@@ -39,20 +39,22 @@ fun decode (panel : Panel, description : String) : String {
     }.joinToString (transform = Int::toString, separator = "")
 }
 
-class Panel (val height : Int, val width : Int, val alphabet : (Pair<Int, Int>, Pair<Int, Int>) -> Int = Alphabet.simple, var button : Pair<Int, Int> = center (height, width)) {
+class Panel (val height : Int, val width : Int, val alphabet : (Pair<Int, Int>, Pair<Int, Int>) -> Int? = Alphabet.simple, var button : Pair<Int, Int> = center (height, width)) {
 
     val dimension : Pair<Int, Int> get () = height to width
 
     fun slide         (slide : Slide) : Unit {
-        button = when (slide) {
+        val candidate = when (slide) {
             Slide.U -> button.copy (second = max (0,          button.second - 1))
             Slide.D -> button.copy (second = min (height - 1, button.second + 1))
             Slide.L -> button.copy (first  = max (0,          button.first  - 1))
             Slide.R -> button.copy (first  = min (width - 1,  button.first  + 1))
         }
+
+        alphabet (dimension, candidate)?.let { button = candidate }
     }
 
-    fun press () : Int = alphabet (dimension, button)
+    fun press () : Int = alphabet (dimension, button)!!
 
 }
 
