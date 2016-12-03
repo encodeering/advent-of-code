@@ -4,6 +4,9 @@ import com.encodeering.aoc.y2016.d1.Direction.East
 import com.encodeering.aoc.y2016.d1.Direction.North
 import com.encodeering.aoc.y2016.d1.Direction.South
 import com.encodeering.aoc.y2016.d1.Direction.West
+import com.encodeering.aoc.y2016.d1.Instruction.F
+import com.encodeering.aoc.y2016.d1.Instruction.L
+import com.encodeering.aoc.y2016.d1.Instruction.R
 import java.lang.Math.abs
 import java.lang.Math.floorMod
 
@@ -18,9 +21,23 @@ object Day1 {
 
         val instructions = input.replace (" ", "").split (",").map { Instruction.create (it) }
 
-        val                          start = Point (0, 0, North)
-        val end = instructions.fold (start,  Point::move)
+        var headquarter : Point? = null
+        val visited = mutableSetOf<Point> ()
 
+        fun locateHQ (points : List<Point>) : List<Point> {
+            if (                                                                                      headquarter == null) {
+                points.find { (xp, yp) -> visited.any { (xv, yv) -> xp == xv && yp == yv } }?.apply { headquarter = this }
+
+                visited += points
+            }
+
+            return points
+        }
+
+        val                          start = Point (0, 0, North)
+        val end = instructions.fold (start) { current, instruction -> locateHQ (current.path (instruction)).last () }
+
+        println ("headquarter:    ${distance (start, headquarter!!)}")
         println ("block distance: ${distance (start, end)}")
     }
 
@@ -40,6 +57,24 @@ data class Point (val x : Int, val y : Int, val direction : Direction) {
             East  -> Point (x + magnitude, y,             East)
             West  -> Point (x - magnitude, y,             West)
         }
+    }
+
+    fun path (                      instruction : Instruction) : List<Point> {
+        val instructions = (1 until instruction.magnitude).asIterable ().map { F (1) }
+        val initial = when (instruction) {
+            is L ->         instruction.copy (1)
+            is R ->         instruction.copy (1)
+            else ->         instruction
+        }
+
+        val paths = mutableListOf<Point> ()
+
+        (listOf (initial) + instructions).fold (this) { current, instruction ->
+            paths += current.move (instruction)
+            paths.last ()
+        }
+
+        return paths
     }
 
 }
@@ -65,8 +100,15 @@ sealed class Instruction {
         fun create (definition : String) = when (definition.first ()) {
             'L'  -> L (definition.substring (1).toInt ())
             'R'  -> R (definition.substring (1).toInt ())
+            'F'  -> F (definition.substring (1).toInt ())
             else -> throw IllegalStateException ("$definition is not a valid instruction")
         }
+
+    }
+
+    data class F (override val magnitude : Int) : Instruction () {
+
+        override val sign : Int = 0
 
     }
 

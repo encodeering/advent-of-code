@@ -2,6 +2,7 @@ package com.encodeering.aoc.y2016.d1
 import com.encodeering.aoc.y2016.d1.Direction.North
 import com.encodeering.aoc.y2016.d1.Direction.South
 import com.encodeering.aoc.y2016.d1.Direction.West
+import com.encodeering.aoc.y2016.d1.Instruction.F
 import com.encodeering.aoc.y2016.d1.Instruction.L
 import com.encodeering.aoc.y2016.d1.Instruction.R
 import com.winterbe.expekt.expect
@@ -21,7 +22,9 @@ class HeadquarterSpek : Spek({
 
         it ("direction") {
             expect (North.turn (L (0))).to.equal (West)
+            expect (North.turn (F (0))).to.equal (North)
             expect (West.turn  (R (0))).to.equal (North)
+            expect (West.turn  (F (0))).to.equal (West)
         }
 
         describe ("#1") {
@@ -64,6 +67,20 @@ class HeadquarterSpek : Spek({
                 expect (end.y).to.equal (start.y +  2)
 
                 expect (distance (start, end)).to.equal (12)
+            }
+
+        }
+
+        describe ("#2") {
+
+            it ("first example") {
+                val         start = Point (0, 0, North)
+                val paths = start.path (R (8)).last ()
+                                 .path (R (4)).last ()
+                                 .path (R (4)).last ()
+                                 .path (R (8))
+
+                expect (paths).to.satisfy { it.any { p -> p.x == 4 && p.y == 0 } }
             }
 
         }
