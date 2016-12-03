@@ -27,7 +27,7 @@ object Day2 {
 
 object Alphabet {
 
-    val simple : (Pair<Int, Int>, Pair<Int, Int>) -> Int = { (_, width), (x, y) -> (1 + x + y * width) }
+    val simple : (Pair<Int, Int>, Pair<Int, Int>) -> CharSequence = { (_, width), (x, y) -> (1 + x + y * width).toString () }
 
 }
 
@@ -36,10 +36,10 @@ fun decode (panel : Panel, description : String) : String {
     return series.map {
         it.forEach (panel::slide)
                     panel.press ()
-    }.joinToString (transform = Int::toString, separator = "")
+    }.joinToString (transform = CharSequence::toString, separator = "")
 }
 
-class Panel (val height : Int, val width : Int, val alphabet : (Pair<Int, Int>, Pair<Int, Int>) -> Int? = Alphabet.simple, var button : Pair<Int, Int> = center (height, width)) {
+class Panel (val height : Int, val width : Int, val alphabet : (Pair<Int, Int>, Pair<Int, Int>) -> CharSequence? = Alphabet.simple, var button : Pair<Int, Int> = center (height, width)) {
 
     val dimension : Pair<Int, Int> get () = height to width
 
@@ -54,7 +54,7 @@ class Panel (val height : Int, val width : Int, val alphabet : (Pair<Int, Int>, 
         alphabet (dimension, candidate)?.let { button = candidate }
     }
 
-    fun press () : Int = alphabet (dimension, button)!!
+    fun press () : CharSequence = alphabet (dimension, button)!!
 
 }
 
