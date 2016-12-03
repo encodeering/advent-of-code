@@ -25,6 +25,12 @@ object Day2 {
 
 }
 
+object Alphabet {
+
+    val simple : (Pair<Int, Int>, Pair<Int, Int>) -> Int = { (_, width), (x, y) -> (1 + x + y * width) }
+
+}
+
 fun decode (panel : Panel, description : String) : String {
     val    series = description.trimIndent ().lineSequence ().map { it.map (Any::toString).map (Slide::valueOf) }
     return series.map {
@@ -33,7 +39,9 @@ fun decode (panel : Panel, description : String) : String {
     }.joinToString (transform = Int::toString, separator = "")
 }
 
-class Panel (val height : Int, val width : Int, private var button : Pair<Int, Int> = center (height, width)) {
+class Panel (val height : Int, val width : Int, val alphabet : (Pair<Int, Int>, Pair<Int, Int>) -> Int = Alphabet.simple, var button : Pair<Int, Int> = center (height, width)) {
+
+    val dimension : Pair<Int, Int> get () = height to width
 
     fun slide         (slide : Slide) : Unit {
         button = when (slide) {
@@ -44,9 +52,7 @@ class Panel (val height : Int, val width : Int, private var button : Pair<Int, I
         }
     }
 
-    fun press () : Int {
-        return 1 + button.first + button.second * width
-    }
+    fun press () : Int = alphabet (dimension, button)
 
 }
 
