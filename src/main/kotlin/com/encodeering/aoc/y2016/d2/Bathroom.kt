@@ -21,6 +21,16 @@ object Day2 {
         """
 
         println ("bathroom code: ${decode (Panel (3, 3), description)}")
+
+        val meeting = Alphabet.meeting (listOf (
+            null, null, "1", null, null,
+            null,  "2", "3", "4" , null,
+             "5",  "6", "7", "8" , "9",
+            null,  "A", "B", "C" , null,
+            null, null, "D", null, null
+        ))
+
+        println ("bathroom code: ${decode (Panel (5, 5, meeting, 0 to 3), description)}")
     }
 
 }
@@ -28,6 +38,11 @@ object Day2 {
 object Alphabet {
 
     val simple : (Pair<Int, Int>, Pair<Int, Int>) -> CharSequence = { (_, width), (x, y) -> (1 + x + y * width).toString () }
+
+    val meeting : (List<CharSequence?>) -> (Pair<Int, Int>, Pair<Int, Int>) -> CharSequence? = {
+                               codepoints -> {
+        (_, width), (x,  y) -> codepoints[x + y * width]
+    }}
 
 }
 

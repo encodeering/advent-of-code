@@ -22,18 +22,33 @@ class BathroomSpek : Spek({
             expect (center (5, 5)).to.equal (Pair (2, 2))
         }
 
+        val description = """
+                          ULL
+                          RRDDD
+                          LURDL
+                          UUUUD
+                          """
+
         describe ("#1") {
 
             it ("first example") {
-                val description =
-                """
-                ULL
-                RRDDD
-                LURDL
-                UUUUD
-                """
-
                 expect (decode (Panel (3, 3), description)).to.equal ("1985")
+            }
+
+        }
+
+        describe ("#2") {
+
+            it ("first example") {
+                val meeting = Alphabet.meeting (listOf (
+                    null, null, "1", null, null,
+                    null,  "2", "3", "4" , null,
+                     "5",  "6", "7", "8" , "9",
+                    null,  "A", "B", "C" , null,
+                    null, null, "D", null, null
+                ))
+
+                expect (decode (Panel (5, 5, meeting, 0 to 3), description)).to.equal ("5DB3")
             }
 
         }
