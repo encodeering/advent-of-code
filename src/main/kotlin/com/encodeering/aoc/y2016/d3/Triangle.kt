@@ -9,17 +9,17 @@ object Day3 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse ("/d3/triangles.txt") {
-            val valids = it.map (String::trim)
-                           .map { v -> v.split (Regex ("\\s+")) }
-                           .map { (a, b, c) -> triangle (a.toInt (), b.toInt (), c.toInt ()) }
-                           .filterNotNull ()
-                                 .toList ()
-
-            println ("valid triangles: ${valids.size}")
-        }
+        println ("horizontally : ${traverse ("/d3/triangles.txt", ::horizontally).size}")
     }
 
+}
+
+fun horizontally (sequence : Sequence<String>) : List<Triple<Int, Int, Int>> {
+    return sequence.map (String::trim)
+                   .map { v -> v.split (Regex ("\\s+")) }
+                   .map { (a, b, c) -> triangle (a.toInt (), b.toInt (), c.toInt ()) }
+                   .filterNotNull ()
+                         .toList ()
 }
 
 fun triangle                       (a : Int, b : Int, c : Int) : Triple<Int, Int, Int>? {
