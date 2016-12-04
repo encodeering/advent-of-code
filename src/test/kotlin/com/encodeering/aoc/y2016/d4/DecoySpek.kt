@@ -49,6 +49,14 @@ class DecoySpek : Spek ({
 
         }
 
+        describe ("#2") {
+
+            it ("first example") {
+                expect (transpile (Code.apply ("qzmt-zixmtkozy-ivhz-343"))).to.equal ("very encrypted name")
+            }
+
+        }
+
     }
 
 })

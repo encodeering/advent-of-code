@@ -12,11 +12,24 @@ object Day4 {
         traverse ("/d4/encryptions.txt") {
             println ("sum of sectors: ${it.fold (0) { sum, text -> sum + (verify (text)?.sector ?: 0) }}")
         }
+
+        traverse ("/d4/encryptions.txt") {
+            val      candidates = it.map (::verify).filterNotNull ().filter { c -> transpile (c)?.contains ("North", true) ?: false }
+            println (candidates.map { "${transpile (it)} - ${it.sector}" }.joinToString ())
+        }
     }
 
 }
 
 val Alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+fun transpile  (code: Code) : String? {
+    fun shift                                  (c : Char) : Char {
+        return with (Alphabet) { this[(indexOf (c) + code.sector) % length] }
+    }
+
+    return code.parts.map { p -> p.map (::shift).joinToString ("") }.joinToString (" ")
+}
 
 fun verify                             (text : String) : Code? {
     val              code = Code.apply (text)
