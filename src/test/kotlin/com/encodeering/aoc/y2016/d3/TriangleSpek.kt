@@ -23,6 +23,30 @@ class TriangleSpek : Spek ({
 
         }
 
+        describe ("#2") {
+
+            it ("first example") {
+                val description = """
+                101 301 501
+                102 302 502
+                103 303 503
+                201 401 601
+                202 402 602
+                203 403 603
+                """
+
+                expect (vertically (description.trimIndent ().lineSequence ())).to.equal (listOf (
+                    Triple (101, 102, 103),
+                    Triple (301, 302, 303),
+                    Triple (501, 502, 503),
+                    Triple (201, 202, 203),
+                    Triple (401, 402, 403),
+                    Triple (601, 602, 603)
+                ))
+            }
+
+        }
+
     }
 
 })
