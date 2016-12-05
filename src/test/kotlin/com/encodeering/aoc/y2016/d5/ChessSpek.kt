@@ -27,6 +27,14 @@ class ChessSpek : Spek({
 
         }
 
+        describe ("#2") {
+
+            it ("first example") {
+                expect (password2 ("abc")).to.equal ("05ace8e3")
+            }
+
+        }
+
     }
 
 })
