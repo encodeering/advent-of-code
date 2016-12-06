@@ -48,7 +48,7 @@ class RepetitionSpek : Spek({
                 enarar
                 """
 
-                expect (correct (description.trimIndent ().lineSequence ())).to.equal ("easter")
+                expect (correct (description.trimIndent ().lineSequence ()) { it.maxBy { it.value }?.key }).to.equal ("easter")
             }
 
         }

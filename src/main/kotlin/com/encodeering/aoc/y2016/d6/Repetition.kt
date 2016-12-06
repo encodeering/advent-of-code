@@ -10,17 +10,17 @@ object Day6 {
     @JvmStatic
     fun main(args : Array<String>) {
         traverse ("/d6/transmission.txt") {
-            println ("message: ${correct (it)}")
+            println ("message: ${correct (it) { it.maxBy { it.value }?.key } }")
         }
     }
 
 }
 
-fun correct (codes : Sequence<String>) : String? {
+fun correct (codes : Sequence<String>, select : (Map<Char, Int>) -> Char?) : String? {
     return   codes.asIterable()
                   .map (String::asIterable).transpose ()
                   .map { it.frequence () }
-                  .map { it.maxBy { it.value }?.key }
+                  .map (select)
                       .joinToString ("")
 }
 
