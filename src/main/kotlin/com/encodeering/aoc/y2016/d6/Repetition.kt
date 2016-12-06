@@ -12,6 +12,10 @@ object Day6 {
         traverse ("/d6/transmission.txt") {
             println ("message: ${correct (it) { it.maxBy { it.value }?.key } }")
         }
+
+        traverse ("/d6/transmission.txt") {
+            println ("message: ${correct (it) { it.minBy { it.value }?.key } }")
+        }
     }
 
 }
