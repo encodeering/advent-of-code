@@ -30,10 +30,10 @@ class NetworkSpek : Spek({
         describe ("#1") {
 
             it ("first example") {
-                expect (verify ("abba[mnop]qrst")).to.equal (true)
-                expect (verify ("abcd[bddb]xyyx")).to.equal (false)
-                expect (verify ("aaaa[qwer]tyui")).to.equal (false)
-                expect (verify ("ioxxoj[asdfgh]zxcvbn")).to.equal (true)
+                expect (abba ("abba[mnop]qrst")).to.equal (true)
+                expect (abba ("abcd[bddb]xyyx")).to.equal (false)
+                expect (abba ("aaaa[qwer]tyui")).to.equal (false)
+                expect (abba ("ioxxoj[asdfgh]zxcvbn")).to.equal (true)
             }
 
         }

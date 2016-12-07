@@ -11,21 +11,29 @@ object Day7 {
     @JvmStatic
     fun main(args : Array<String>) {
         traverse ("/d7/addresses.txt") {
-            println ("addresses: ${ it.map (::verify).filter { it }.count () }")
+            println ("addresses: ${ it.map (::abba).filter { it }.count () }")
         }
     }
 
 }
 
-fun verify                   (addr : String) : Boolean {
+fun abba (addr : String) : Boolean = verify (addr) {
+    outer, inner ->
+    outer.map { it.map (::abbafied).any { it } }.any {   it } &&
+    inner.map { it.map (::abbafied).any { it } }.all { ! it }
+}
+
+fun verify                   (addr : String, process : (List<List<String>>, List<List<String>>) -> Boolean): Boolean {
     val (outer, inner) = ip7 (addr).map (String::toList)
                                        .withIndex ()
                                            .partition { it.index % 2 == 0 }
 
-    fun prepare (list : List<List<Char>>) = list.map { it.window (4).map { it.joinToString("") } }
+    fun prepare (list : List<List<Char>>) = list.map { it.window (4).map { it.joinToString ("") } }
 
-    return prepare (outer.map { it.value }).map { it.map (::abbafied).any { it } }.any {   it } &&
-           prepare (inner.map { it.value }).map { it.map (::abbafied).any { it } }.all { ! it }
+    return process (
+            prepare (outer.map { it.value }),
+            prepare (inner.map { it.value })
+    )
 }
 
 fun abbafied (it : String) : Boolean = it[0] == it[3] &&
