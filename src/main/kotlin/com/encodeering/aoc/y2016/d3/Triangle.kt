@@ -1,5 +1,6 @@
 package com.encodeering.aoc.y2016.d3
 
+import com.encodeering.aoc.y2016.extension.window
 import com.encodeering.aoc.y2016.io.traverse
 
 /**
@@ -49,12 +50,4 @@ fun triangle                       (a : Int, b : Int, c : Int) : Triple<Int, Int
     val invalid = window.map { (sides, opposite) -> sides.first + sides.second to opposite }.any { (sum, opposite) -> sum <= opposite }
 
     return if (invalid) null else Triple (a, b, c)
-}
-
-fun <T> List<T>.window  (n : Int, step : Int = 1) : List<List<T>> {
-    return (0.rangeTo (size - n).step (step)).asSequence ().fold (mutableListOf<List<T>> ()) {
-        list,              idx ->
-        list.add (subList (idx, idx + n))
-        list
-    }
 }
