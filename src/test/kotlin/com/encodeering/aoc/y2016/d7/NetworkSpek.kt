@@ -38,5 +38,16 @@ class NetworkSpek : Spek({
 
         }
 
+        describe ("#2") {
+
+            it ("second example") {
+                expect (aba ("aba[bab]xyz")).to.equal (true)
+                expect (aba ("xyx[xyx]xyx ")).to.equal (false)
+                expect (aba ("aaa[kek]eke")).to.equal (true)
+                expect (aba ("zazbz[bzb]cdb")).to.equal (true)
+            }
+
+        }
+
     }
 })
