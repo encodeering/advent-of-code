@@ -19,12 +19,13 @@ object Day7 {
 
 fun verify                   (addr : String) : Boolean {
     val (outer, inner) = ip7 (addr).map (String::toList)
-                                           .map { it.window (4).map { it.joinToString ("") } }
-                                           .map { it.map (::abbafied).any { it } }
-                                               .withIndex ().partition    { it.index % 2 == 0 }
+                                       .withIndex ()
+                                           .partition { it.index % 2 == 0 }
 
-    return outer.any {   it.value } &&
-           inner.all { ! it.value }
+    fun prepare (list : List<List<Char>>) = list.map { it.window (4).map { it.joinToString("") } }
+
+    return prepare (outer.map { it.value }).map { it.map (::abbafied).any { it } }.any {   it } &&
+           prepare (inner.map { it.value }).map { it.map (::abbafied).any { it } }.all { ! it }
 }
 
 fun abbafied (it : String) : Boolean = it[0] == it[3] &&
