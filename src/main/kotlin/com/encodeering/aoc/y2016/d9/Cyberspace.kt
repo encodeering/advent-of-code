@@ -1,0 +1,66 @@
+package com.encodeering.aoc.y2016.d9
+
+import com.encodeering.aoc.y2016.d9.Node.Compression
+import com.encodeering.aoc.y2016.d9.Node.Literal
+import com.encodeering.aoc.y2016.extension.times
+import com.encodeering.aoc.y2016.io.traverse
+
+/**
+ * @author clausen - encodeering@gmail.com
+ */
+object Day9 {
+
+    @JvmStatic
+    fun main (args : Array<String>) {
+        traverse ("/d9/file.txt") {
+            println ("file length: ${size (it.first ())}")
+        }
+    }
+
+}
+
+
+fun content (text: CharSequence) = decompress (text).stringify ()
+
+fun size (text: CharSequence) = decompress (text).countify ()
+
+fun decompress (text : CharSequence) : Node {
+    val regex = Regex ("""([^(]+)?\(([^)]+)\)|(.+)$""")
+
+    fun scan (text : CharSequence) : Iterable<Node> {
+
+        val                              result = regex.find (text) ?: return listOf (Literal (text))
+        val upcoming = text.subSequence (result.range.endInclusive + 1, text.length)
+
+        val (start,              code, end) = result.destructured
+        if  (start.isBlank () && code.isBlank ()) return listOf (Literal (end))
+
+        val (many, times) = code.split ("x", limit = 2).map(String::toInt)
+
+        val content = upcoming.take (many).let { listOf (Literal (it)) }
+
+        return listOf (Literal (start), Compression (content, times)) + scan (upcoming.drop (many))
+    }
+
+    return Compression (scan (text))
+}
+
+sealed class Node {
+
+    data class Literal (val literal : CharSequence) : Node ()
+
+    data class Compression (val children : Iterable<Node>, val times : Int = 1) : Node ()
+
+}
+
+fun Node.stringify () : CharSequence =
+    when (this) {
+        is Compression -> children.map (Node::stringify).joinToString ("").times (times)
+        is Literal     -> literal
+    }
+
+fun Node.countify () : Int =
+    when (this) {
+        is Compression -> children.map (Node::countify).sum () * times
+        is Literal     -> literal.length
+    }
