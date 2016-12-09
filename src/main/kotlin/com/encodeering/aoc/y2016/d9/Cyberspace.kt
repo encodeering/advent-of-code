@@ -15,16 +15,20 @@ object Day9 {
         traverse ("/d9/file.txt") {
             println ("file length: ${size (it.first ())}")
         }
+
+        traverse ("/d9/file.txt") {
+            println ("file length: ${size (it.first (), true)}")
+        }
     }
 
 }
 
 
-fun content (text: CharSequence) = decompress (text).stringify ()
+fun content (text: CharSequence, recursive : Boolean = false) = decompress (text, recursive).stringify ()
 
-fun size (text: CharSequence) = decompress (text).countify ()
+fun size (text: CharSequence, recursive : Boolean = false) = decompress (text, recursive).countify ()
 
-fun decompress (text : CharSequence) : Node {
+fun decompress (text : CharSequence, recursive : Boolean) : Node {
     val regex = Regex ("""([^(]+)?\(([^)]+)\)|(.+)$""")
 
     fun scan (text : CharSequence) : Iterable<Node> {
@@ -37,7 +41,9 @@ fun decompress (text : CharSequence) : Node {
 
         val (many, times) = code.split ("x", limit = 2).map(String::toInt)
 
-        val content = upcoming.take (many).let { listOf (Literal (it)) }
+        val content = upcoming.take (many).let {
+            if (recursive) scan (it) else listOf (Literal (it))
+        }
 
         return listOf (Literal (start), Compression (content, times)) + scan (upcoming.drop (many))
     }
@@ -59,8 +65,8 @@ fun Node.stringify () : CharSequence =
         is Literal     -> literal
     }
 
-fun Node.countify () : Int =
+fun Node.countify () : Long =
     when (this) {
         is Compression -> children.map (Node::countify).sum () * times
-        is Literal     -> literal.length
+        is Literal     -> literal.length.toLong ()
     }
