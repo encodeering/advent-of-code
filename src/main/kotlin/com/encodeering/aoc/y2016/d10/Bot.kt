@@ -13,6 +13,13 @@ object Day10 {
             val factory = Factory (compares (17, 61))
                 factory.execute (it)
         }
+
+        traverse ("/d10/instructions.txt") {
+            val factory = Factory ()
+                factory.execute (it)
+
+            println ("chip sum : ${(0..2).map (factory::bin).fold (1) { total, (_, chips) -> total * chips.sum () }}")
+        }
     }
 
 }
