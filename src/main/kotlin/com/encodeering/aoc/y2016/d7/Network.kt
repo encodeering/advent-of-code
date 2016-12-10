@@ -37,7 +37,7 @@ fun ssl (addr : String) : Boolean = verify (addr, 3) {
     }
 }
 
-fun verify                   (addr : String, window : Int, process : (List<List<String>>, List<List<String>>) -> Boolean): Boolean {
+fun verify                         (addr : String, window : Int, process : (List<List<String>>, List<List<String>>) -> Boolean): Boolean {
     val (supernet, hypernet) = ip7 (addr).map (String::toList)
                                        .withIndex ()
                                            .partition { it.index % 2 == 0 }
