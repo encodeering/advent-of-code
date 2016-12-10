@@ -30,10 +30,10 @@ class NetworkSpek : Spek({
         describe ("#1") {
 
             it ("first example") {
-                expect (abba ("abba[mnop]qrst")).to.equal (true)
-                expect (abba ("abcd[bddb]xyyx")).to.equal (false)
-                expect (abba ("aaaa[qwer]tyui")).to.equal (false)
-                expect (abba ("ioxxoj[asdfgh]zxcvbn")).to.equal (true)
+                expect (tls ("abba[mnop]qrst")).to.equal (true)
+                expect (tls ("abcd[bddb]xyyx")).to.equal (false)
+                expect (tls ("aaaa[qwer]tyui")).to.equal (false)
+                expect (tls ("ioxxoj[asdfgh]zxcvbn")).to.equal (true)
             }
 
         }
@@ -41,10 +41,10 @@ class NetworkSpek : Spek({
         describe ("#2") {
 
             it ("second example") {
-                expect (aba ("aba[bab]xyz")).to.equal (true)
-                expect (aba ("xyx[xyx]xyx ")).to.equal (false)
-                expect (aba ("aaa[kek]eke")).to.equal (true)
-                expect (aba ("zazbz[bzb]cdb")).to.equal (true)
+                expect (ssl ("aba[bab]xyz")).to.equal (true)
+                expect (ssl ("xyx[xyx]xyx ")).to.equal (false)
+                expect (ssl ("aaa[kek]eke")).to.equal (true)
+                expect (ssl ("zazbz[bzb]cdb")).to.equal (true)
             }
 
         }

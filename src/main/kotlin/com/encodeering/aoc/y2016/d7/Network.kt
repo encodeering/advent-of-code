@@ -11,42 +11,42 @@ object Day7 {
     @JvmStatic
     fun main(args : Array<String>) {
         traverse ("/d7/addresses.txt") {
-            println ("addresses: ${ it.map { abba (it) }.filter { it }.count () }")
+            println ("addresses: ${ it.map (::tls).filter { it }.count () }")
         }
 
         traverse ("/d7/addresses.txt") {
-            println ("addresses: ${ it.map(::aba).filter { it }.count () }")
+            println ("addresses: ${ it.map (::ssl).filter { it }.count () }")
         }
     }
 
 }
 
-fun abba (addr : String) : Boolean = verify (addr, 4) {
-    outer, inner ->
-    outer.map { it.map (::abbafied).any { it } }.any {   it } &&
-    inner.map { it.map (::abbafied).any { it } }.all { ! it }
+fun tls (addr : String) : Boolean = verify (addr, 4) {
+    supernet, hypernet ->
+    supernet.map { it.map (::abbafied).any { it } }.any {   it } &&
+    hypernet.map { it.map (::abbafied).any { it } }.all { ! it }
 }
 
-fun aba (addr : String) : Boolean = verify (addr, 3) {
-    outer, inner ->
-    outer.flatMap { it.filter (::abafied) }.any {
+fun ssl (addr : String) : Boolean = verify (addr, 3) {
+    supernet, hypernet ->
+    supernet.flatMap { it.filter (::abafied) }.any {
         var bab  = it.drop (1)
             bab += bab.first ()
 
-        inner.filter { it.filter { s -> bab in s }.isNotEmpty () }.isNotEmpty()
+        hypernet.filter { it.filter { s -> bab in s }.isNotEmpty () }.isNotEmpty()
     }
 }
 
 fun verify                   (addr : String, window : Int, process : (List<List<String>>, List<List<String>>) -> Boolean): Boolean {
-    val (outer, inner) = ip7 (addr).map (String::toList)
+    val (supernet, hypernet) = ip7 (addr).map (String::toList)
                                        .withIndex ()
                                            .partition { it.index % 2 == 0 }
 
     fun prepare (list : List<List<Char>>) = list.map { it.window (window).map { it.joinToString ("") } }
 
     return process (
-            prepare (outer.map { it.value }),
-            prepare (inner.map { it.value })
+            prepare (supernet.map { it.value }),
+            prepare (hypernet.map { it.value })
     )
 }
 
