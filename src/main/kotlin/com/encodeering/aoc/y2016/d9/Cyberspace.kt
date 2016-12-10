@@ -29,15 +29,15 @@ fun content (text: CharSequence, recursive : Boolean = false) = decompress (text
 fun size (text: CharSequence, recursive : Boolean = false) = decompress (text, recursive).countify ()
 
 fun decompress (text : CharSequence, recursive : Boolean) : Node {
-    val regex = Regex ("""([^(]+)?\(([^)]+)\)|(.+)$""")
+    val regex = Regex ("""^([^(]+)?(?:\(([^)]+)\))?""")
 
     fun scan (text : CharSequence) : Iterable<Node> {
 
         val                              result = regex.find (text) ?: return listOf (Literal (text))
         val upcoming = text.subSequence (result.range.endInclusive + 1, text.length)
 
-        val (start,              code, end) = result.destructured
-        if  (start.isBlank () && code.isBlank ()) return listOf (Literal (end))
+        val (meta, code) = result.destructured
+        if        (code.isBlank ()) return listOf (Literal (meta))
 
         val (many, times) = code.split ("x", limit = 2).map(String::toInt)
 
@@ -45,7 +45,7 @@ fun decompress (text : CharSequence, recursive : Boolean) : Node {
             if (recursive) scan (it) else listOf (Literal (it))
         }
 
-        return listOf (Literal (start), Compression (content, times)) + scan (upcoming.drop (many))
+        return listOf (Literal (meta), Compression (content, times)) + scan (upcoming.drop (many))
     }
 
     return Compression (scan (text))
