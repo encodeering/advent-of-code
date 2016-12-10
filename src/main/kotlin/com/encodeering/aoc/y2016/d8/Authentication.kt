@@ -50,14 +50,14 @@ class Authentication (val height : Int, val width : Int, val charfy : (Boolean) 
 
     fun rotateCol (x : Int, by : Int) : Authentication {
         val col = m.map { it[x] }
-           (col + col).asIterable().drop(height - by % height).take(height).forEachIndexed { y, value ->  m[y][x] = value }
+           (col + col).drop(height - by % height).take(height).forEachIndexed { y, value ->  m[y][x] = value }
 
         return this
     }
 
     fun rotateRow  (y : Int, by : Int) : Authentication {
         val row = m[y]
-           (row + row).asIterable ().drop (width - by % width).take (width).forEachIndexed { x, value ->  m[y][x] = value }
+           (row + row).drop (width - by % width).take (width).forEachIndexed { x, value ->  m[y][x] = value }
 
         return this
     }
