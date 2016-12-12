@@ -15,6 +15,14 @@ object Day12 {
 
             println ("register a: ${interpreter["a"]}")
         }
+
+        traverse ("/d12/instructions.txt") {
+            val interpreter = Interpreter ()
+                interpreter["c"] = 1
+                interpreter.run (it)
+
+            println ("register a: ${interpreter["a"]}")
+        }
     }
 
 }
