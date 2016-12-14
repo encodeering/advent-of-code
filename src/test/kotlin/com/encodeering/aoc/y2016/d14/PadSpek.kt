@@ -23,6 +23,14 @@ class PadSpek : Spek({
 
         }
 
+        describe ("#2") {
+
+            it ("first example") {
+                expect (padkeys ("abc", 2016).keys.last ()).to.equal (22551)
+            }
+
+        }
+
     }
 
 })
