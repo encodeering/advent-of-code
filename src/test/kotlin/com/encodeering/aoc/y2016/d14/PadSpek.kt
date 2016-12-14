@@ -1,6 +1,5 @@
-package com.encodeering.aoc.y2016.d5
+package com.encodeering.aoc.y2016.d14
 
-import com.encodeering.aoc.y2016.extension.md5sum
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -12,18 +11,14 @@ import org.junit.runner.RunWith
  * @author clausen - encodeering@gmail.com
  */
 @RunWith (JUnitPlatform::class)
-class ChessSpek : Spek({
+class PadSpek : Spek({
 
-    describe ("Chess") {
-
-        it ("md5") {
-            expect ("hello".md5sum ()).to.equal ("5d41402abc4b2a76b9719d911017c592")
-        }
+    describe ("Pad") {
 
         describe ("#1") {
 
             it ("first example") {
-                expect (password ("abc")).to.equal ("18f47a30")
+                expect (padkeys ("abc").keys.last ()).to.equal (22728)
             }
 
         }
@@ -31,7 +26,7 @@ class ChessSpek : Spek({
         describe ("#2") {
 
             it ("first example") {
-                expect (password2 ("abc")).to.equal ("05ace8e3")
+                expect (padkeys ("abc", 2016).keys.last ()).to.equal (22551)
             }
 
         }
