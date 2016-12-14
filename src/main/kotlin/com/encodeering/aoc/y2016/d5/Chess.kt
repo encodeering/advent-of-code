@@ -1,7 +1,6 @@
 package com.encodeering.aoc.y2016.d5
 
-import java.math.BigInteger
-import java.security.MessageDigest
+import com.encodeering.aoc.y2016.extension.md5sum
 
 /**
  * @author clausen - encodeering@gmail.com
@@ -36,8 +35,4 @@ fun password2 (door : String) : String {
                 .sortedBy      { (idx, _) -> idx }
                 .map           { (_  , c) -> c   }
                     .joinToString ("")
-}
-
-fun String.md5sum () : String {
-    return BigInteger (1, MessageDigest.getInstance ("MD5").digest (toByteArray ())).toString (16).padStart (32, padChar = '0')
 }
