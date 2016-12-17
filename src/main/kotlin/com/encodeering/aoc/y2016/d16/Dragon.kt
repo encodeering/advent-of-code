@@ -8,6 +8,7 @@ object Day16 {
     @JvmStatic
     fun main(args : Array<String>) {
         println ("dragon checksum: ${dragonfy ("00111101111101000", 272).checksum}")
+        println ("dragon checksum: ${dragonfy ("00111101111101000", 35651584).checksum}")
     }
 
 }
