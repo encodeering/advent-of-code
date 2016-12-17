@@ -12,6 +12,7 @@ object Day17 {
     @JvmStatic
     fun main(args : Array<String>) {
         println ("vault path: ${Vault (4, 4).path (0 to 0, 3 to 3, "lpvhkcbi")!!}")
+        println ("vault path: ${Vault (4, 4).longest (0 to 0, 3 to 3, "lpvhkcbi")?.length}")
     }
 
 }
@@ -26,6 +27,30 @@ class Vault (val width : Int, val height : Int) {
         )
 
         return search.query (State (passcode, from, true), "") { first.position == to }?.drop (passcode.length)
+    }
+
+    fun longest (from : Pair<Int, Int>, to : Pair<Int, Int>, passcode : String) : CharSequence? {
+        var longest : CharSequence = ""
+
+        val search = Search<State, State, CharSequence> (
+            morph    = { it            },
+            storage  = { LinkedList () },
+            generate = { state, result -> generate (state, result).filterNot {
+                (state, result) ->
+                    if (state.position == to ) {
+                        longest = if (state.code.length > longest.length) state.code else longest
+                        true
+                    }
+                    else {
+                        false
+                    }
+                }
+            }
+        )
+
+        search.query (State (passcode, from, true), "") { false }
+
+        return longest.drop (passcode.length)
     }
 
     private fun generate (state : State, @Suppress("UNUSED_PARAMETER") result : CharSequence) : Iterable<Pair<State, CharSequence>> {
