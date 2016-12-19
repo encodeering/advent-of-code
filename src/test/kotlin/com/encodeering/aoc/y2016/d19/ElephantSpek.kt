@@ -23,6 +23,25 @@ class ElephantSpek : Spek ({
 
         }
 
+        describe ("#2") {
+
+            it ("first example") {
+                expect (takesall2 (5)).to.equal (2)
+            }
+
+            it ("analysis") {
+                (1..128).forEach {
+                    println ("$it ${takesall2 (it)}")
+                }
+            }
+
+            it ("analysis verification") {
+                (1..128).forEach {
+                    expect (takesall2 (it)).to.equal (takesall2math (it))
+                }
+            }
+
+        }
     }
 
 })
