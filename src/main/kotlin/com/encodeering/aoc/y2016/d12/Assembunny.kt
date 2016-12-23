@@ -27,33 +27,37 @@ object Day12 {
 
 }
 
-class Interpreter {
 
-    private val registers : MutableMap<String, Int> = mutableMapOf ()
+fun Interpreter.run          (operations : Sequence<CharSequence>) {
+    val instructions = parse (operations).toList ()
 
-    fun run                      (operations : Sequence<CharSequence>) {
-        val instructions = parse (operations).toList ()
+    val interpreter = this
 
-        tailrec fun next                             (pos : Int) {
-                    next (
-                        instructions.elementAtOrNull (pos).run {
-                            if   (this == null) return@next
+    tailrec fun next                             (pos : Int) {
+                next (
+                    instructions.elementAtOrNull (pos).run {
+                        if   (this == null) return@next
 
-                            when (this) {
-                                is Command.Cpy -> { this@Interpreter[register] = supply ();                        pos + 1 }
-                                is Command.Inc -> { this@Interpreter[register] = this@Interpreter[register]!! + 1; pos + 1 }
-                                is Command.Dec -> { this@Interpreter[register] = this@Interpreter[register]!! - 1; pos + 1 }
-                                is Command.Jnz -> {                                                                pos + if (check ()) offset else 1 }
-                                else           ->                                                                  pos + 1
-                            }
+                        when (this) {
+                            is Command.Cpy -> { interpreter[register] = supply ();                   pos + 1 }
+                            is Command.Inc -> { interpreter[register] = interpreter[register]!! + 1; pos + 1 }
+                            is Command.Dec -> { interpreter[register] = interpreter[register]!! - 1; pos + 1 }
+                            is Command.Jnz -> {                                                      pos + if (check ()) offset else 1 }
+                            else           ->                                                        pos + 1
                         }
-                    )
-        }
-
-        next (0)
+                    }
+                )
     }
 
-    private fun parse (operations : Sequence<CharSequence>) = operations.map { op ->
+    next (0)
+}
+
+
+class Interpreter {
+
+    val registers : MutableMap<String, Int> = mutableMapOf ()
+
+    fun parse (operations : Sequence<CharSequence>) = operations.map { op ->
         val parameters = op.drop (4).split (" ")
 
         when {
