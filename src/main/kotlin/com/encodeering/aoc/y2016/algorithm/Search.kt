@@ -12,7 +12,7 @@ class Search<T, M, R> (
         val operations = storage ()
             operations += start to neutral
 
-        val travels = mutableListOf<M> ()
+        val travels = mutableSetOf<M> ()
 
         var count = 0
         var step  = 0
@@ -27,7 +27,10 @@ class Search<T, M, R> (
             val                op = operations.first ()
             operations.remove (op)
 
-            travels += morph (op.first)
+            val visited = morph (op.first)
+            if (visited in travels) continue
+
+            travels += visited
 
             if (op.solves ()) return op.second
             else
