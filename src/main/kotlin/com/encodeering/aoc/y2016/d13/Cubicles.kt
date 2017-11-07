@@ -17,6 +17,16 @@ object Day13 {
         println (layout.display (* part1.toTypedArray ()))
 
         println ("size ${part1.size}")
+
+        val part2 = (0..50).flatMap {
+                x ->      (0..50).flatMap {
+                y ->  layout.path (1 to 1) { (state, way) -> state.position == x to y || way.size == 50 + 1 }
+            }
+        }.map { it.position }.distinct ()
+
+        println (layout.display (* part2.toTypedArray ()))
+
+        println ("size ${part2.size}")
     }
 
 }
