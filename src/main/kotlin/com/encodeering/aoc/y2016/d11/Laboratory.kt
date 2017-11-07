@@ -57,6 +57,40 @@ object Day11 {
             }}
         }
 
+        val elg = Code ("EL", Type.Generator)
+        val elm = Code ("EL", Type.Microchip)
+
+        val dig = Code ("DI", Type.Generator)
+        val dim = Code ("DI", Type.Microchip)
+
+        show {
+            val laboratory = Laboratory (
+                lift   = 0,
+                floors = listOf (
+                    Floor (0, listOf (prg, prm, elg, elm, dig, dim)),
+                    Floor (1, listOf (cog, cug, rug, plg)),
+                    Floor (2, listOf (com, cum, rum, plm)),
+                    Floor (3)
+                )
+            )
+
+            route (laboratory) { lift == 3 && floor (3).run {
+                elg in items &&
+                elm in items &&
+                dig in items &&
+                dim in items &&
+                prg in items &&
+                prm in items &&
+                cog in items &&
+                com in items &&
+                cug in items &&
+                cum in items &&
+                rug in items &&
+                rum in items &&
+                plg in items &&
+                plm in items
+            }}
+        }
     }
 
     private fun show (solution : () -> List<Laboratory>) {
