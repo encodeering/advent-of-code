@@ -1,11 +1,9 @@
 buildscript {
-    ext.kotlinversion = '1.1-M03-eap-24'
-    ext.junitversion  = '1.0.0-M2'
+    ext.kotlinversion = '1.1.4-3'
+    ext.junitversion  = '1.0.0-M4'
 
     repositories {
-        maven {
-            url "https://dl.bintray.com/kotlin/kotlin-dev"
-        }
+        mavenLocal ()
         mavenCentral ()
     }
 
@@ -28,9 +26,6 @@ version '0.0.1-SNAPSHOT'
 mainClassName = 'com.encodeering.Application'
 
 repositories {
-    maven {
-        url "https://dl.bintray.com/kotlin/kotlin-dev"
-    }
     mavenCentral ()
     mavenLocal ()
 }
@@ -39,8 +34,8 @@ dependencies {
     compile     "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
     testCompile "org.junit.platform:junit-platform-runner:$junitversion"
     testCompile "com.winterbe:expekt:0.5.0"
-    testCompile "org.jetbrains.spek:spek-api:1.0.89"
-    testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.0.89"
+    testCompile "org.jetbrains.spek:spek-api:1.1.2"
+    testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
 }
 
 sourceSets {
@@ -57,7 +52,9 @@ idea {
 
 junitPlatform {
     platformVersion "$junitversion"
-    engines {
-        include 'spek'
+    filters {
+        engines {
+            include 'spek'
+        }
     }
 }
