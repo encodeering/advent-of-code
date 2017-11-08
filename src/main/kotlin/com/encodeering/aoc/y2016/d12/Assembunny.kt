@@ -119,12 +119,17 @@ sealed class Command {
     data class Jnz (val register : String, val offset : String) : Command () {
 
         override fun apply (state : State) : Int {
-            fun offsetify (check : Int) = if (check != 0) offset.number () else null
+            fun offsetify (num : Int) =
+                if        (num != 0) offset.number () ?: state[offset] else null
 
-            var goto = register.number ()?.let (::offsetify)
-                goto = goto ?: state[register]?.let (::offsetify)
+            val raw = register.number()
+            val reg = state[register]
 
-            return goto ?: next
+            if (       raw != null) {
+                return raw.let(::offsetify) ?: next
+            }
+
+            return reg?.let(::offsetify) ?: next
         }
 
     }
