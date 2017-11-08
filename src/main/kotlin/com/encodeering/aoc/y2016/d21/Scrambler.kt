@@ -14,14 +14,19 @@ object Day21 {
         traverse ("/d21/scrambling.txt") {
             println ("password ${scramble ("abcdefgh", it.toList ())}")
         }
+
+        traverse ("/d21/scrambling.txt") {
+            println ("password-reverse ${scramble ("fbgdceah", it.toList (), reverse = true)}")
+        }
     }
 
 }
 
-tailrec fun scramble                   (state : CharSequence, ops : Iterable<CharSequence>) : CharSequence {
+tailrec fun scramble                   (state : CharSequence, ops : Iterable<CharSequence>, reverse : Boolean = false) : CharSequence {
     if       (ops.count () == 0) return state
 
-    val cmd = ops.first ()
+    val cmd = if (reverse) ops.last () else
+                           ops.first ()
 
     return scramble (
         when {
@@ -38,24 +43,32 @@ tailrec fun scramble                   (state : CharSequence, ops : Iterable<Cha
             }
 
             cmd.startsWith ("rotate right") -> {
-                val          (by) = cmd.findAll (Regex("""(\d+)""")).map (String::toInt).toList ()
+                val          (by) = cmd.findAll (Regex("""(\d+)""")).map (String::toInt).toList ().map { it * if (reverse) -1 else +1 }
                 state.rotate (by)
             }
 
             cmd.startsWith ("rotate left") -> {
-                val           (by) = cmd.findAll (Regex("""(\d+)""")).map (String::toInt).toList ()
+                val           (by) = cmd.findAll (Regex("""(\d+)""")).map (String::toInt).toList ().map { it * if (reverse) -1 else +1 }
                 state.rotate (-by)
             }
 
             cmd.startsWith ("rotate based") -> {
-                val rotation = listOf ( 1,  2,  3,  4,  6,  7,  8,  9).withIndex ().map { it.index to it.value }.toMap ()
+                val rotation = when {
+                    // e.g
+                    // 0 is mapped to 1, so position 1 for reverse should get value -1
+                    // 4 is mapped to 6, which is position 2 when mod (len) is applied, so position 2 for reverse should get the value -6
+                    //
+                    //                  0   1   2   3   4   5   6   7
+                    reverse -> listOf (-9, -1, -6, -2, -7, -3, -8, -4).withIndex ().map { it.index to it.value }.toMap ()
+                    else    -> listOf ( 1,  2,  3,  4,  6,  7,  8,  9).withIndex ().map { it.index to it.value }.toMap ()
+                }
 
                 val                                  (by) = cmd.findAll (Regex ("""letter (\w)""")).toList ()
                 state.rotate (rotation[state.indexOf (by)]!!)
             }
 
             cmd.startsWith ("move") -> {
-                val        (a, b) = cmd.findAll (Regex ("""(\d+)""")).map (String::toInt).toList ()
+                val        (a, b) = cmd.findAll (Regex ("""(\d+)""")).map (String::toInt).toList ().run { if (reverse) reversed() else this }
                 state.move (a, b)
             }
 
@@ -66,7 +79,9 @@ tailrec fun scramble                   (state : CharSequence, ops : Iterable<Cha
 
             else -> throw IllegalStateException ("cmd $cmd unknown")
         },
-        ops.drop (1)
+        if (reverse) ops.take (ops.count () - 1) else
+                     ops.drop (1),
+        reverse = reverse
     )
 }
 
