@@ -32,18 +32,6 @@ object Day12 {
 }
 
 
-fun Interpreter.run          (operations : Sequence<CharSequence>, state : State) {
-    val instructions = parse (operations).toList ()
-
-    tailrec fun next                                  (pos : Int) {
-                next (
-                    instructions.elementAtOrNull (pos)?.run { pos + apply (state) } ?: return@next
-                )
-    }
-
-    next (0)
-}
-
 class State {
 
     private val registers : MutableMap<String, Int> = mutableMapOf ()
@@ -58,6 +46,18 @@ class State {
 }
 
 class Interpreter {
+
+    fun run                      (operations : Sequence<CharSequence>, state : State) {
+        val instructions = parse (operations).toList ()
+
+        tailrec fun next                                  (pos : Int) {
+                    next (
+                        instructions.elementAtOrNull (pos)?.run { pos + apply (state) } ?: return@next
+                    )
+        }
+
+        next (0)
+    }
 
     fun parse (operations : Sequence<CharSequence>) = operations.map { op ->
         val parameters = op.drop (4).split (" ")
