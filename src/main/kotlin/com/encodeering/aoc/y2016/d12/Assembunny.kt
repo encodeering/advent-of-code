@@ -31,6 +31,16 @@ object Day12 {
 
 }
 
+class Code (private val instructions : MutableList<Command>) {
+
+    operator fun get (line : Int) : Command? =
+        instructions.getOrElse (line) { null }
+
+    operator fun set (line : Int, value : Command) {
+        instructions[line] = value
+    }
+
+}
 
 class State {
 
@@ -47,19 +57,19 @@ class State {
 
 class Interpreter {
 
-    fun run                      (operations : Sequence<CharSequence>, state : State) {
-        val instructions = parse (operations).toList ()
+    fun run              (operations : Sequence<CharSequence>, state : State) {
+        val code = parse (operations)
 
-        tailrec fun next                                  (pos : Int) {
+        tailrec fun next                     (pos : Int) {
                     next (
-                        instructions.elementAtOrNull (pos)?.run { pos + apply (state) } ?: return@next
+                        code[pos]?.run { pos + apply (state) } ?: return@next
                     )
         }
 
         next (0)
     }
 
-    fun parse (operations : Sequence<CharSequence>) = operations.map { op ->
+    fun parse (operations : Sequence<CharSequence>) = Code (operations.map { op ->
         val parameters = op.drop (4).split (" ")
 
         when {
@@ -69,7 +79,7 @@ class Interpreter {
             op.startsWith ("jnz") -> Command.Jnz (parameters[0], parameters[1])
             else -> throw IllegalStateException("operation $op unknown")
         }
-    }
+    }.toMutableList ())
 
 }
 
