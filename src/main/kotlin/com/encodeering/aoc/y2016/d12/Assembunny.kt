@@ -10,28 +10,30 @@ object Day12 {
     @JvmStatic
     fun main (args : Array<String>) {
         traverse ("/d12/instructions.txt") {
-            val interpreter = Interpreter ()
-                interpreter.run (it)
+            val state = State ()
 
-            println ("register a: ${interpreter["a"]}")
+            val interpreter = Interpreter ()
+                interpreter.run (it, state)
+
+            println ("register a: ${state["a"]}")
         }
 
         traverse ("/d12/instructions.txt") {
-            val interpreter = Interpreter ()
-                interpreter["c"] = 1
-                interpreter.run (it)
+            val state = State ()
+                state["c"] = 1
 
-            println ("register a: ${interpreter["a"]}")
+            val interpreter = Interpreter ()
+                interpreter.run (it, state)
+
+            println ("register a: ${state["a"]}")
         }
     }
 
 }
 
 
-fun Interpreter.run          (operations : Sequence<CharSequence>) {
+fun Interpreter.run          (operations : Sequence<CharSequence>, state : State) {
     val instructions = parse (operations).toList ()
-
-    val interpreter = this
 
     tailrec fun next                             (pos : Int) {
                 next (
@@ -39,11 +41,11 @@ fun Interpreter.run          (operations : Sequence<CharSequence>) {
                         if   (this == null) return@next
 
                         when (this) {
-                            is Command.Cpy -> { interpreter[register] = supply ();                   pos + 1 }
-                            is Command.Inc -> { interpreter[register] = interpreter[register]!! + 1; pos + 1 }
-                            is Command.Dec -> { interpreter[register] = interpreter[register]!! - 1; pos + 1 }
-                            is Command.Jnz -> {                                                      pos + if (check ()) offset else 1 }
-                            else           ->                                                        pos + 1
+                            is Command.Cpy -> { state[register] = supply (state);        pos + 1 }
+                            is Command.Inc -> { state[register] = state[register]!! + 1; pos + 1 }
+                            is Command.Dec -> { state[register] = state[register]!! - 1; pos + 1 }
+                            is Command.Jnz -> {                                          pos + if (check (state)) offset else 1 }
+                            else           ->                                            pos + 1
                         }
                     }
                 )
@@ -52,35 +54,9 @@ fun Interpreter.run          (operations : Sequence<CharSequence>) {
     next (0)
 }
 
+class State {
 
-class Interpreter {
-
-    val registers : MutableMap<String, Int> = mutableMapOf ()
-
-    fun parse (operations : Sequence<CharSequence>) = operations.map { op ->
-        val parameters = op.drop (4).split (" ")
-
-        when {
-            op.startsWith ("cpy") -> {
-                val (supply, register) = parameters
-
-                supply.number ()?.run { Command.Cpy (register) { this }                     }
-                                ?:      Command.Cpy (register) { this@Interpreter[supply]!! }
-            }
-            op.startsWith ("inc") -> Command.Inc (parameters[0])
-            op.startsWith ("dec") -> Command.Dec (parameters[0])
-            op.startsWith ("jnz") -> {
-                val (supply, offset) = parameters
-
-                offset.number ()?.run {
-                    Command.Jnz (this) {
-                        supply.number ()?.run { this != 0 } ?: this@Interpreter[supply] != null && this@Interpreter[supply] != 0
-                    }
-                }
-            }
-            else -> throw IllegalStateException("operation $op unknown")
-        }
-    }
+    private val registers : MutableMap<String, Int> = mutableMapOf ()
 
     operator fun get (register : String) : Int? =
         registers[register]
@@ -91,15 +67,45 @@ class Interpreter {
 
 }
 
+class Interpreter {
+
+    fun parse (operations : Sequence<CharSequence>) = operations.map { op ->
+        val parameters = op.drop (4).split (" ")
+
+        when {
+            op.startsWith ("cpy") -> {
+                val (supply, register) = parameters
+
+                supply.number ()?.run { Command.Cpy (register) { this@run }     }
+                                ?:      Command.Cpy (register) { this[supply]!! }
+            }
+            op.startsWith ("inc") -> Command.Inc (parameters[0])
+            op.startsWith ("dec") -> Command.Dec (parameters[0])
+            op.startsWith ("jnz") -> {
+                val (supply, offset) = parameters
+
+                offset.number ()?.run {
+                    Command.Jnz (this) {
+                        supply.number ()?.run { this != 0 }
+                                        ?:run { this[supply] != null && this[supply] != 0 }
+                    }
+                }
+            }
+            else -> throw IllegalStateException("operation $op unknown")
+        }
+    }
+
+}
+
 sealed class Command {
 
-    data class Cpy (val register : String, val supply : () -> Int) : Command ()
+    data class Cpy (val register : String, val supply : State.() -> Int) : Command ()
 
     data class Inc (val register : String) : Command ()
 
     data class Dec (val register : String) : Command ()
 
-    data class Jnz (val offset : Int, val check : () -> Boolean) : Command ()
+    data class Jnz (val offset : Int, val check : State.() -> Boolean) : Command ()
 
 }
 

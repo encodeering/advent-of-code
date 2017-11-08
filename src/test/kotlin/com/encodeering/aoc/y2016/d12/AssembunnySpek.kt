@@ -29,10 +29,12 @@ class AssembunnySpek : Spek({
 
                 val instructions = description.trimIndent ().lineSequence ()
 
-                val interpreter = Interpreter ()
-                    interpreter.run (instructions)
+                val state = State ()
 
-                expect (interpreter["a"]).to.equal (42)
+                val interpreter = Interpreter ()
+                    interpreter.run (instructions, state)
+
+                expect (state["a"]).to.equal (42)
             }
 
         }
