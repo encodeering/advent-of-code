@@ -35,19 +35,9 @@ object Day12 {
 fun Interpreter.run          (operations : Sequence<CharSequence>, state : State) {
     val instructions = parse (operations).toList ()
 
-    tailrec fun next                             (pos : Int) {
+    tailrec fun next                                  (pos : Int) {
                 next (
-                    instructions.elementAtOrNull (pos).run {
-                        if   (this == null) return@next
-
-                        when (this) {
-                            is Command.Cpy -> { state[register] = supply (state);        pos + 1 }
-                            is Command.Inc -> { state[register] = state[register]!! + 1; pos + 1 }
-                            is Command.Dec -> { state[register] = state[register]!! - 1; pos + 1 }
-                            is Command.Jnz -> {                                          pos + if (check (state)) offset else 1 }
-                            else           ->                                            pos + 1
-                        }
-                    }
+                    instructions.elementAtOrNull (pos)?.run { pos + apply (state) } ?: return@next
                 )
     }
 
@@ -73,24 +63,10 @@ class Interpreter {
         val parameters = op.drop (4).split (" ")
 
         when {
-            op.startsWith ("cpy") -> {
-                val (supply, register) = parameters
-
-                supply.number ()?.run { Command.Cpy (register) { this@run }     }
-                                ?:      Command.Cpy (register) { this[supply]!! }
-            }
+            op.startsWith ("cpy") -> Command.Cpy (parameters[1], parameters[0])
             op.startsWith ("inc") -> Command.Inc (parameters[0])
             op.startsWith ("dec") -> Command.Dec (parameters[0])
-            op.startsWith ("jnz") -> {
-                val (supply, offset) = parameters
-
-                offset.number ()?.run {
-                    Command.Jnz (this) {
-                        supply.number ()?.run { this != 0 }
-                                        ?:run { this[supply] != null && this[supply] != 0 }
-                    }
-                }
-            }
+            op.startsWith ("jnz") -> Command.Jnz (parameters[0], parameters[1])
             else -> throw IllegalStateException("operation $op unknown")
         }
     }
@@ -99,13 +75,50 @@ class Interpreter {
 
 sealed class Command {
 
-    data class Cpy (val register : String, val supply : State.() -> Int) : Command ()
+    val next = 1
 
-    data class Inc (val register : String) : Command ()
+    abstract fun apply (state : State) : Int
 
-    data class Dec (val register : String) : Command ()
+    data class Cpy (val register : String, val supply : String) : Command () {
 
-    data class Jnz (val offset : Int, val check : State.() -> Boolean) : Command ()
+        override fun apply (state : State) : Int {
+            state[register] = supply.number () ?: state[supply]!!
+            return next
+        }
+
+    }
+
+    data class Inc (val register : String) : Command () {
+
+        override fun apply   (state : State) : Int {
+            state[register] = state[register]!! + 1
+            return next
+        }
+
+    }
+
+    data class Dec (val register : String) : Command () {
+
+        override fun apply   (state : State) : Int {
+            state[register] = state[register]!! - 1
+            return next
+        }
+
+    }
+
+    data class Jnz (val register : String, val offset : String) : Command () {
+
+        override fun apply (state : State) : Int {
+            fun offsetify (check : Int) = if (check != 0) offset.number () else null
+
+            var goto = register.number ()?.let (::offsetify)
+                goto = goto ?: state[register]?.let (::offsetify)
+
+            return goto ?: next
+        }
+
+    }
+
 
 }
 
