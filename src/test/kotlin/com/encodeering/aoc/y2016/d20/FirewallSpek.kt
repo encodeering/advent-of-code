@@ -44,6 +44,18 @@ class FirewallSpek : Spek({
 
         }
 
+        describe ("#2") {
+
+            it ("first example"){
+                expect (all ("""
+                    5-8
+                    0-2
+                    4-7
+                """.trimIndent().splitToSequence("\n"))).to.equal (1)
+            }
+
+        }
+
     }
 
 })
