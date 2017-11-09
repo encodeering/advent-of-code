@@ -1,4 +1,4 @@
-package com.encodeering.aoc.y2016.d12
+package com.encodeering.aoc.y2016.d23
 
 import com.encodeering.aoc.y2016.algorithm.Interpreter
 import com.encodeering.aoc.y2016.algorithm.State
@@ -7,12 +7,13 @@ import com.encodeering.aoc.y2016.io.traverse
 /**
  * @author clausen - encodeering@gmail.com
  */
-object Day12 {
+object Day23 {
 
     @JvmStatic
-    fun main (args : Array<String>) {
-        traverse ("/d12/instructions.txt") {
+    fun main(args : Array<String>) {
+        traverse ("/d23/cracking.txt") {
             val state = State ()
+                state["a"] = 7
 
             val interpreter = Interpreter ()
                 interpreter.run (it, state)
@@ -20,9 +21,9 @@ object Day12 {
             println ("register a: ${state["a"]}")
         }
 
-        traverse ("/d12/instructions.txt") {
+        traverse ("/d23/cracking.txt") {
             val state = State ()
-                state["c"] = 1
+                state["a"] = 12
 
             val interpreter = Interpreter ()
                 interpreter.run (it, state)
