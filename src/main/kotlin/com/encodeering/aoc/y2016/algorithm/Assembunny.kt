@@ -89,6 +89,10 @@ class State {
         registers[register] = value
     }
 
+    fun convertOrLoad (value : String) = value.number () ?: load(value)!!
+
+    fun load (value : String) = this[value]
+
 }
 
 class Interpreter {
@@ -130,10 +134,6 @@ sealed class Command {
     val next = 1
 
     abstract fun apply (code : Code, state : State) : Int
-
-    protected fun State.convertOrLoad (value : String) = value.number () ?: load(value)!!
-
-    protected fun State.load (value : String) = this[value]
 
     data class Cpy (val register : String, val supply : String) : Command () {
 
