@@ -1,15 +1,77 @@
 package com.encodeering.aoc.y2016.algorithm
 
+import com.encodeering.aoc.y2016.extension.window
+
 /**
  * @author clausen - encodeering@gmail.com
  */
+
+operator fun <T> List<T>.component6 () : T = get (5)
+
 class Code (private val instructions : MutableList<Command>) {
 
+    var world : MutableList<Command> = instructions
+
     operator fun get (line : Int) : Command? =
-        instructions.getOrElse (line) { null }
+        world.getOrElse (line) { null }
 
     operator fun set (line : Int, value : Command) {
-        instructions[line] = value
+        deoptimize ()
+        world[line] = value
+    }
+
+    fun optimize () {
+        if (world != instructions) return
+
+        world = instructions.toMutableList ()
+
+        // cpy b c
+        // inc a
+        // dec c
+        // jnz c -2
+        // dec d
+        // jnz d -5
+        world.window (6).withIndex ().map {
+            val (cpy, inc, dec1, jmp1, dec2, jmp2) = it.value
+
+            if (cpy  !is Command.Cpy) return@map null
+            if (inc  !is Command.Inc) return@map null
+            if (dec1 !is Command.Dec) return@map null
+            if (jmp1 !is Command.Jnz) return@map null
+            if (dec2 !is Command.Dec) return@map null
+            if (jmp2 !is Command.Jnz) return@map null
+
+            val aux = "${inc.register}~"
+
+            if (dec1.register == cpy.register &&
+                dec1.register == jmp1.register &&
+                dec2.register == jmp2.register &&
+                jmp1.offset   == "-2" &&
+                jmp2.offset   == "-5")
+                    IndexedValue (it.index, listOf (
+                        cpy,
+                        Command.Mpy (aux, dec1.register, dec2.register),
+                        Command.Inc (inc.register, aux),
+                        Command.Cpy (aux, "0"),
+                        Command.Cpy (dec1.register, "0"),
+                        Command.Cpy (dec2.register, "0")
+                    ))
+
+            else null
+        }.filterNotNull ().forEach { (line, commands) ->
+            (0..5).forEach {
+                world.removeAt (line)
+            }
+
+            commands.withIndex ().forEach {
+                                       (pos,   cmd) ->
+                world.add (line + pos, cmd)
+            }
+        }
+    }
+
+    fun deoptimize () {
+        world = instructions
     }
 
 }
@@ -34,7 +96,10 @@ class Interpreter {
 
         tailrec fun next                     (pos : Int) {
                     next (
-                        code[pos]?.run { pos + apply (state) } ?: return@next
+                        run {
+                            code.optimize ()
+                            code[pos]?.run { pos + apply (state) }
+                        } ?: return@next
                     )
         }
 

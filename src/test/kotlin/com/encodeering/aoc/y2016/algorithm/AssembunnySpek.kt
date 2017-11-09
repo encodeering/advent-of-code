@@ -47,6 +47,37 @@ class AssembunnySpek : Spek({
 
         }
 
+        describe ("optimization") {
+
+            it ("should optimize a multiplication pattern") {
+                val description = """
+                inc z
+                cpy b c
+                inc a
+                dec c
+                jnz c -2
+                dec d
+                jnz d -5
+                dec z
+                """
+
+                val code = Interpreter().parse(description.trimIndent().lineSequence())
+                    code.optimize()
+
+                expect (code.world).to.equal (listOf (
+                    Command.Inc ("z", "1"),
+                    Command.Cpy ("c", "b"),
+                    Command.Mpy ("a~", "c", "d"),
+                    Command.Inc ("a", "a~"),
+                    Command.Cpy ("a~", "0"),
+                    Command.Cpy ("c", "0"),
+                    Command.Cpy ("d", "0"),
+                    Command.Dec ("z", "1")
+                ))
+            }
+
+        }
+
     }
 
 })
