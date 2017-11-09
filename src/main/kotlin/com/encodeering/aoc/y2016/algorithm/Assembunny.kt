@@ -46,8 +46,8 @@ class Interpreter {
 
         when {
             op.startsWith("cpy") -> Command.Cpy(parameters[1], parameters[0])
-            op.startsWith("inc") -> Command.Inc(parameters[0])
-            op.startsWith("dec") -> Command.Dec(parameters[0])
+            op.startsWith("inc") -> Command.Inc(parameters[0], parameters.getOrElse(1) { "1" })
+            op.startsWith("dec") -> Command.Dec(parameters[0], parameters.getOrElse(1) { "1" })
             op.startsWith("jnz") -> Command.Jnz(parameters[0], parameters[1])
             else                 -> throw IllegalStateException("operation $op unknown")
         }
@@ -73,19 +73,19 @@ sealed class Command {
 
     }
 
-    data class Inc (val register : String) : Command () {
+    data class Inc (val register : String, val value : String) : Command () {
 
         override fun apply   (state : State) : Int {
-            state[register] = state.load (register)!! + 1
+            state[register] = state.load (register)!! + state.convertOrLoad (value)
             return next
         }
 
     }
 
-    data class Dec (val register : String) : Command () {
+    data class Dec (val register : String, val value : String) : Command () {
 
         override fun apply   (state : State) : Int {
-            state[register] = state.load (register)!! - 1
+            state[register] = state.load (register)!! - state.convertOrLoad (value)
             return next
         }
 
