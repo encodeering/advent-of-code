@@ -10,6 +10,8 @@ operator fun <T> List<T>.component6 () : T = get (5)
 
 class Code (private val instructions : MutableList<Command>) {
 
+    var line : Int = 0
+
     var world : MutableList<Command> = instructions
 
     operator fun get (line : Int) : Command? =
@@ -94,11 +96,12 @@ class Interpreter {
     fun run              (operations : Sequence<CharSequence>, state : State) {
         val code = parse (operations)
 
-        tailrec fun next                     (pos : Int) {
+        tailrec fun next (pos : Int) {
                     next (
                         run {
                             code.optimize ()
-                            code[pos]?.run { pos + apply (state) }
+                            code.line = pos
+                            code[pos]?.run { pos + apply (code, state) }
                         } ?: return@next
                     )
         }
@@ -115,6 +118,7 @@ class Interpreter {
             op.startsWith("dec") -> Command.Dec(parameters[0], parameters.getOrElse(1) { "1" })
             op.startsWith("jnz") -> Command.Jnz(parameters[0], parameters[1])
             op.startsWith("mpy") -> Command.Mpy(parameters[2], parameters[0], parameters[1])
+            op.startsWith("tgl") -> Command.Tgl(parameters[0])
             else                 -> throw IllegalStateException("operation $op unknown")
         }
     }.toMutableList())
@@ -125,14 +129,15 @@ sealed class Command {
 
     val next = 1
 
-    abstract fun apply (state : State) : Int
+    abstract fun apply (code : Code, state : State) : Int
+
     protected fun State.convertOrLoad (value : String) = value.number () ?: load(value)!!
 
     protected fun State.load (value : String) = this[value]
 
     data class Cpy (val register : String, val supply : String) : Command () {
 
-        override fun apply (state : State) : Int {
+        override fun apply (code : Code, state : State) : Int {
             state[register] = state.convertOrLoad (supply)
             return next
         }
@@ -141,7 +146,7 @@ sealed class Command {
 
     data class Inc (val register : String, val value : String) : Command () {
 
-        override fun apply   (state : State) : Int {
+        override fun apply (code : Code, state : State) : Int {
             state[register] = state.load (register)!! + state.convertOrLoad (value)
             return next
         }
@@ -150,7 +155,7 @@ sealed class Command {
 
     data class Dec (val register : String, val value : String) : Command () {
 
-        override fun apply   (state : State) : Int {
+        override fun apply (code : Code, state : State) : Int {
             state[register] = state.load (register)!! - state.convertOrLoad (value)
             return next
         }
@@ -159,7 +164,7 @@ sealed class Command {
 
     data class Jnz (val register : String, val offset : String) : Command () {
 
-        override fun apply (state : State) : Int {
+        override fun apply (code : Code, state : State) : Int {
             fun offsetify (num : Int) =
                 if        (num != 0) state.convertOrLoad (offset) else null
 
@@ -177,8 +182,28 @@ sealed class Command {
 
     data class Mpy (val register : String, val first : String, val second : String) : Command () {
 
-        override fun apply (state : State) : Int {
+        override fun apply (code : Code, state : State) : Int {
             state[register] = state.convertOrLoad (first) * state.convertOrLoad (second)
+            return next
+        }
+
+    }
+
+    data class Tgl (val register : String) : Command () {
+
+        override fun apply (code : Code, state : State) : Int {
+            val                            number = state.load(register)!!
+            val command = code[code.line + number] ?: return next
+
+            code[code.line + number] = when (command) {
+                is Inc -> Dec (command.register, command.value)
+                is Dec -> Inc (command.register, command.value)
+                is Tgl -> Inc (command.register, "1")
+                is Jnz -> Cpy (command.offset, command.register)
+                is Cpy -> Jnz (command.supply, command.register)
+                is Mpy -> throw UnsupportedOperationException ()
+            }
+
             return next
         }
 
