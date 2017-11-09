@@ -49,6 +49,7 @@ class Interpreter {
             op.startsWith("inc") -> Command.Inc(parameters[0], parameters.getOrElse(1) { "1" })
             op.startsWith("dec") -> Command.Dec(parameters[0], parameters.getOrElse(1) { "1" })
             op.startsWith("jnz") -> Command.Jnz(parameters[0], parameters[1])
+            op.startsWith("mpy") -> Command.Mpy(parameters[2], parameters[0], parameters[1])
             else                 -> throw IllegalStateException("operation $op unknown")
         }
     }.toMutableList())
@@ -109,6 +110,14 @@ sealed class Command {
 
     }
 
+    data class Mpy (val register : String, val first : String, val second : String) : Command () {
+
+        override fun apply (state : State) : Int {
+            state[register] = state.convertOrLoad (first) * state.convertOrLoad (second)
+            return next
+        }
+
+    }
 
 }
 

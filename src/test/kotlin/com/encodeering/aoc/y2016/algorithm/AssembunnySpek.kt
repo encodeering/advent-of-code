@@ -35,6 +35,16 @@ class AssembunnySpek : Spek({
                 expect (evaluate (description)["a"]).to.equal (4)
             }
 
+            it ("multiply") {
+                val description = """
+                cpy 0 a
+                cpy 2 b
+                mpy b 4 a
+                """
+
+                expect (evaluate (description)["a"]).to.equal (8)
+            }
+
         }
 
     }
