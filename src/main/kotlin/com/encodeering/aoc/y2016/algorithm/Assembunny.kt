@@ -60,11 +60,14 @@ sealed class Command {
     val next = 1
 
     abstract fun apply (state : State) : Int
+    protected fun State.convertOrLoad (value : String) = value.number () ?: load(value)!!
+
+    protected fun State.load (value : String) = this[value]
 
     data class Cpy (val register : String, val supply : String) : Command () {
 
         override fun apply (state : State) : Int {
-            state[register] = supply.number () ?: state[supply]!!
+            state[register] = state.convertOrLoad (supply)
             return next
         }
 
@@ -73,7 +76,7 @@ sealed class Command {
     data class Inc (val register : String) : Command () {
 
         override fun apply   (state : State) : Int {
-            state[register] = state[register]!! + 1
+            state[register] = state.load (register)!! + 1
             return next
         }
 
@@ -82,7 +85,7 @@ sealed class Command {
     data class Dec (val register : String) : Command () {
 
         override fun apply   (state : State) : Int {
-            state[register] = state[register]!! - 1
+            state[register] = state.load (register)!! - 1
             return next
         }
 
@@ -92,10 +95,10 @@ sealed class Command {
 
         override fun apply (state : State) : Int {
             fun offsetify (num : Int) =
-                if        (num != 0) offset.number () ?: state[offset] else null
+                if        (num != 0) state.convertOrLoad (offset) else null
 
             val raw = register.number()
-            val reg = state[register]
+            val reg = state.load(register)
 
             if (       raw != null) {
                 return raw.let(::offsetify) ?: next
