@@ -1,5 +1,6 @@
 package com.encodeering.aoc.y2016.d11
 
+import com.encodeering.aoc.y2016.algorithm.permutations
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
