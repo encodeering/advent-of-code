@@ -13,6 +13,14 @@ object Day22 {
         traverse("/d22/datagrid.txt") {
             println ("viable pairs: ${df (it.drop(2)).viables ().sumBy { 1 }}")
         }
+
+        traverse("/d22/datagrid.txt") {
+            println (Grid (df (it.drop(2)).toList()).display ())
+
+            // 17 + 22 + 35 + 34 * 5
+            // assumes all operations are valid
+            // left, up, right, circle-toggle 34 times by 5 steps
+        }
     }
 
 }
@@ -27,12 +35,40 @@ fun df (stdout : Sequence<CharSequence> ) : Iterable<Node> {
     }.toList ()
 }
 
+class Grid (val nodes : Iterable<Node>) {
+
+    fun display () : String {
+        val viables = nodes.viables ().map { it.first }
+
+        return nodes.toXY ().entries.run {
+            "  " + first ().value.joinToString ("  ") { it.position.first.toString().padStart(2) } +
+            "\n" + joinToString ("\n") { (k, v) ->
+                "$k".padStart (2) + v.joinToString ("  ") { node ->
+                    when {
+                        node.used == 0  -> "_"
+                        node in viables -> "."
+                        else            -> "#"
+                    }.padStart (2)
+                }
+            }
+        }
+    }
+
+}
+
 fun Iterable<Node>.viables () = permutations (true).filterNot { (a, b) -> a == b }.filter {
     (a, b) -> a.used > 0 &&
               a.used <= b.avail
 }
 
-data class Node (val path : String, val size : Int, val used : Int) {
+fun Iterable<Node>.toXY () = sortedWith (
+    compareBy (
+        { it.position.second },
+        { it.position.first }
+    )
+).groupBy { it.position.second }
+
+data class Node (val path : String, val size : Int, val used : Int, val meta : Set<String> = setOf (path)) {
 
     init {
         assert (used <= size)
