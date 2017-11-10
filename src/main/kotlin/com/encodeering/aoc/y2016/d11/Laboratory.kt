@@ -1,6 +1,7 @@
 package com.encodeering.aoc.y2016.d11
 
 import com.encodeering.aoc.y2016.algorithm.Search
+import com.encodeering.aoc.y2016.algorithm.permutations
 import java.util.LinkedList
 
 /**
@@ -207,9 +208,3 @@ private fun combinations (floor : Floor) : List<Collection<Code>> {
 
     return result
 }
-
-fun <T> Iterable<T>.permutations (symmetric : Boolean = false) : Iterable<Pair<T, T>> =
-        this.withIndex ().flatMap {
-                                                         (idx,            a) ->
-            this@permutations.drop (if (symmetric) 0 else idx).map { b -> a to b }
-        }.distinct ()
