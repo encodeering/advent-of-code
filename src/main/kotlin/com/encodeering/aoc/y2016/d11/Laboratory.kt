@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2016.d11
 
 import com.encodeering.aoc.y2016.algorithm.Search
-import com.encodeering.aoc.y2016.algorithm.permutations
+import com.encodeering.aoc.y2016.algorithm.cartesian
 import java.util.LinkedList
 
 /**
@@ -204,7 +204,7 @@ private fun combinations (floor : Floor) : List<Collection<Code>> {
     val result = mutableListOf<Collection<Code>> ()
 
     val singles = floor.items
-        singles.permutations (false).mapTo (result) { it.toList ().distinct () }
+        singles.cartesian (false).mapTo (result) { it.toList ().distinct () }
 
     return result
 }

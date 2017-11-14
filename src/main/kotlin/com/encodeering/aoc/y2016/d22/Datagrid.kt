@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2016.d22
 
-import com.encodeering.aoc.y2016.algorithm.permutations
+import com.encodeering.aoc.y2016.algorithm.cartesian
 import com.encodeering.aoc.y2016.io.traverse
 
 /**
@@ -56,7 +56,7 @@ class Grid (val nodes : Iterable<Node>) {
 
 }
 
-fun Iterable<Node>.viables () = permutations (true).filterNot { (a, b) -> a == b }.filter {
+fun Iterable<Node>.viables () = cartesian (true).filterNot { (a, b) -> a == b }.filter {
     (a, b) -> a.used > 0 &&
               a.used <= b.avail
 }
