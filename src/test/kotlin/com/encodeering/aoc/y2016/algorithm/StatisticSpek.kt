@@ -26,6 +26,17 @@ class StatisticSpek : Spek({
 
         }
 
+        it ("cartesian with other") {
+
+            expect (listOf (1, 2, 3, 4).cartesian (listOf ('A', 'B'))).to.equal (listOf (
+                1 to 'A', 1 to 'B',
+                2 to 'A', 2 to 'B',
+                3 to 'A', 3 to 'B',
+                4 to 'A', 4 to 'B'
+            ).sortedWith (compareBy ({ it.first }, { it.second })))
+
+        }
+
     }
 
 })
