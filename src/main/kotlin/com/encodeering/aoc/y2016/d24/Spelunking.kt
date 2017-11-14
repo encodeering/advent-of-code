@@ -21,7 +21,13 @@ object Day24 {
                 (_, distance) -> distance
             }.min ()
 
+            val cycle = distances.map {
+                               (r,                                                        distance) ->
+                 grid.distance (r.last (), grid.locate { description == "0" }.first ()) + distance
+            }.min ()
+
             println ("shortest distance: $oneway")
+            println ("shortest distance: $cycle")
         }
     }
 
