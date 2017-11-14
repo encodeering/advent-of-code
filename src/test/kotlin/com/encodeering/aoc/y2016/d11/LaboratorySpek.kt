@@ -1,6 +1,5 @@
 package com.encodeering.aoc.y2016.d11
 
-import com.encodeering.aoc.y2016.algorithm.permutations
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -44,17 +43,6 @@ class LaboratorySpek : Spek({
             )
 
             expect (morph(laboratory)).to.equal (morph(laboratory2))
-        }
-
-        it ("permutation") {
-
-            expect (listOf (1, 2, 3, 4).permutations (symmetric = false)).to.equal (listOf (
-                1 to 1,
-                1 to 2, 2 to 2,
-                1 to 3, 2 to 3, 3 to 3,
-                1 to 4, 2 to 4, 3 to 4, 4 to 4
-            ).sortedWith (compareBy ({ it.first }, { it.second })))
-
         }
 
         describe ("#1") {
