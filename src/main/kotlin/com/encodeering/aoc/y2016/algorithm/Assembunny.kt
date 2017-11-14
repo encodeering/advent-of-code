@@ -89,9 +89,13 @@ class State {
         registers[register] = value
     }
 
+    fun convertOrLoad (value : String) = value.number () ?: load(value)!!
+
+    fun load (value : String) = this[value]
+
 }
 
-class Interpreter {
+class Interpreter (private val clock : (Int) -> Boolean = { true }) {
 
     fun run              (operations : Sequence<CharSequence>, state : State) {
         val code = parse (operations)
@@ -101,7 +105,13 @@ class Interpreter {
                         run {
                             code.optimize ()
                             code.line = pos
-                            code[pos]?.run { pos + apply (code, state) }
+                            code[pos]?.run {
+                                pos + apply (code, state).also {
+                                    when (this) {
+                                        is Command.Out -> if (! clock (state.convertOrLoad (register))) return@next
+                                    }
+                                }
+                            }
                         } ?: return@next
                     )
         }
@@ -119,6 +129,7 @@ class Interpreter {
             op.startsWith("jnz") -> Command.Jnz(parameters[0], parameters[1])
             op.startsWith("mpy") -> Command.Mpy(parameters[2], parameters[0], parameters[1])
             op.startsWith("tgl") -> Command.Tgl(parameters[0])
+            op.startsWith("out") -> Command.Out(parameters[0])
             else                 -> throw IllegalStateException("operation $op unknown")
         }
     }.toMutableList())
@@ -130,10 +141,6 @@ sealed class Command {
     val next = 1
 
     abstract fun apply (code : Code, state : State) : Int
-
-    protected fun State.convertOrLoad (value : String) = value.number () ?: load(value)!!
-
-    protected fun State.load (value : String) = this[value]
 
     data class Cpy (val register : String, val supply : String) : Command () {
 
@@ -198,12 +205,21 @@ sealed class Command {
             code[code.line + number] = when (command) {
                 is Inc -> Dec (command.register, command.value)
                 is Dec -> Inc (command.register, command.value)
+                is Out -> Inc (command.register, "1")
                 is Tgl -> Inc (command.register, "1")
                 is Jnz -> Cpy (command.offset, command.register)
                 is Cpy -> Jnz (command.supply, command.register)
                 is Mpy -> throw UnsupportedOperationException ()
             }
 
+            return next
+        }
+
+    }
+
+    data class Out (val register : String) : Command () {
+
+        override fun apply (code : Code, state : State) : Int {
             return next
         }
 
