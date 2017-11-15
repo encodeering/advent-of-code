@@ -26,3 +26,18 @@ fun <T : Any, R> Sequence<T>.window (n : Int, step : Int = 1, partial : Boolean 
         }.also { if (! it) windows.clear () }
     }.map (transform)
 }
+
+fun <T : Any>    Sequence<T>.zipwise () = zipwise { it }
+fun <T : Any, R> Sequence<T>.zipwise (transform : (List<T>) -> R) = window (2, 1, transform = transform)
+
+fun <T : Any>    Sequence<T>.blockwise (n: Int, partial : Boolean = false) = blockwise (n, partial) { it }
+fun <T : Any, R> Sequence<T>.blockwise (n: Int, partial : Boolean = false, transform : (List<T>) -> R) = window (n, n, partial, transform)
+
+fun <T : Any>    Iterable<T>.window (n : Int, step : Int = 1, partial : Boolean = false) = window (n, step, partial) { it }
+fun <T : Any, R> Iterable<T>.window (n : Int, step : Int = 1, partial : Boolean = false, transform : (List<T>) -> R) = asSequence ().window (n, step, partial, transform).asIterable ()
+
+fun <T : Any>    Iterable<T>.zipwise () = zipwise { it }
+fun <T : Any, R> Iterable<T>.zipwise (transform : (List<T>) -> R) = asSequence ().zipwise (transform).asIterable ()
+
+fun <T : Any>    Iterable<T>.blockwise (n : Int, partial : Boolean = false) = blockwise (n, partial) { it }
+fun <T : Any, R> Iterable<T>.blockwise (n : Int, partial : Boolean = false, transform : (List<T>) -> R) = asSequence ().blockwise (n, partial, transform).asIterable ()

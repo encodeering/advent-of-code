@@ -39,6 +39,73 @@ class CollectionsSpek : Spek ({
 
         }
 
+        describe ("blockwise") {
+
+            it ("should create a windowed stream of equal size") {
+                expect (emptyList<Int> ().asSequence ().blockwise (2).toList ()).to.be.empty
+
+                expect (listOf (1).asSequence ().blockwise (2).toList ()).to.be.empty
+
+                expect (listOf (1, 2).asSequence ().blockwise (2).toList ()).to.equal (listOf (
+                        listOf (1, 2)
+                ))
+
+                expect (listOf (1, 2, 3, 4, 5, 6, 7, 8, 9).asSequence().blockwise(2).toList ()).to.equal (listOf (
+                        listOf (1, 2),
+                        listOf (3, 4),
+                        listOf (5, 6),
+                        listOf (7, 8)
+                ))
+            }
+
+
+            it ("should create a windowed stream with incomplete entries") {
+                expect (emptyList<Int> ().asSequence ().blockwise (2, partial = true).toList ()).to.be.empty
+
+                expect (listOf (1).asSequence ().blockwise (2, partial = true).toList ()).to.equal (listOf (
+                        listOf (1)
+                ))
+
+                expect (listOf (1, 2).asSequence ().blockwise (2, partial = true).toList ()).to.equal (listOf (
+                        listOf (1, 2)
+                ))
+
+                expect (listOf (1, 2, 3, 4, 5, 6, 7, 8, 9).asSequence().blockwise(2, partial = true).toList ()).to.equal (listOf (
+                        listOf (1, 2),
+                        listOf (3, 4),
+                        listOf (5, 6),
+                        listOf (7, 8),
+                        listOf (9)
+                ))
+            }
+
+        }
+
+        describe ("zipwise") {
+
+            it ("should create a windowed stream of equal size with zipped elements") {
+                expect (emptyList<Int> ().asSequence ().zipwise ().toList ()).to.be.empty
+
+                expect (listOf (1).asSequence ().zipwise ().toList ()).to.be.empty
+
+                expect (listOf (1, 2).asSequence ().zipwise ().toList ()).to.equal (listOf (
+                        listOf (1, 2)
+                ))
+
+                expect (listOf (1, 2, 3, 4, 5, 6, 7, 8, 9).asSequence().zipwise().toList ()).to.equal (listOf (
+                        listOf (1, 2),
+                        listOf (2, 3),
+                        listOf (3, 4),
+                        listOf (4, 5),
+                        listOf (5, 6),
+                        listOf (6, 7),
+                        listOf (7, 8),
+                        listOf (8, 9)
+                ))
+            }
+
+        }
+
     }
 
 })
