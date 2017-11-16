@@ -2,8 +2,8 @@ package com.encodeering.aoc.y2016.d25
 
 import com.encodeering.aoc.common.traverse
 import com.encodeering.aoc.common.window
-import com.encodeering.aoc.y2016.algorithm.Interpreter
-import com.encodeering.aoc.y2016.algorithm.State
+import com.encodeering.aoc.y2016.common.Interpreter
+import com.encodeering.aoc.y2016.common.State
 
 /**
  * @author clausen - encodeering@gmail.com

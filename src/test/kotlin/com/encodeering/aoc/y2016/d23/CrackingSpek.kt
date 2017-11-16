@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2016.d23
 
-import com.encodeering.aoc.y2016.algorithm.Interpreter
-import com.encodeering.aoc.y2016.algorithm.State
+import com.encodeering.aoc.y2016.common.Interpreter
+import com.encodeering.aoc.y2016.common.State
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe

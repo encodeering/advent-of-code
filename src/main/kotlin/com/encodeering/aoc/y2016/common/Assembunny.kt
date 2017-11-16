@@ -1,4 +1,4 @@
-package com.encodeering.aoc.y2016.algorithm
+package com.encodeering.aoc.y2016.common
 
 import com.encodeering.aoc.common.number
 import com.encodeering.aoc.common.window

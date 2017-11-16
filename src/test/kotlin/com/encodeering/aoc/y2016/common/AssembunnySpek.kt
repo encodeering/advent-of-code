@@ -1,4 +1,4 @@
-package com.encodeering.aoc.y2016.algorithm
+package com.encodeering.aoc.y2016.common
 
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
