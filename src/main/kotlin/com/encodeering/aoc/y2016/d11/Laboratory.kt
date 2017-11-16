@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2016.d11
 
-import com.encodeering.aoc.y2016.algorithm.Search
-import com.encodeering.aoc.y2016.algorithm.cartesian
+import com.encodeering.aoc.common.Search
+import com.encodeering.aoc.common.cartesian
 import java.util.LinkedList
 
 /**

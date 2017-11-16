@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2016.d22
 
-import com.encodeering.aoc.y2016.algorithm.cartesian
-import com.encodeering.aoc.y2016.io.traverse
+import com.encodeering.aoc.common.cartesian
+import com.encodeering.aoc.common.traverse
 
 /**
  * @author clausen - encodeering@gmail.com

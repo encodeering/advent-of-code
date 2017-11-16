@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2016.d13
 
-import com.encodeering.aoc.y2016.algorithm.Search
+import com.encodeering.aoc.common.Search
 import java.lang.Integer.toBinaryString
 import java.util.LinkedList
 

@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2016.d21
 
-import com.encodeering.aoc.y2016.io.traverse
+import com.encodeering.aoc.common.traverse
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe

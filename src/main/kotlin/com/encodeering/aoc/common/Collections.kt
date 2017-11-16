@@ -1,4 +1,4 @@
-package com.encodeering.aoc.y2016.extension
+package com.encodeering.aoc.common
 
 /**
  * @author clausen - encodeering@gmail.com

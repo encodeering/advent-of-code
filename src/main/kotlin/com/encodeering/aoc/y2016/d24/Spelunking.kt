@@ -1,9 +1,9 @@
 package com.encodeering.aoc.y2016.d24
 
-import com.encodeering.aoc.y2016.algorithm.Search
-import com.encodeering.aoc.y2016.algorithm.permutation
-import com.encodeering.aoc.y2016.extension.window
-import com.encodeering.aoc.y2016.io.traverse
+import com.encodeering.aoc.common.Search
+import com.encodeering.aoc.common.permutation
+import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.window
 import java.util.LinkedList
 
 /**

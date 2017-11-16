@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2016.d14
 
 import java.lang.Math.max
-import com.encodeering.aoc.y2016.extension.md5sum as md5
+import com.encodeering.aoc.common.md5sum as md5
 
 /**
  * @author clausen - encodeering@gmail.com

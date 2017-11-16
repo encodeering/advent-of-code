@@ -2,7 +2,7 @@ package com.encodeering.aoc.y2016.d9
 
 import com.encodeering.aoc.y2016.d9.Node.Compression
 import com.encodeering.aoc.y2016.d9.Node.Literal
-import com.encodeering.aoc.y2016.extension.asCharSequence
+import com.encodeering.aoc.common.asCharSequence
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe

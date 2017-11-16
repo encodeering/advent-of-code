@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2016.d5
 
-import com.encodeering.aoc.y2016.extension.md5sum
+import com.encodeering.aoc.common.md5sum
 
 /**
  * @author clausen - encodeering@gmail.com

@@ -1,9 +1,9 @@
 package com.encodeering.aoc.y2016.d9
 
+import com.encodeering.aoc.common.times
+import com.encodeering.aoc.common.traverse
 import com.encodeering.aoc.y2016.d9.Node.Compression
 import com.encodeering.aoc.y2016.d9.Node.Literal
-import com.encodeering.aoc.y2016.extension.times
-import com.encodeering.aoc.y2016.io.traverse
 
 /**
  * @author clausen - encodeering@gmail.com

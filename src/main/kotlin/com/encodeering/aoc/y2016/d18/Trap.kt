@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2016.d18
 
-import com.encodeering.aoc.y2016.extension.window
+import com.encodeering.aoc.common.window
 
 /**
  * @author clausen - encodeering@gmail.com

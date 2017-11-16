@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2016.d6
 
-import com.encodeering.aoc.y2016.io.traverse
+import com.encodeering.aoc.common.traverse
 
 /**
  * @author clausen - encodeering@gmail.com

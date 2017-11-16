@@ -1,4 +1,4 @@
-package com.encodeering.aoc.y2016.extension
+package com.encodeering.aoc.common
 
 import java.math.BigInteger
 import java.security.MessageDigest
