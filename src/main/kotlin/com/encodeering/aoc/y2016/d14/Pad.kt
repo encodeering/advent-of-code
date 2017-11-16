@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2016.d14
 
+import com.encodeering.aoc.common.md5sum
 import java.lang.Math.max
-import com.encodeering.aoc.common.md5sum as md5
 
 /**
  * @author clausen - encodeering@gmail.com
@@ -38,5 +38,3 @@ fun padkeys (                salt : CharSequence, hardening : Int = 0) : Map<Int
             }
             .take (64).toMap ()
 }
-
-fun String.md5sum (num : Int) : String = 0.until (num).fold (this.md5 ()) { v, _ -> v.md5 () }

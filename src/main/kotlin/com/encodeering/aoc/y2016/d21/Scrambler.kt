@@ -1,8 +1,9 @@
 package com.encodeering.aoc.y2016.d21
 
+import com.encodeering.aoc.common.findAll
+import com.encodeering.aoc.common.reverse
+import com.encodeering.aoc.common.rotate
 import com.encodeering.aoc.common.traverse
-import java.lang.Math.abs
-import java.lang.Math.floorMod
 
 /**
  * @author clausen - encodeering@gmail.com
@@ -85,8 +86,6 @@ tailrec fun scramble                   (state : CharSequence, ops : Iterable<Cha
     )
 }
 
-fun CharSequence.findAll (regex : Regex) = regex.findAll (this).flatMap { it.groupValues.drop (1).asSequence () }
-
 fun CharSequence.swap (idxA : Int, idxB : Int) : CharSequence = this.mapIndexed { idx, char ->
     when (idx) {
           idxA -> elementAt (idxB)
@@ -99,16 +98,4 @@ fun CharSequence.move (idxA : Int, idxB : Int) : CharSequence =
     when {
         idxA < idxB -> subSequence (0, idxA).toString () + subSequence (idxA, idxB + 1).rotate (-1).toString () + subSequence (idxB + 1, length)
         else        -> subSequence (0, idxB).toString () + subSequence (idxB, idxA + 1).rotate (+1).toString () + subSequence (idxA + 1, length)
-    }
-
-fun CharSequence.reverse (idxA : Int, idxB : Int) : CharSequence =
-    subSequence (0,    idxA).toString () +
-    subSequence (idxA, idxB + 1).reversed () +
-    subSequence (idxB + 1, length)
-
-fun CharSequence.rotate (by : Int) : CharSequence =
-    when {
-        by == 0 || length - abs (by) == 0 -> this
-        by <  0                           -> takeLast (floorMod (length - abs (by), length)).toString () + take (floorMod (         abs (by), length))
-        else                              -> takeLast (floorMod (         abs (by), length)).toString () + take (floorMod (length - abs (by), length))
     }
