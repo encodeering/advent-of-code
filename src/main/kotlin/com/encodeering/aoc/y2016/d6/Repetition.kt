@@ -1,5 +1,7 @@
 package com.encodeering.aoc.y2016.d6
 
+import com.encodeering.aoc.common.asCharSequence
+import com.encodeering.aoc.common.frequence
 import com.encodeering.aoc.common.traverse
 
 /**
@@ -23,15 +25,11 @@ object Day6 {
 fun correct (codes : Sequence<String>, select : (Map<Char, Int>) -> Char?) : String? {
     return   codes.asIterable()
                   .map (String::asIterable).transpose ()
-                  .map { it.frequence () }
+                  .map { it.asCharSequence ().frequence () }
                   .map (select)
                       .joinToString ("")
 }
 
 fun <T> Iterable<Iterable<T>>.transpose () : Iterable<Iterable<T>> {
     return first ().mapIndexed { idx, _ -> map { seq -> seq.elementAt (idx) } }
-}
-
-fun Iterable<Char>.frequence () : Map<Char, Int> {
-    return groupBy { it }.mapValues { (_, v) -> v.size }
 }

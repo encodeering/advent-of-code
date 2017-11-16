@@ -54,3 +54,6 @@ fun Sequence<Char>.asCharSequence () : CharSequence {
 
     }
 }
+fun Iterable<Char>.asCharSequence () : CharSequence = asSequence ().asCharSequence ().run { toString () }
+
+fun CharSequence.frequence () : Map<Char, Int> = groupBy { it }.mapValues { (_, v) -> v.size }
