@@ -63,7 +63,7 @@ class ScramblerSpek : Spek({
             }
 
             it ("second example") {
-                traverse ("/d21/scrambling.txt") {
+                traverse ("/y2016/d21/scrambling.txt") {
                     expect (scramble ("agcebfdh", it.toList(), reverse = true)).to.equal ("abcdefgh")
                 }
             }

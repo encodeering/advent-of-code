@@ -13,7 +13,7 @@ object Day24 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse("/d24/spelunking.txt") {
+        traverse("/y2016/d24/spelunking.txt") {
             val grid = Grid (planify (it.toList ())).also { println (it.display ()) }
             val distances = grid.distances { locate { type == SectorType.POI } }.filter { (r, _) -> r.first ().description == "0" }.toList ()
 

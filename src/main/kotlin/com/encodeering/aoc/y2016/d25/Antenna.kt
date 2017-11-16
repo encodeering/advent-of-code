@@ -12,7 +12,7 @@ object Day25 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse("/d25/signal.txt") {
+        traverse("/y2016/d25/signal.txt") {
             val operations = it.toList()
 
             generateSequence (0) { it + 1 }.filter {

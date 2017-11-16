@@ -9,11 +9,11 @@ object Day4 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse ("/d4/encryptions.txt") {
+        traverse ("/y2016/d4/encryptions.txt") {
             println ("sum of sectors: ${it.fold (0) { sum, text -> sum + (verify (text)?.sector ?: 0) }}")
         }
 
-        traverse ("/d4/encryptions.txt") {
+        traverse ("/y2016/d4/encryptions.txt") {
             val      candidates = it.map (::verify).filterNotNull ().filter { c -> transpile (c)?.contains ("North", true) ?: false }
             println (candidates.map { "${transpile (it)} - ${it.sector}" }.joinToString ())
         }

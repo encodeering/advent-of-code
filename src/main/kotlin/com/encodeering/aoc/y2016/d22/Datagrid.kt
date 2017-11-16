@@ -10,11 +10,11 @@ object Day22 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse("/d22/datagrid.txt") {
+        traverse("/y2016/d22/datagrid.txt") {
             println ("viable pairs: ${df (it.drop(2)).viables ().sumBy { 1 }}")
         }
 
-        traverse("/d22/datagrid.txt") {
+        traverse("/y2016/d22/datagrid.txt") {
             println (Grid (df (it.drop(2)).toList()).display ())
 
             // 17 + 22 + 35 + 34 * 5

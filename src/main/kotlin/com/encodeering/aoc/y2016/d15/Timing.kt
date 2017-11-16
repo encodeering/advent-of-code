@@ -10,11 +10,11 @@ object Day15 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse ("/d15/discs.txt") {
+        traverse ("/y2016/d15/discs.txt") {
             println ("first index: ${unleash (it)}")
         }
 
-        traverse ("/d15/discs.txt") {
+        traverse ("/y2016/d15/discs.txt") {
             val cheat = "Disc #7 has 11 positions; at time=0, it is at state 0."
 
             println ("first index: ${unleash (it + cheat)}")

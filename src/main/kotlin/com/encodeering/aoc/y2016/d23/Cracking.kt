@@ -11,7 +11,7 @@ object Day23 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse ("/d23/cracking.txt") {
+        traverse ("/y2016/d23/cracking.txt") {
             val state = State ()
                 state["a"] = 7
 
@@ -21,7 +21,7 @@ object Day23 {
             println ("register a: ${state["a"]}")
         }
 
-        traverse ("/d23/cracking.txt") {
+        traverse ("/y2016/d23/cracking.txt") {
             val state = State ()
                 state["a"] = 12
 

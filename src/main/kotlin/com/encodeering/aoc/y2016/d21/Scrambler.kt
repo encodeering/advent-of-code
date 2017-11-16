@@ -12,11 +12,11 @@ object Day21 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse ("/d21/scrambling.txt") {
+        traverse ("/y2016/d21/scrambling.txt") {
             println ("password ${scramble ("abcdefgh", it.toList ())}")
         }
 
-        traverse ("/d21/scrambling.txt") {
+        traverse ("/y2016/d21/scrambling.txt") {
             println ("password-reverse ${scramble ("fbgdceah", it.toList (), reverse = true)}")
         }
     }

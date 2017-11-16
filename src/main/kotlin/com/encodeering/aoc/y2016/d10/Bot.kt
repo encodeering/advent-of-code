@@ -9,12 +9,12 @@ object Day10 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse ("/d10/instructions.txt") {
+        traverse ("/y2016/d10/instructions.txt") {
             val factory = Factory (compares (17, 61))
                 factory.execute (it)
         }
 
-        traverse ("/d10/instructions.txt") {
+        traverse ("/y2016/d10/instructions.txt") {
             val factory = Factory ()
                 factory.execute (it)
 

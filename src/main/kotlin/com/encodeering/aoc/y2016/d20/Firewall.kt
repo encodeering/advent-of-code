@@ -10,11 +10,11 @@ object Day20 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse ("/d20/table.txt") {
+        traverse ("/y2016/d20/table.txt") {
             println ("first ip: ${first (it)}")
         }
 
-        traverse ("/d20/table.txt") {
+        traverse ("/y2016/d20/table.txt") {
             val max = 2 * Integer.MAX_VALUE.toLong()
 
             println ("allowed ips: ${all(it + "$max-$max")}")

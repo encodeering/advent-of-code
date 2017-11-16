@@ -9,7 +9,7 @@ object Day8 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse ("/d8/codes.txt") {
+        traverse ("/y2016/d8/codes.txt") {
             val authentication = evaluate (Authentication (6, 50) { if (it) "#" else " " }, it)
             println ("lits: ${authentication.lits ()}")
             println (authentication.display ())

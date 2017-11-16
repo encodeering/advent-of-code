@@ -12,11 +12,11 @@ object Day9 {
 
     @JvmStatic
     fun main (args : Array<String>) {
-        traverse ("/d9/file.txt") {
+        traverse ("/y2016/d9/file.txt") {
             println ("file length: ${size (it.first ())}")
         }
 
-        traverse ("/d9/file.txt") {
+        traverse ("/y2016/d9/file.txt") {
             println ("file length: ${size (it.first (), true)}")
         }
     }

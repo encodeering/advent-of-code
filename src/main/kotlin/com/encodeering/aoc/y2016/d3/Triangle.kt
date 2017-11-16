@@ -10,8 +10,8 @@ object Day3 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        println ("horizontally : ${traverse ("/d3/triangles.txt", ::horizontally).size}")
-        println ("vertically:    ${traverse ("/d3/triangles.txt", ::vertically).size}")
+        println ("horizontally : ${traverse ("/y2016/d3/triangles.txt", ::horizontally).size}")
+        println ("vertically:    ${traverse ("/y2016/d3/triangles.txt", ::vertically).size}")
     }
 
 }

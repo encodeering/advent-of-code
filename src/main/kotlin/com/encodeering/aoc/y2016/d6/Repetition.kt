@@ -11,11 +11,11 @@ object Day6 {
 
     @JvmStatic
     fun main(args : Array<String>) {
-        traverse ("/d6/transmission.txt") {
+        traverse ("/y2016/d6/transmission.txt") {
             println ("message: ${correct (it) { it.maxBy { it.value }?.key } }")
         }
 
-        traverse ("/d6/transmission.txt") {
+        traverse ("/y2016/d6/transmission.txt") {
             println ("message: ${correct (it) { it.minBy { it.value }?.key } }")
         }
     }
