@@ -61,7 +61,7 @@ sealed class Node {
 
 fun Node.stringify () : CharSequence =
     when (this) {
-        is Compression -> children.map (Node::stringify).joinToString ("").times (times)
+        is Compression -> children.map (Node::stringify).joinToString ("") * times
         is Literal     -> literal
     }
 
