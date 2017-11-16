@@ -1,5 +1,6 @@
 package com.encodeering.aoc.y2016.algorithm
 
+import com.encodeering.aoc.common.number
 import com.encodeering.aoc.common.window
 
 /**
@@ -89,7 +90,7 @@ class State {
         registers[register] = value
     }
 
-    fun convertOrLoad (value : String) = value.number () ?: load(value)!!
+    fun convertOrLoad (value : String) = value.number { toInt () } ?: load(value)!!
 
     fun load (value : String) = this[value]
 
@@ -175,7 +176,7 @@ sealed class Command {
             fun offsetify (num : Int) =
                 if        (num != 0) state.convertOrLoad (offset) else null
 
-            val raw = register.number()
+            val raw = register.number { toInt () }
             val reg = state.load(register)
 
             if (       raw != null) {
@@ -225,12 +226,4 @@ sealed class Command {
 
     }
 
-}
-
-private fun String.number () : Int? {
-    return try {
-        this.toInt ()
-    } catch (e : NumberFormatException) {
-        null
-    }
 }

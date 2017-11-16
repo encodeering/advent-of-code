@@ -11,6 +11,12 @@ fun String.md5sum () : String {
     return BigInteger (1, MessageDigest.getInstance ("MD5").digest (toByteArray ())).toString (16).padStart (32, padChar = '0')
 }
 
+fun <T : Number> String.number (f : String.() -> T) : T? = try {
+    this.f ()
+} catch (e : NumberFormatException) {
+    null
+}
+
 operator fun CharSequence.times (n : Int)        : CharSequence = (1 until n).fold             (asSequence ()) { v, _ -> v + this@times.asSequence () }.asCharSequence ()
 operator fun Int.times (sequence : CharSequence) : CharSequence = (1 until this).fold (sequence.asSequence ()) { v, _ -> v +   sequence.asSequence () }.asCharSequence ()
 
