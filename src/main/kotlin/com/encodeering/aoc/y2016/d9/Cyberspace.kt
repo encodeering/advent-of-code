@@ -1,9 +1,10 @@
 package com.encodeering.aoc.y2016.d9
 
+import com.encodeering.aoc.common.Node
+import com.encodeering.aoc.common.Node.Composite
+import com.encodeering.aoc.common.Node.Leaf
 import com.encodeering.aoc.common.times
 import com.encodeering.aoc.common.traverse
-import com.encodeering.aoc.y2016.d9.Node.Compression
-import com.encodeering.aoc.y2016.d9.Node.Literal
 
 /**
  * @author clausen - encodeering@gmail.com
@@ -28,45 +29,32 @@ fun content (text: CharSequence, recursive : Boolean = false) = decompress (text
 
 fun size (text: CharSequence, recursive : Boolean = false) = decompress (text, recursive).countify ()
 
-fun decompress (text : CharSequence, recursive : Boolean) : Node {
+fun decompress (text : CharSequence, recursive : Boolean) : CyberNode {
     val regex = Regex ("""^([^(]+)?(?:\(([^)]+)\))?""")
 
-    fun scan (text : CharSequence) : Iterable<Node> {
+    fun scan (text : CharSequence) : Iterable<CyberNode> {
 
-        val                              result = regex.find (text) ?: return listOf (Literal (text))
+        val                              result = regex.find (text) ?: return listOf (CyberLeaf (text))
         val upcoming = text.subSequence (result.range.endInclusive + 1, text.length)
 
         val (meta, code) = result.destructured
-        if        (code.isBlank ()) return listOf (Literal (meta))
+        if        (code.isBlank ()) return listOf (CyberLeaf (meta))
 
         val (many, times) = code.split ("x", limit = 2).map(String::toInt)
 
         val content = upcoming.take (many).let {
-            if (recursive) scan (it) else listOf (Literal (it))
+            if (recursive) scan (it) else listOf (CyberLeaf (it))
         }
 
-        return listOf (Literal (meta), Compression (content, times)) + scan (upcoming.drop (many))
+        return listOf (CyberLeaf (meta), CyberComposite (content, "times" to times)) + scan (upcoming.drop (many))
     }
 
-    return Compression (scan (text))
+    return CyberComposite (scan (text), "times" to 1)
 }
 
-sealed class Node {
+typealias CyberNode = Node<CharSequence, Int>
+typealias CyberLeaf = Leaf<CharSequence, Int>
+typealias CyberComposite = Composite<CharSequence, Int>
 
-    data class Literal (val literal : CharSequence) : Node ()
-
-    data class Compression (val children : Iterable<Node>, val times : Int = 1) : Node ()
-
-}
-
-fun Node.stringify () : CharSequence =
-    when (this) {
-        is Compression -> children.map (Node::stringify).joinToString ("") * times
-        is Literal     -> literal
-    }
-
-fun Node.countify () : Long =
-    when (this) {
-        is Compression -> children.map (Node::countify).sum () * times
-        is Literal     -> literal.length.toLong ()
-    }
+fun CyberNode.stringify () = transform ({ _, value -> value },                  { meta, children -> meta["times"] * children.joinToString ("") })
+fun CyberNode.countify ()  = transform ({ _, value -> value.length.toLong () }, { meta, children -> meta["times"] * children.sum () })
