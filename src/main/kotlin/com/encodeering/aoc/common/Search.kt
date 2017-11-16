@@ -7,33 +7,33 @@ import java.util.Stack
 /**
  * @author clausen - encodeering@gmail.com
  */
-class Search<T, M, R> (
-    private val storage  : () -> MutableCollection<Pair<T, R>>,
-    private val generate : (T, R) ->      Iterable<Pair<T, R>>,
-    private val morph    : (T)    -> M
+class Search<State, Hash, Result> (
+    private val storage  : ()              -> MutableCollection<Pair<State, Result>>,
+    private val generate : (State, Result) ->          Iterable<Pair<State, Result>>,
+    private val morph    : (State)         -> Hash
 ) {
 
     companion object {
 
-        fun <T,    R> bfs (generate : (T, R) -> Iterable<Pair<T, R>>) = bfs (generate) { it }
+        fun <State,       Result> bfs (generate : (State, Result) -> Iterable<Pair<State, Result>>) = bfs (generate) { it }
 
-        fun <T, M, R> bfs (generate : (T, R) -> Iterable<Pair<T, R>>, morph : (T) -> M) = Search (
+        fun <State, Hash, Result> bfs (generate : (State, Result) -> Iterable<Pair<State, Result>>, morph : (State) -> Hash) = Search (
             storage  = { LinkedList () },
             morph    = morph,
             generate = generate
         )
 
-        fun <T,    R> dfs (generate : (T, R) -> Iterable<Pair<T, R>>) = dfs (generate) { it }
+        fun <State,       Result> dfs (generate : (State, Result) -> Iterable<Pair<State, Result>>) = dfs (generate) { it }
 
-        fun <T, M, R> dfs (generate : (T, R) -> Iterable<Pair<T, R>>, morph : (T) -> M) = Search (
+        fun <State, Hash, Result> dfs (generate : (State, Result) -> Iterable<Pair<State, Result>>, morph : (State) -> Hash) = Search (
             storage  = { Stack () },
             morph    = morph,
             generate = generate
         )
 
-        fun <T,    R> astar (comparator : Comparator<Pair<T, R>>, generate : (T, R) -> Iterable<Pair<T, R>>) = astar (comparator, generate) { it }
+        fun <State,       Result> astar (comparator : Comparator<Pair<State, Result>>, generate : (State, Result) -> Iterable<Pair<State, Result>>) = astar (comparator, generate) { it }
 
-        fun <T, M, R> astar (comparator : Comparator<Pair<T, R>>, generate : (T, R) -> Iterable<Pair<T, R>>, morph : (T) -> M) = Search (
+        fun <State, Hash, Result> astar (comparator : Comparator<Pair<State, Result>>, generate : (State, Result) -> Iterable<Pair<State, Result>>, morph : (State) -> Hash) = Search (
             storage  = { PriorityQueue (comparator) },
             morph    = morph,
             generate = generate
@@ -41,11 +41,11 @@ class Search<T, M, R> (
 
     }
 
-    fun query (start : T, neutral : R, solves : Pair<T, R>.() -> Boolean) : R? {
+    fun query (start : State, neutral : Result, solves : Pair<State, Result>.() -> Boolean) : Result? {
         val operations = storage ()
             operations += start to neutral
 
-        val travels = mutableSetOf<M> ()
+        val travels = mutableSetOf<Hash> ()
 
         do {
             val                op = operations.first ()
