@@ -16,14 +16,17 @@ fun CharSequence.times (n : Int) : CharSequence = (1.until (n)).fold (asSequence
 fun Sequence<Char>.asCharSequence () : CharSequence {
     return object : CharSequence {
 
+        private val content : String
+            by lazy { joinToString ("") }
+
         override val length : Int
-            get () = this@asCharSequence.count ()
+            by lazy { content.length }
 
-        override fun get (index : Int) : Char = this@asCharSequence.elementAt (index)
+        override fun get (index : Int) : Char = content[index]
 
-        override fun subSequence (startIndex : Int, endIndex : Int) : CharSequence = this@asCharSequence.drop (startIndex).take (endIndex).asCharSequence ()
+        override fun subSequence (startIndex : Int, endIndex : Int) : CharSequence = content.subSequence (startIndex, endIndex)
 
-        override fun toString () : String = this@asCharSequence.joinToString ("")
+        override fun toString () : String = content
 
     }
 }
