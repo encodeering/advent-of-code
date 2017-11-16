@@ -17,8 +17,6 @@ fun <T, S> Iterable<T>.cartesian (other : Iterable<S>) : Iterable<Pair<T, S>> =
         }.distinct ()
 
 
-fun <T> Iterator<T>.nextOrNull () = if (hasNext ()) next () else null
-
 fun <T> Collection<T>.permutation () : Sequence<List<T>> {
     if (size == 1) return sequenceOf (toList ())
 

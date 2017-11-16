@@ -3,6 +3,8 @@ package com.encodeering.aoc.common
 /**
  * @author clausen - encodeering@gmail.com
  */
+fun <T> Iterator<T>.nextOrNull () = if (hasNext ()) next () else null
+
 fun <T : Any>    Sequence<T>.window (n : Int, step : Int = 1, partial : Boolean = false) = window (n, step, partial) { it }
 fun <T : Any, R> Sequence<T>.window (n : Int, step : Int = 1, partial : Boolean = false, transform : (List<T>) -> R) : Sequence<R> {
     val source  = iterator ()
