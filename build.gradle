@@ -1,6 +1,6 @@
 buildscript {
-    ext.kotlinversion = '1.1.4-3'
-    ext.junitversion  = '1.0.0-M4'
+    ext.kotlinversion = '1.1.60'
+    ext.junitversion  = '1.0.0'
 
     repositories {
         mavenLocal ()
@@ -34,8 +34,8 @@ dependencies {
     compile     "org.jetbrains.kotlin:kotlin-reflect:$kotlinversion"
     testCompile "org.junit.platform:junit-platform-runner:$junitversion"
     testCompile "com.winterbe:expekt:0.5.0"
-    testCompile "org.jetbrains.spek:spek-api:1.1.2"
-    testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.2"
+    testCompile "org.jetbrains.spek:spek-api:1.1.5"
+    testRuntime "org.jetbrains.spek:spek-junit-platform-engine:1.1.5"
 }
 
 sourceSets {
