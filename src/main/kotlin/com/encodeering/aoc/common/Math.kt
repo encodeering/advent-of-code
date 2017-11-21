@@ -92,11 +92,13 @@ data class TransformMatrix<out T, out R> (private val matrix : Matrix<T>, privat
 
 }
 
+fun <T> matrixOf (m : Int, n : Int, f : (Int, Int, Pair<Int, Int>) -> T) : Matrix<T> = List (m * n) { (m to n).run { f (it / n, it % n, this) } }.matrix (m, n)
+
 fun <T> List<T>.matrix (m : Int, n : Int) : Matrix<T> = ListMatrix (this, m, n)
 
 fun <T> Matrix<T>.matrix (m : Int, n : Int, point : Pair<Int, Int> = 0 to 0) : Matrix<T> = SubMatrix(this, point, point.first + m to point.second + n)
 
-fun <T> Matrix<T>.toSequence () : Sequence<T> = generateSequence (0) { it + 1 }.takeWhile { it < size }.map { this[it / n, it % n] }
+fun <T> Matrix<T>.toSequence () : Sequence<T> = (0 until size).asSequence ().map { this[it / n, it % n] }
 fun <T> Matrix<T>.toList () : List<T> = toSequence ().toList ()
 
 fun <T> Matrix<T>.row    (i : Int) : Matrix<T> = ListMatrix ((0 until n).map { j -> this[i, j] }, 1, n)

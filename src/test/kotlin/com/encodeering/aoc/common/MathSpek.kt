@@ -20,6 +20,19 @@ class MathSpek : Spek ({
 
         describe ("creation") {
 
+            it ("creation from a function") {
+                val matrix = matrixOf (2, 3) { i, j, (m, n) -> i + j + m + n }
+
+                expect (matrix.n).to.equal (3)
+                expect (matrix.m).to.equal (2)
+                expect (matrix.size).to.equal (6)
+
+                expect (matrix[0, 0]).to.equal (0+5)
+                expect (matrix[0, 1]).to.equal (1+5)
+                expect (matrix[1, 0]).to.equal (1+5)
+                expect (matrix[1, 1]).to.equal (2+5)
+            }
+
             it ("creation from a list") {
                 val matrix = list4.matrix (2, 2)
 
