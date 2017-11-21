@@ -27,7 +27,7 @@ interface Matrix<out T> {
 
     operator fun get (i : Int, j : Int) : T
 
-    fun display (padding : Int = 2, header : Boolean = false) : String {
+    fun display (padding : Int = 2, header : Boolean = false, represent : (Int, Int, T) -> String = { _, _, v -> v.toString () }) : String {
         val alignment = ceil (log10 (m.toDouble ())).toInt ()
         val newline   = "\n"
 
@@ -37,7 +37,7 @@ interface Matrix<out T> {
         fun body () : String =
             (0 until m).joinToString (newline) {
                         i ->
-                 index (i) + (0 until n).joinToString ("") { j -> "${get (i, j)}".padStart (padding) }
+                 index (i) + (0 until n).joinToString ("") { j -> represent (i, j, get (i, j)).padStart (padding) }
             }
 
         return header () + body ()
