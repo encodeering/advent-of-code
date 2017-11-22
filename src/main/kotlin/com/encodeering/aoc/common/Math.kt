@@ -49,7 +49,7 @@ interface Matrix<out T> {
 data class ListMatrix<out T> (private val content : List<T>, override val m : Int, override val n : Int) : Matrix<T> {
 
     init {
-        require (content.size == size)
+        require (content.size == size) { "list size ${content.size} should match matrix size $size"}
     }
 
     override fun get (i : Int, j : Int) = content[n * i + j]
@@ -60,8 +60,10 @@ data class ListMatrix<out T> (private val content : List<T>, override val m : In
 data class SubMatrix<out T> (private val content : Matrix<T>, private val ul : Pair<Int, Int>, private val lr : Pair<Int, Int>) : Matrix<T> {
 
     init {
-        require (lr.first  >= ul.first)
-        require (lr.second >= ul.second)
+        require (
+            lr.first  >= ul.first &&
+            lr.second >= ul.second
+        ) { "sub-matrix points should be defined with proper upper left $ul and lower right $lr pair"}
     }
 
     override val m : Int by lazy { lr.first  - ul.first  }
