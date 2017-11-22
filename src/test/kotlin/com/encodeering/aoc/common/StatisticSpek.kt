@@ -10,8 +10,8 @@ import org.junit.runner.RunWith
 /**
  * @author clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
-class StatisticSpek : Spek({
+@RunWith (JUnitPlatform::class)
+class StatisticSpek : Spek ({
 
     describe ("Statistic") {
 

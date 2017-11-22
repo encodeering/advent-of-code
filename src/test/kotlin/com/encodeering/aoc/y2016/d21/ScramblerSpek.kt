@@ -14,7 +14,7 @@ import org.junit.runner.RunWith
  * @author clausen - encodeering@gmail.com
  */
 @RunWith (JUnitPlatform::class)
-class ScramblerSpek : Spek({
+class ScramblerSpek : Spek ({
 
     describe ("Scrambler") {
 
@@ -40,7 +40,7 @@ class ScramblerSpek : Spek({
                 rotate based on position of letter d
                 """
 
-                expect (scramble ("abcde", description.trimIndent ().lineSequence ().toList())).to.equal ("decab")
+                expect (scramble ("abcde", description.trimIndent ().lineSequence ().toList ())).to.equal ("decab")
             }
 
         }
@@ -64,7 +64,7 @@ class ScramblerSpek : Spek({
 
             it ("second example") {
                 traverse ("/y2016/d21/scrambling.txt") {
-                    expect (scramble ("agcebfdh", it.toList(), reverse = true)).to.equal ("abcdefgh")
+                    expect (scramble ("agcebfdh", it.toList (), reverse = true)).to.equal ("abcdefgh")
                 }
             }
 

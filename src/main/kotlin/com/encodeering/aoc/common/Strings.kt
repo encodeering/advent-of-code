@@ -29,9 +29,9 @@ fun CharSequence.reverse (idxA : Int = 0, idxB : Int = length - 1) : CharSequenc
 
 fun CharSequence.rotate (by : Int) : CharSequence =
     when {
-        by == 0 || length - Math.abs(by) == 0 -> this
-        by <  0                               -> takeLast (Math.floorMod(length - Math.abs(by), length)).toString () + take (Math.floorMod(Math.abs(by), length))
-        else                                  -> takeLast (Math.floorMod(Math.abs(by), length)).toString () + take (Math.floorMod(length - Math.abs(by), length))
+        by == 0 || length - Math.abs (by) == 0 -> this
+        by <  0                               -> takeLast (Math.floorMod (length - Math.abs (by), length)).toString () + take (Math.floorMod (Math.abs (by), length))
+        else                                  -> takeLast (Math.floorMod (Math.abs (by), length)).toString () + take (Math.floorMod (length - Math.abs (by), length))
     }
 
 operator fun CharSequence.times (n : Int)        : CharSequence = (1 until n).fold             (asSequence ()) { v, _ -> v + this@times.asSequence () }.asCharSequence ()

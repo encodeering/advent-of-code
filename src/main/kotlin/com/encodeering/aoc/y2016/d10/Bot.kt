@@ -8,7 +8,7 @@ import com.encodeering.aoc.common.traverse
 object Day10 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         traverse ("/y2016/d10/instructions.txt") {
             val factory = Factory (compares (17, 61))
                 factory.execute (it)
@@ -39,7 +39,7 @@ class Factory (val trace : Bot.() -> Unit = {}) {
     fun bin (id : Int) = bins.computeIfAbsent (id) { Bin (id) }
 
     fun execute (instructions : Sequence<String>) {
-        val                                      query = Regex("""(\d+)""")
+        val                                      query = Regex ("""(\d+)""")
         fun parse (instruction : CharSequence) = query.findAll (instruction).map (MatchResult::value).map (String::toInt).toList ()
 
         fun instruct (instruction : CharSequence) : CharSequence? {

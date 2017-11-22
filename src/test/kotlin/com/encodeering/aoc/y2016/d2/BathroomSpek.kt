@@ -10,8 +10,8 @@ import org.junit.runner.RunWith
 /**
  * @author Michael Clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
-class BathroomSpek : Spek({
+@RunWith (JUnitPlatform::class)
+class BathroomSpek : Spek ({
 
     describe ("Bathroom") {
 

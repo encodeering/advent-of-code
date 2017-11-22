@@ -12,7 +12,7 @@ import org.junit.runner.RunWith
  * @author clausen - encodeering@gmail.com
  */
 @RunWith (JUnitPlatform::class)
-class ChessSpek : Spek({
+class ChessSpek : Spek ({
 
     describe ("Chess") {
 

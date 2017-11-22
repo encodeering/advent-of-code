@@ -10,15 +10,15 @@ import org.junit.runner.RunWith
 /**
  * @author clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
-class AssembunnySpek : Spek({
+@RunWith (JUnitPlatform::class)
+class AssembunnySpek : Spek ({
 
     describe ("Assembunny") {
 
         fun evaluate (description : String) : State {
-            val state = State()
-            val interpreter = Interpreter()
-                interpreter.run (description.trimIndent().lineSequence(), state)
+            val state = State ()
+            val interpreter = Interpreter ()
+                interpreter.run (description.trimIndent ().lineSequence (), state)
 
             return state
         }
@@ -61,8 +61,8 @@ class AssembunnySpek : Spek({
                 dec z
                 """
 
-                val code = Interpreter().parse(description.trimIndent().lineSequence())
-                    code.optimize()
+                val code = Interpreter ().parse (description.trimIndent ().lineSequence ())
+                    code.optimize ()
 
                 expect (code.world).to.equal (listOf (
                     Command.Inc ("z", "1"),

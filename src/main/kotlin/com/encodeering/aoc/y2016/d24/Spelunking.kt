@@ -15,8 +15,8 @@ import java.util.LinkedList
 object Day24 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
-        traverse("/y2016/d24/spelunking.txt") {
+    fun main (args : Array<String>) {
+        traverse ("/y2016/d24/spelunking.txt") {
             val             spelunking = planify (it.toList ()).also { println (it.display ()) }
             val distances = spelunking.distances { locate { type == SpelunkingSectorType.POI } }.filter { (r, _) -> r.first ().value == "0" }.toList ()
 
@@ -72,8 +72,8 @@ class Spelunking (val grid : Grid<String>)  {
             Route (
                 a,
                 b,
-                Search(
-                    storage = { LinkedList() },
+                Search (
+                    storage = { LinkedList () },
                     morph = { it },
                     generate = this::generate
                 ).query (a, emptyList ()) { first.ij == b.ij }?.size ?: 0

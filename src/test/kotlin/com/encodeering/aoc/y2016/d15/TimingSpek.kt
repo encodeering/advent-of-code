@@ -10,8 +10,8 @@ import org.junit.runner.RunWith
 /**
  * @author clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
-class TimingSpek : Spek({
+@RunWith (JUnitPlatform::class)
+class TimingSpek : Spek ({
 
     describe ("Timing") {
 

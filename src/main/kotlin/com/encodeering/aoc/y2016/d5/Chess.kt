@@ -8,7 +8,7 @@ import com.encodeering.aoc.common.md5sum
 object Day5 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         println ("password: ${password ("ojvtpuvg")}")
         println ("password: ${password2 ("ojvtpuvg")}")
     }

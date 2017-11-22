@@ -90,7 +90,7 @@ class State {
         registers[register] = value
     }
 
-    fun convertOrLoad (value : String) = value.number { toInt () } ?: load(value)!!
+    fun convertOrLoad (value : String) = value.number { toInt () } ?: load (value)!!
 
     fun load (value : String) = this[value]
 
@@ -120,20 +120,20 @@ class Interpreter (private val clock : (Int) -> Boolean = { true }) {
         next (0)
     }
 
-    fun parse (operations : Sequence<CharSequence>) = Code(operations.map { op ->
-        val parameters = op.drop(4).split(" ")
+    fun parse (operations : Sequence<CharSequence>) = Code (operations.map { op ->
+        val parameters = op.drop (4).split (" ")
 
         when {
-            op.startsWith("cpy") -> Command.Cpy(parameters[1], parameters[0])
-            op.startsWith("inc") -> Command.Inc(parameters[0], parameters.getOrElse(1) { "1" })
-            op.startsWith("dec") -> Command.Dec(parameters[0], parameters.getOrElse(1) { "1" })
-            op.startsWith("jnz") -> Command.Jnz(parameters[0], parameters[1])
-            op.startsWith("mpy") -> Command.Mpy(parameters[2], parameters[0], parameters[1])
-            op.startsWith("tgl") -> Command.Tgl(parameters[0])
-            op.startsWith("out") -> Command.Out(parameters[0])
-            else                 -> throw IllegalStateException("operation $op unknown")
+            op.startsWith ("cpy") -> Command.Cpy (parameters[1], parameters[0])
+            op.startsWith ("inc") -> Command.Inc (parameters[0], parameters.getOrElse (1) { "1" })
+            op.startsWith ("dec") -> Command.Dec (parameters[0], parameters.getOrElse (1) { "1" })
+            op.startsWith ("jnz") -> Command.Jnz (parameters[0], parameters[1])
+            op.startsWith ("mpy") -> Command.Mpy (parameters[2], parameters[0], parameters[1])
+            op.startsWith ("tgl") -> Command.Tgl (parameters[0])
+            op.startsWith ("out") -> Command.Out (parameters[0])
+            else                 -> throw IllegalStateException ("operation $op unknown")
         }
-    }.toMutableList())
+    }.toMutableList ())
 
 }
 
@@ -177,13 +177,13 @@ sealed class Command {
                 if        (num != 0) state.convertOrLoad (offset) else null
 
             val raw = register.number { toInt () }
-            val reg = state.load(register)
+            val reg = state.load (register)
 
             if (       raw != null) {
-                return raw.let(::offsetify) ?: next
+                return raw.let (::offsetify) ?: next
             }
 
-            return reg?.let(::offsetify) ?: next
+            return reg?.let (::offsetify) ?: next
         }
 
     }
@@ -200,7 +200,7 @@ sealed class Command {
     data class Tgl (val register : String) : Command () {
 
         override fun apply (code : Code, state : State) : Int {
-            val                            number = state.load(register)!!
+            val                            number = state.load (register)!!
             val command = code[code.line + number] ?: return next
 
             code[code.line + number] = when (command) {

@@ -8,7 +8,7 @@ import java.lang.Math.pow
 object Day19 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         println ("last standing elf: ${takesall (3004953)}")
         println ("last standing elf: ${takesall2math (3004953)}")
     }
@@ -35,7 +35,7 @@ fun takesall (elves : Int) : Int {
 
 fun takesall2 (elves : Int) : Int {
     tailrec fun play (players : Iterable<Int>, beginner : Int) : Int {
-        if           (players.count() == 1) return players.first ()
+        if           (players.count () == 1) return players.first ()
 
         val round = players.drop (beginner) +
                     players.take (beginner)

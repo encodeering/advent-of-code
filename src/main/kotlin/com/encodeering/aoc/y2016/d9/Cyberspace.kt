@@ -40,7 +40,7 @@ fun decompress (text : CharSequence, recursive : Boolean) : CyberNode {
         val (meta, code) = result.destructured
         if        (code.isBlank ()) return listOf (CyberLeaf (meta))
 
-        val (many, times) = code.split ("x", limit = 2).map(String::toInt)
+        val (many, times) = code.split ("x", limit = 2).map (String::toInt)
 
         val content = upcoming.take (many).let {
             if (recursive) scan (it) else listOf (CyberLeaf (it))

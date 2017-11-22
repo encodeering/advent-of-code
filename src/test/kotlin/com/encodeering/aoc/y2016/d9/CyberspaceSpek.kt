@@ -11,8 +11,8 @@ import org.junit.runner.RunWith
 /**
  * @author clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
-class CyberspaceSpek : Spek({
+@RunWith (JUnitPlatform::class)
+class CyberspaceSpek : Spek ({
 
     describe ("Advent") {
 
@@ -28,7 +28,7 @@ class CyberspaceSpek : Spek({
             }
 
             it ("compression") {
-                expect (CyberComposite (listOf (CyberLeaf("hello"), CyberLeaf("world")), "times" to 2).stringify ().toString ()).to.equal ("helloworldhelloworld")
+                expect (CyberComposite (listOf (CyberLeaf ("hello"), CyberLeaf ("world")), "times" to 2).stringify ().toString ()).to.equal ("helloworldhelloworld")
             }
 
         }

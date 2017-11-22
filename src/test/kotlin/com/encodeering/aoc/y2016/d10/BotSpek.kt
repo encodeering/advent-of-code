@@ -27,7 +27,7 @@ class BotSpek : Spek ({
                 value 2 goes to bot 2
                 """
 
-                val instructions = description.trimIndent ().lineSequence()
+                val instructions = description.trimIndent ().lineSequence ()
 
                 val factory = Factory (compares (2, 5))
                     factory.execute (instructions)

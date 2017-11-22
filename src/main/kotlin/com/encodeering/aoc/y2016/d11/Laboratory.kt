@@ -10,7 +10,7 @@ import java.util.LinkedList
 object Day11 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         /*
         The first floor contains a promethium generator and a promethium-compatible microchip.
         The second floor contains a cobalt generator, a curium generator, a ruthenium generator, and a plutonium generator.
@@ -97,12 +97,12 @@ object Day11 {
     private fun show (solution : () -> List<Laboratory>) {
         solution ().apply {
             forEachIndexed { idx, laboratory ->
-                println(idx + 1)
-                println(laboratory.display())
-                println()
+                println (idx + 1)
+                println (laboratory.display ())
+                println ()
             }
 
-            println("solution size: $size")
+            println ("solution size: $size")
         }
     }
 
@@ -115,7 +115,7 @@ fun route (laboratory : Laboratory, solves : Laboratory.() -> Boolean) : List<La
         generate = ::generate
     )
 
-    return search.query (laboratory, listOf(laboratory)) { first.solves () } ?: emptyList()
+    return search.query (laboratory, listOf (laboratory)) { first.solves () } ?: emptyList ()
 }
 
 fun morph (laboratory : Laboratory) : String {

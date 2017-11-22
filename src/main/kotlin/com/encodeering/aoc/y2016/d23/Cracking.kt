@@ -10,7 +10,7 @@ import com.encodeering.aoc.y2016.common.State
 object Day23 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         traverse ("/y2016/d23/cracking.txt") {
             val state = State ()
                 state["a"] = 7

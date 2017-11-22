@@ -9,7 +9,7 @@ import com.encodeering.aoc.common.window
 object Day3 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         println ("horizontally : ${traverse ("/y2016/d3/triangles.txt", ::horizontally).size}")
         println ("vertically:    ${traverse ("/y2016/d3/triangles.txt", ::vertically).size}")
     }

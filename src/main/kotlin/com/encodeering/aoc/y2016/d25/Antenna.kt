@@ -11,9 +11,9 @@ import com.encodeering.aoc.y2016.common.State
 object Day25 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
-        traverse("/y2016/d25/signal.txt") {
-            val operations = it.toList()
+    fun main (args : Array<String>) {
+        traverse ("/y2016/d25/signal.txt") {
+            val operations = it.toList ()
 
             generateSequence (0) { it + 1 }.filter {
                 val state = State ()
@@ -24,7 +24,7 @@ object Day25 {
 
                 Interpreter {
                                 queue += it
-                    val pairs = queue.toList ().window(2, step = 2).filterNot { (a, b) -> a == 0 && b == 1 }.take (50)
+                    val pairs = queue.toList ().window (2, step = 2).filterNot { (a, b) -> a == 0 && b == 1 }.take (50)
 
                     if (pairs.isNotEmpty ())
                         false
@@ -33,7 +33,7 @@ object Day25 {
                 }.run (operations.asSequence (), state)
 
                 found
-            }.take( 1).forEach { println(it) }
+            }.take ( 1).forEach { println (it) }
         }
     }
 

@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
  * @author clausen - encodeering@gmail.com
  */
 @RunWith (JUnitPlatform::class)
-class NetworkSpek : Spek({
+class NetworkSpek : Spek ({
 
     describe ("Network") {
 

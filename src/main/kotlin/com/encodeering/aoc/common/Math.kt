@@ -98,7 +98,7 @@ fun <T> matrixOf (m : Int, n : Int, f : (Int, Int, Pair<Int, Int>) -> T) : Matri
 
 fun <T> List<T>.matrix (m : Int, n : Int) : Matrix<T> = ListMatrix (this, m, n)
 
-fun <T> Matrix<T>.matrix (m : Int, n : Int, point : Pair<Int, Int> = 0 to 0) : Matrix<T> = SubMatrix(this, point, point.first + m to point.second + n)
+fun <T> Matrix<T>.matrix (m : Int, n : Int, point : Pair<Int, Int> = 0 to 0) : Matrix<T> = SubMatrix (this, point, point.first + m to point.second + n)
 
 fun <T> Matrix<T>.toSequence () : Sequence<T> = (0 until size).asSequence ().map { this[it / n, it % n] }
 fun <T> Matrix<T>.toList () : List<T> = toSequence ().toList ()

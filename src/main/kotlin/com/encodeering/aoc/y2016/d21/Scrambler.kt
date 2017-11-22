@@ -11,7 +11,7 @@ import com.encodeering.aoc.common.traverse
 object Day21 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         traverse ("/y2016/d21/scrambling.txt") {
             println ("password ${scramble ("abcdefgh", it.toList ())}")
         }
@@ -32,7 +32,7 @@ tailrec fun scramble                   (state : CharSequence, ops : Iterable<Cha
     return scramble (
         when {
             cmd.startsWith ("swap position") -> {
-                val        (a, b) = cmd.findAll (Regex("""(\d+)""")).map (String::toInt).toList ()
+                val        (a, b) = cmd.findAll (Regex ("""(\d+)""")).map (String::toInt).toList ()
                 state.swap (a, b)
             }
 
@@ -44,12 +44,12 @@ tailrec fun scramble                   (state : CharSequence, ops : Iterable<Cha
             }
 
             cmd.startsWith ("rotate right") -> {
-                val          (by) = cmd.findAll (Regex("""(\d+)""")).map (String::toInt).toList ().map { it * if (reverse) -1 else +1 }
+                val          (by) = cmd.findAll (Regex ("""(\d+)""")).map (String::toInt).toList ().map { it * if (reverse) -1 else +1 }
                 state.rotate (by)
             }
 
             cmd.startsWith ("rotate left") -> {
-                val           (by) = cmd.findAll (Regex("""(\d+)""")).map (String::toInt).toList ().map { it * if (reverse) -1 else +1 }
+                val           (by) = cmd.findAll (Regex ("""(\d+)""")).map (String::toInt).toList ().map { it * if (reverse) -1 else +1 }
                 state.rotate (-by)
             }
 
@@ -69,7 +69,7 @@ tailrec fun scramble                   (state : CharSequence, ops : Iterable<Cha
             }
 
             cmd.startsWith ("move") -> {
-                val        (a, b) = cmd.findAll (Regex ("""(\d+)""")).map (String::toInt).toList ().run { if (reverse) reversed() else this }
+                val        (a, b) = cmd.findAll (Regex ("""(\d+)""")).map (String::toInt).toList ().run { if (reverse) reversed () else this }
                 state.move (a, b)
             }
 

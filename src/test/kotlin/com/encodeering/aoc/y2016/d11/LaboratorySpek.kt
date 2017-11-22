@@ -10,8 +10,8 @@ import org.junit.runner.RunWith
 /**
  * @author clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
-class LaboratorySpek : Spek({
+@RunWith (JUnitPlatform::class)
+class LaboratorySpek : Spek ({
 
     describe ("Laboraty") {
 
@@ -42,7 +42,7 @@ class LaboratorySpek : Spek({
                 )
             )
 
-            expect (morph(laboratory)).to.equal (morph(laboratory2))
+            expect (morph (laboratory)).to.equal (morph (laboratory2))
         }
 
         describe ("#1") {
@@ -74,7 +74,7 @@ class LaboratorySpek : Spek({
                     }
                 }
 
-                solution.forEach { println(it.display()); println() }
+                solution.forEach { println (it.display ()); println () }
 
                 expect (solution.size).to.equal (12)
             }

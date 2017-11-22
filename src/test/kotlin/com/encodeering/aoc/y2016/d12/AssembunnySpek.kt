@@ -13,7 +13,7 @@ import org.junit.runner.RunWith
  * @author clausen - encodeering@gmail.com
  */
 @RunWith (JUnitPlatform::class)
-class AssembunnySpek : Spek({
+class AssembunnySpek : Spek ({
 
     describe ("Assembunny") {
 

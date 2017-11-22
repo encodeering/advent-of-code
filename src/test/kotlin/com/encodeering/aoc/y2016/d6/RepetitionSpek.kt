@@ -10,8 +10,8 @@ import org.junit.runner.RunWith
 /**
  * @author clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
-class RepetitionSpek : Spek({
+@RunWith (JUnitPlatform::class)
+class RepetitionSpek : Spek ({
 
     describe ("Repetition") {
 
@@ -20,7 +20,7 @@ class RepetitionSpek : Spek({
             12
             34
             56
-            """.trimIndent ().lineSequence ().asIterable().map (String::asIterable).transpose ()
+            """.trimIndent ().lineSequence ().asIterable ().map (String::asIterable).transpose ()
 
             expect (codes.elementAt (0).joinToString ("")).to.equal ("135")
             expect (codes.elementAt (1).joinToString ("")).to.equal ("246")

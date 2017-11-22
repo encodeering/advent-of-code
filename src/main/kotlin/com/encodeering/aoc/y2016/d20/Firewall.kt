@@ -9,15 +9,15 @@ import com.encodeering.aoc.common.window
 object Day20 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         traverse ("/y2016/d20/table.txt") {
             println ("first ip: ${first (it)}")
         }
 
         traverse ("/y2016/d20/table.txt") {
-            val max = 2 * Integer.MAX_VALUE.toLong()
+            val max = 2 * Integer.MAX_VALUE.toLong ()
 
-            println ("allowed ips: ${all(it + "$max-$max")}")
+            println ("allowed ips: ${all (it + "$max-$max")}")
         }
     }
 
@@ -25,7 +25,7 @@ object Day20 {
 
 fun first (ips : Sequence<CharSequence>) = ipfilter (ips).first ().last + 1
 
-fun all (ips : Sequence<CharSequence>) = ipfilter (ips).window (2).sumBy { (a, b) -> (b.first - a.last - 1).toInt() }
+fun all (ips : Sequence<CharSequence>) = ipfilter (ips).window (2).sumBy { (a, b) -> (b.first - a.last - 1).toInt () }
 
 fun ipfilter (ips : Sequence<CharSequence>) : List<LongRange> {
     return    ips.map { it.split ('-', ignoreCase = false, limit = 2) }

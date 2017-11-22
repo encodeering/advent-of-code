@@ -12,8 +12,8 @@ import java.util.LinkedList
 object Day13 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
-        val initial = State(1, 1, true)
+    fun main (args : Array<String>) {
+        val initial = State (1, 1, true)
 
         val      layout = Layout (50, 50, 1350)
         val                        part1 = layout.path (initial) { (sector, _) -> sector.ij == 39 to 31 }

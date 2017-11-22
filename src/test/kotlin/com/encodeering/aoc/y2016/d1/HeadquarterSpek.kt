@@ -15,8 +15,8 @@ import org.junit.runner.RunWith
 /**
  * @author Michael Clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
-class HeadquarterSpek : Spek({
+@RunWith (JUnitPlatform::class)
+class HeadquarterSpek : Spek ({
 
     describe ("Headquarter") {
 

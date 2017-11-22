@@ -57,8 +57,8 @@ data class Sector<out T> (val i : Int, val j : Int, val value : T) {
 }
 
 fun <T> Iterable<Sector<T>>.toGrid () : Grid<T> {
-    val map = sortedWith(
-                  compareBy(
+    val map = sortedWith (
+                  compareBy (
                         { it.i },
                         { it.j }
                   )

@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
 /**
  * @author clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
+@RunWith (JUnitPlatform::class)
 class CollectionsSpek : Spek ({
 
     describe ("Collections") {
@@ -26,7 +26,7 @@ class CollectionsSpek : Spek ({
                         listOf (1, 2)
                 ))
 
-                expect (listOf (1, 2, 3, 4, 5, 6, 7, 8, 9).asSequence().window(3).toList ()).to.equal (listOf (
+                expect (listOf (1, 2, 3, 4, 5, 6, 7, 8, 9).asSequence ().window (3).toList ()).to.equal (listOf (
                         listOf (1, 2, 3),
                         listOf (2, 3, 4),
                         listOf (3, 4, 5),
@@ -50,7 +50,7 @@ class CollectionsSpek : Spek ({
                         listOf (1, 2)
                 ))
 
-                expect (listOf (1, 2, 3, 4, 5, 6, 7, 8, 9).asSequence().blockwise(2).toList ()).to.equal (listOf (
+                expect (listOf (1, 2, 3, 4, 5, 6, 7, 8, 9).asSequence ().blockwise (2).toList ()).to.equal (listOf (
                         listOf (1, 2),
                         listOf (3, 4),
                         listOf (5, 6),
@@ -70,7 +70,7 @@ class CollectionsSpek : Spek ({
                         listOf (1, 2)
                 ))
 
-                expect (listOf (1, 2, 3, 4, 5, 6, 7, 8, 9).asSequence().blockwise(2, partial = true).toList ()).to.equal (listOf (
+                expect (listOf (1, 2, 3, 4, 5, 6, 7, 8, 9).asSequence ().blockwise (2, partial = true).toList ()).to.equal (listOf (
                         listOf (1, 2),
                         listOf (3, 4),
                         listOf (5, 6),
@@ -92,7 +92,7 @@ class CollectionsSpek : Spek ({
                         listOf (1, 2)
                 ))
 
-                expect (listOf (1, 2, 3, 4, 5, 6, 7, 8, 9).asSequence().zipwise().toList ()).to.equal (listOf (
+                expect (listOf (1, 2, 3, 4, 5, 6, 7, 8, 9).asSequence ().zipwise ().toList ()).to.equal (listOf (
                         listOf (1, 2),
                         listOf (2, 3),
                         listOf (3, 4),

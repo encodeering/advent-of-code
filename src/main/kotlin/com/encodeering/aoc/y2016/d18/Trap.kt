@@ -8,7 +8,7 @@ import com.encodeering.aoc.common.window
 object Day18 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         println ("safe tiles: ${trapplan (".^.^..^......^^^^^...^^^...^...^....^^.^...^.^^^^....^...^^.^^^...^^^^.^^.^.^^..^.^^^..^^^^^^.^^^..^", 40).count { it == '.' }}")
         println ("safe tiles: ${trapplan (".^.^..^......^^^^^...^^^...^...^....^^.^...^.^^^^....^...^^.^^^...^^^^.^^.^.^^..^.^^^..^^^^^^.^^^..^", 400000).count { it == '.' }}")
     }

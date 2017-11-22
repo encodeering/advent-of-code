@@ -9,7 +9,7 @@ import java.lang.Math.max
 object Day14 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         println ("normal: ${padkeys ("ngcjuoqr").keys.last ()}")
         println ("hardened: ${padkeys ("ngcjuoqr", 2016).keys.last ()}")
     }

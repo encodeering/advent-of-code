@@ -11,7 +11,7 @@ import org.junit.runner.RunWith
  * @author clausen - encodeering@gmail.com
  */
 @RunWith (JUnitPlatform::class)
-class PadSpek : Spek({
+class PadSpek : Spek ({
 
     describe ("Pad") {
 

@@ -8,7 +8,7 @@ import com.encodeering.aoc.common.traverse
 object Day4 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         traverse ("/y2016/d4/encryptions.txt") {
             println ("sum of sectors: ${it.fold (0) { sum, text -> sum + (verify (text)?.sector ?: 0) }}")
         }
@@ -44,7 +44,7 @@ fun verify                             (text : String) : Code? {
         val count  = statistics.replace (char, 0) ?: 0
 
         val larger = statistics.filterValues { it > count }
-        if (larger.isNotEmpty()) return false
+        if (larger.isNotEmpty ()) return false
 
         val same = statistics.filterValues   { it == count }
         if (same.isNotEmpty ()) {
@@ -63,7 +63,7 @@ data class Code (val parts : List<String>, val sector : Int, val checksum : Stri
 
     companion object {
 
-        fun apply(text : String) : Code {
+        fun apply (text : String) : Code {
             val checksum = text.substringAfter  ("[").substringBefore ("]")
             val parts    = text.substringBefore ("[").split ("-")
 

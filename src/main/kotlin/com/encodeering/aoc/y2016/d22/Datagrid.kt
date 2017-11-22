@@ -11,13 +11,13 @@ import com.encodeering.aoc.common.traverse
 object Day22 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
-        traverse("/y2016/d22/datagrid.txt") {
-            println ("viable pairs: ${df (it.drop(2)).viables ().sumBy { 1 }}")
+    fun main (args : Array<String>) {
+        traverse ("/y2016/d22/datagrid.txt") {
+            println ("viable pairs: ${df (it.drop (2)).viables ().sumBy { 1 }}")
         }
 
-        traverse("/y2016/d22/datagrid.txt") {
-            println (df (it.drop(2)).display ())
+        traverse ("/y2016/d22/datagrid.txt") {
+            println (df (it.drop (2)).display ())
 
             // 17 + 22 + 35 + 34 * 5
             // assumes all operations are valid
@@ -28,7 +28,7 @@ object Day22 {
 }
 
 fun df (stdout : Sequence<CharSequence> ) : Datagrid {
-    return stdout.map { it.split (" ").filter { it.isNotBlank() } }.map { (path, size, used) ->
+    return stdout.map { it.split (" ").filter { it.isNotBlank () } }.map { (path, size, used) ->
         Node (
             path,
             Node.amount (size),
@@ -74,7 +74,7 @@ data class Node (val path : String, val size : Int, val used : Int, val meta : S
 
     companion object {
 
-        fun amount (value : String) = """(\d+)[T%]""".toRegex ().find (value)!!.groupValues[1].toInt()
+        fun amount (value : String) = """(\d+)[T%]""".toRegex ().find (value)!!.groupValues[1].toInt ()
 
     }
 
@@ -82,7 +82,7 @@ data class Node (val path : String, val size : Int, val used : Int, val meta : S
         get () = size - used
 
     val x : Int by lazy {
-        """.+node-x(\d+)-y\d+$""".toRegex().find (path)!!.groupValues[1].toInt ()
+        """.+node-x(\d+)-y\d+$""".toRegex ().find (path)!!.groupValues[1].toInt ()
     }
 
     val y : Int by lazy {

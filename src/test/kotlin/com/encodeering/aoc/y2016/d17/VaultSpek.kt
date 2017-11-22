@@ -12,7 +12,7 @@ import org.junit.runner.RunWith
  * @author clausen - encodeering@gmail.com
  */
 @RunWith (JUnitPlatform::class)
-class VaultSpek : Spek({
+class VaultSpek : Spek ({
 
     describe ("Vault") {
 

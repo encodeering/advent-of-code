@@ -10,7 +10,7 @@ import com.encodeering.aoc.common.traverse
 object Day6 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         traverse ("/y2016/d6/transmission.txt") {
             println ("message: ${correct (it) { it.maxBy { it.value }?.key } }")
         }
@@ -23,7 +23,7 @@ object Day6 {
 }
 
 fun correct (codes : Sequence<String>, select : (Map<Char, Int>) -> Char?) : String? {
-    return   codes.asIterable()
+    return   codes.asIterable ()
                   .map (String::asIterable).transpose ()
                   .map { it.asCharSequence ().frequence () }
                   .map (select)

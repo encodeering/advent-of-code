@@ -9,7 +9,7 @@ import java.lang.Math.floorMod
 object Day15 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         traverse ("/y2016/d15/discs.txt") {
             println ("first index: ${unleash (it)}")
         }
@@ -24,7 +24,7 @@ object Day15 {
 }
 
 fun unleash (discs : Sequence<CharSequence>) : Int? {
-    val                                      query = Regex("""(\d+)""")
+    val                                      query = Regex ("""(\d+)""")
     fun parse (instruction : CharSequence) = query.findAll (instruction).map (MatchResult::value).map (String::toInt).toList ()
 
     val machine = discs.map {

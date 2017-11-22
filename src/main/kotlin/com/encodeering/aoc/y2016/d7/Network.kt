@@ -9,7 +9,7 @@ import com.encodeering.aoc.common.window
 object Day7 {
 
     @JvmStatic
-    fun main(args : Array<String>) {
+    fun main (args : Array<String>) {
         traverse ("/y2016/d7/addresses.txt") {
             println ("addresses: ${ it.map (::tls).filter { it }.count () }")
         }
@@ -33,7 +33,7 @@ fun ssl (addr : String) : Boolean = verify (addr, 3) {
         var bab  = it.drop (1)
             bab += bab.first ()
 
-        hypernet.filter { it.filter { s -> bab in s }.isNotEmpty () }.isNotEmpty()
+        hypernet.filter { it.filter { s -> bab in s }.isNotEmpty () }.isNotEmpty ()
     }
 }
 
