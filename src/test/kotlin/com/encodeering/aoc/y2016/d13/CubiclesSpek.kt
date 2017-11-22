@@ -18,7 +18,7 @@ class CubiclesSpek : Spek ({
         describe ("#1") {
 
             it ("first example") {
-                expect (Layout (10, 7, 10).display ().trim ()).to.equal ("""
+                expect (Layout (7, 10, 10).display ().trim ()).to.equal ("""
                 .#.####.##
                 ..#..#...#
                 #....##...

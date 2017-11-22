@@ -1,7 +1,10 @@
 package com.encodeering.aoc.y2016.d24
 
+import com.encodeering.aoc.common.Grid
 import com.encodeering.aoc.common.Search
+import com.encodeering.aoc.common.Sector
 import com.encodeering.aoc.common.permutation
+import com.encodeering.aoc.common.toGrid
 import com.encodeering.aoc.common.traverse
 import com.encodeering.aoc.common.window
 import java.util.LinkedList
@@ -14,16 +17,16 @@ object Day24 {
     @JvmStatic
     fun main(args : Array<String>) {
         traverse("/y2016/d24/spelunking.txt") {
-            val grid = Grid (planify (it.toList ())).also { println (it.display ()) }
-            val distances = grid.distances { locate { type == SectorType.POI } }.filter { (r, _) -> r.first ().description == "0" }.toList ()
+            val             spelunking = planify (it.toList ()).also { println (it.display ()) }
+            val distances = spelunking.distances { locate { type == SpelunkingSectorType.POI } }.filter { (r, _) -> r.first ().value == "0" }.toList ()
 
             val oneway = distances.map {
                 (_, distance) -> distance
             }.min ()
 
             val cycle = distances.map {
-                               (r,                                                        distance) ->
-                 grid.distance (r.last (), grid.locate { description == "0" }.first ()) + distance
+                                     (r,                                                        distance) ->
+                 spelunking.distance (r.last (), spelunking.locate { value == "0" }.first ()) + distance
             }.min ()
 
             println ("shortest distance: $oneway")
@@ -33,47 +36,38 @@ object Day24 {
 
 }
 
-fun planify (stdout : Iterable<CharSequence> ) : Iterable<Sector> {
+fun planify (stdout : Iterable<CharSequence> ) : Spelunking {
     return   stdout.drop (1).dropLast (1).map { it.drop (1).dropLast (1) }.withIndex ().flatMap {
         (y, value) ->
             value.split ("").filterNot { it.isBlank () }.withIndex ().map {
-                (x, c) -> Sector (x, y, c)
+                (x, c) -> SpelunkingSector (y, x, c)
             }
-    }
+    }.toGrid ().let (::Spelunking)
 }
 
-class Grid (val sectors : Iterable<Sector>)  {
+class Spelunking (val grid : Grid<String>)  {
 
-    val xy by lazy { sectors.toXY () }
+    val routing = mutableMapOf<Pair<SpelunkingSector, SpelunkingSector>, Int> ()
 
-    val routing = mutableMapOf<Pair<Sector, Sector>, Int> ()
+    fun locate (f : SpelunkingSector.() -> Boolean) = grid.locate { it.f () }.toList ()
 
-    operator fun get (position : Pair<Int, Int>) = xy[position.second]?.find { it.position.first == position.first }
-
-    fun locate (f : Sector.() -> Boolean) = sectors.filter { it.f () }
-
-    fun display () : String {
-        return xy.values.run {
-            joinToString ("\n") {
-                it.joinToString ("") { sector ->
-                    when (sector.type) {
-                        SectorType.Wall   -> "#"
-                        SectorType.Street -> "."
-                        SectorType.POI    -> sector.description
-                    }
-                }
+    fun display () : String = grid.display {
+              sector ->
+        when (sector.type) {
+                SpelunkingSectorType.Wall   -> "#"
+                SpelunkingSectorType.Street -> "."
+                SpelunkingSectorType.POI    -> sector.value
             }
         }
-    }
 
-    fun distances (way : Grid.() -> List<Sector>) = way ().permutation ().map {
+    fun distances (way : Spelunking.() -> List<SpelunkingSector>) = way ().permutation ().map {
         it to it.window (2).map {
                      (a, b) ->
             distance (a, b)
         }.sum ()
     }
 
-    fun distance (a : Sector, b : Sector) : Int {
+    fun distance (a : SpelunkingSector, b : SpelunkingSector) : Int {
         return routing.computeIfAbsent (a to b) {
             Route (
                 a,
@@ -82,51 +76,26 @@ class Grid (val sectors : Iterable<Sector>)  {
                     storage = { LinkedList() },
                     morph = { it },
                     generate = this::generate
-                ).query (a, emptyList ()) { first.position == b.position }?.size ?: 0
+                ).query (a, emptyList ()) { first.ij == b.ij }?.size ?: 0
             ).distance
         }.also {
             routing[b to a] = it
         }
     }
 
-    private fun generate (sector : Sector, way : List<Sector>) : Iterable<Pair<Sector, List<Sector>>> =
-        neighbours (sector, viable = true).map { it to way + it }.toList ()
-
-    private fun neighbours (sector : Sector, viable : Boolean) = sector.let { (x, y) ->
-        sequenceOf (
-            this[x + 1 to y],
-            this[x - 1 to y],
-            this[x     to y + 1],
-            this[x     to y - 1]
-        ).filterNotNull ().filter {
-            when {
-                viable -> it.type != SectorType.Wall
-                else   -> true
-            }
-        }.toList ()
-    }
+    private fun generate (sector : SpelunkingSector, way : List<Sector<String>>) : Iterable<Pair<SpelunkingSector, List<SpelunkingSector>>> =
+        grid.neighbours (sector).filter { it.type != SpelunkingSectorType.Wall }.map { it to way + it }.toList ()
 
 }
 
-fun Iterable<Sector>.toXY () = sortedWith (
-    compareBy (
-        { it.position.second },
-        { it.position.first  }
-    )
-).groupBy { it.position.second }
+data class Route (val start : SpelunkingSector, val end : SpelunkingSector, val distance : Int)
 
-data class Route (val start : Sector, val end : Sector, val distance : Int)
+private typealias SpelunkingSector = Sector<String>
 
-data class Sector (val x: Int, val y: Int, val description: String) {
-
-    val type get () = when (description) {
-        "#"  -> SectorType.Wall
-        "."  -> SectorType.Street
-        else -> SectorType.POI
-    }
-
-    val position by lazy { x.toInt () to y.toInt () }
-
+private val SpelunkingSector.type get () = when (value) {
+    "#"  -> SpelunkingSectorType.Wall
+    "."  -> SpelunkingSectorType.Street
+    else -> SpelunkingSectorType.POI
 }
 
-enum class SectorType { Wall, Street, POI }
+enum class SpelunkingSectorType { Wall, Street, POI }

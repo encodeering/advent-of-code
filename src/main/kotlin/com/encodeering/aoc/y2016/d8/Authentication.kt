@@ -1,5 +1,11 @@
 package com.encodeering.aoc.y2016.d8
 
+import com.encodeering.aoc.common.Grid
+import com.encodeering.aoc.common.Matrix.Line.Column
+import com.encodeering.aoc.common.Matrix.Line.Row
+import com.encodeering.aoc.common.by
+import com.encodeering.aoc.common.map
+import com.encodeering.aoc.common.rotate
 import com.encodeering.aoc.common.traverse
 
 /**
@@ -10,7 +16,7 @@ object Day8 {
     @JvmStatic
     fun main(args : Array<String>) {
         traverse ("/y2016/d8/codes.txt") {
-            val authentication = evaluate (Authentication (6, 50) { if (it) "#" else " " }, it)
+            val authentication = evaluate (Authentication (6, 50), it)
             println ("lits: ${authentication.lits ()}")
             println (authentication.display ())
         }
@@ -30,41 +36,19 @@ fun evaluate (authentication : Authentication, sequence : Sequence<String>) = se
     }
 }
 
-class Authentication (val height : Int, val width : Int, val charfy : (Boolean) -> CharSequence = ::charfy) {
+data class Authentication (private val m : Grid<Boolean>) {
 
-    private val m by lazy {
-        (0 until   height).map {
-            Array (width) { false }
-        }
-    }
+    constructor (height : Int, width : Int) : this (Grid (height, width) { _, _, _ -> false })
 
-    fun fill (x : Int, y : Int) : Authentication {
-        (0 until y).forEach { yv ->
-            (0 until x).forEach { xv ->
-                m[yv][xv] = true
-            }
-        }
+    fun fill (x : Int, y : Int)       = Authentication (m.derive { it.map { i, j, state -> if (i in 0 until y && j in 0 until x) true else state } })
 
-        return this
-    }
+    fun rotateCol (x : Int, by : Int) = Authentication (m.derive { it.rotate (x by by, line = Column) })
 
-    fun rotateCol (x : Int, by : Int) : Authentication {
-        val col = m.map { it[x] }
-           (col + col).drop(height - by % height).take(height).forEachIndexed { y, value ->  m[y][x] = value }
+    fun rotateRow (y : Int, by : Int) = Authentication (m.derive { it.rotate (y by by, line = Row)    })
 
-        return this
-    }
+    fun display () : String = m.display { (_, _, state) -> if (state) "#" else " " }
 
-    fun rotateRow  (y : Int, by : Int) : Authentication {
-        val row = m[y]
-           (row + row).drop (width - by % width).take (width).forEachIndexed { x, value ->  m[y][x] = value }
-
-        return this
-    }
-
-    fun display () : String = m.joinToString ("") { it.joinToString ("", transform = charfy)+ "\n" }
-
-    fun lits () : Int = m.sumBy { it.sumBy { if (it) 1 else 0 } }
+    fun lits () : Int = m.locate { (_, _, state) -> state }.sumBy { 1 }
 
 }
 
@@ -106,5 +90,3 @@ sealed class Code {
 }
 
 enum class CodeTarget { Area, Column, Row }
-
-fun charfy (onoff : Boolean) : CharSequence = if (onoff) "#" else "."

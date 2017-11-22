@@ -29,12 +29,12 @@ class AuthenticationSpek : Spek({
 
                 println (authentication.display ())
 
-                expect (authentication.display ().trim ()).to.equal (
+                expect (authentication.display ()).to.equal (
                 """
                 .#..#.#
                 #.#....
                 .#.....
-                """.trimIndent ().trim ())
+                """.trimIndent ().replace ('.', ' '))
 
                 expect (authentication.lits ()).to.equal (6)
             }

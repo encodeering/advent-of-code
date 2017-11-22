@@ -1,6 +1,8 @@
 package com.encodeering.aoc.y2016.d22
 
+import com.encodeering.aoc.common.Grid
 import com.encodeering.aoc.common.cartesian
+import com.encodeering.aoc.common.matrix
 import com.encodeering.aoc.common.traverse
 
 /**
@@ -15,7 +17,7 @@ object Day22 {
         }
 
         traverse("/y2016/d22/datagrid.txt") {
-            println (Grid (df (it.drop(2)).toList()).display ())
+            println (df (it.drop(2)).display ())
 
             // 17 + 22 + 35 + 34 * 5
             // assumes all operations are valid
@@ -25,48 +27,44 @@ object Day22 {
 
 }
 
-fun df (stdout : Sequence<CharSequence> ) : Iterable<Node> {
+fun df (stdout : Sequence<CharSequence> ) : Datagrid {
     return stdout.map { it.split (" ").filter { it.isNotBlank() } }.map { (path, size, used) ->
         Node (
             path,
             Node.amount (size),
             Node.amount (used)
         )
-    }.toList ()
+    }.sortedWith (
+        compareBy (
+            { it.y },
+            { it.x }
+        )
+    ).toList ().run {
+        Datagrid (Grid (last ().let { matrix (it.y + 1, it.x + 1) }))
+    }
 }
 
-class Grid (val nodes : Iterable<Node>) {
+class Datagrid (private val grid : Grid<Node>) {
 
     fun display () : String {
-        val viables = nodes.viables ().map { it.first }
+        val viables = viables ().map { it.first }
 
-        return nodes.toXY ().entries.run {
-            "  " + first ().value.joinToString ("  ") { it.position.first.toString().padStart(2) } +
-            "\n" + joinToString ("\n") { (k, v) ->
-                "$k".padStart (2) + v.joinToString ("  ") { node ->
-                    when {
-                        node.used == 0  -> "_"
-                        node in viables -> "."
-                        else            -> "#"
-                    }.padStart (2)
-                }
+        return grid.display (header = true, padding = 3) { (_, _, node) ->
+            when {
+                node.used == 0  -> "_"
+                node in viables -> "."
+                else            -> "#"
             }
         }
     }
 
+    fun viables () = grid.values ().asIterable ().cartesian (true).filterNot { (a, b) -> a == b }.filter {
+        (a, b) -> a.used > 0 &&
+                  a.used <= b.avail
+    }
+
 }
 
-fun Iterable<Node>.viables () = cartesian (true).filterNot { (a, b) -> a == b }.filter {
-    (a, b) -> a.used > 0 &&
-              a.used <= b.avail
-}
-
-fun Iterable<Node>.toXY () = sortedWith (
-    compareBy (
-        { it.position.second },
-        { it.position.first }
-    )
-).groupBy { it.position.second }
 
 data class Node (val path : String, val size : Int, val used : Int, val meta : Set<String> = setOf (path)) {
 
@@ -83,9 +81,12 @@ data class Node (val path : String, val size : Int, val used : Int, val meta : S
     val avail : Int
         get () = size - used
 
-    val position by lazy {
-        val (x,            y) = """.+node-x(\d+)-y(\d+)$""".toRegex().find (path)!!.destructured
-             x.toInt () to y.toInt ()
+    val x : Int by lazy {
+        """.+node-x(\d+)-y\d+$""".toRegex().find (path)!!.groupValues[1].toInt ()
+    }
+
+    val y : Int by lazy {
+        """.+node-x\d+-y(\d+)$""".toRegex ().find (path)!!.groupValues[1].toInt ()
     }
 
 }
