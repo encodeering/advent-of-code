@@ -27,7 +27,7 @@ interface Matrix<out T> {
 
     operator fun get (i : Int, j : Int) : T
 
-    fun display (padding : Int = 2, header : Boolean = false, represent : (Int, Int, T) -> String = { _, _, v -> v.toString () }) : String {
+    fun display (padding : Int = 2, header : Boolean = false, represent : (Int, Int, T) -> CharSequence = { _, _, v -> v.toString () }) : String {
         val alignment = ceil (log10 (m.toDouble ())).toInt ()
         val newline   = "\n"
 
