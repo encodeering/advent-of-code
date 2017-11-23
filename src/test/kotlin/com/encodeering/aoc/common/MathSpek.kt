@@ -107,6 +107,19 @@ class MathSpek : Spek ({
                 expect (matrix.toList ()).to.equal (listOf (5, 6))
             }
 
+            it ("exceeds") {
+                val exceptions = mutableListOf<Exception> ()
+
+                try { list4.matrix (2, 2).matrix (2, 3) } catch (e : IllegalArgumentException) { exceptions.plusAssign (e) }
+                try { list4.matrix (2, 2).matrix (3, 2) } catch (e : IllegalArgumentException) { exceptions.plusAssign (e) }
+                try { list4.matrix (2, 2).matrix (1, 1, point = 3 to 1) } catch (e : IllegalArgumentException) { exceptions.plusAssign (e) }
+                try { list4.matrix (2, 2).matrix (1, 1, point = 1 to 3) } catch (e : IllegalArgumentException) { exceptions.plusAssign (e) }
+                try { list4.matrix (2, 2).matrix (1, 2, point = 2 to 1) } catch (e : IllegalArgumentException) { exceptions.plusAssign (e) }
+                try { list4.matrix (2, 2).matrix (2, 1, point = 1 to 2) } catch (e : IllegalArgumentException) { exceptions.plusAssign (e) }
+
+                expect (exceptions.size).to.equal (6)
+            }
+
         }
 
         describe ("rows") {

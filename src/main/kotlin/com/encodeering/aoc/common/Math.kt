@@ -57,21 +57,26 @@ data class ListMatrix<out T> (private val content : List<T>, override val m : In
 }
 
 
-data class SubMatrix<out T> (private val content : Matrix<T>, private val ul : Pair<Int, Int>, private val lr : Pair<Int, Int>) : Matrix<T> {
+data class SubMatrix<out T> (private val content : Matrix<T>, private val partition : Partition) : Matrix<T> {
 
     init {
         require (
-            lr.first  >= ul.first &&
-            lr.second >= ul.second
-        ) { "sub-matrix points should be defined with proper upper left $ul and lower right $lr pair"}
+            partition.m >= 0 &&
+            partition.n >= 0
+        ) { "sub-matrix points should be defined with proper upper left ${partition.ul} and lower right ${partition.lr} pair"}
+
+        require (
+            partition.mrange.first + partition.m <= content.m &&
+            partition.nrange.first + partition.n <= content.n
+        ) { "sub-matrix should not exceed the wrapped matrix, using $partition" }
     }
 
-    override val m : Int by lazy { lr.first  - ul.first  }
-    override val n : Int by lazy { lr.second - ul.second }
+    override val m : Int = partition.m
+    override val n : Int = partition.n
 
     override fun get (i : Int, j : Int) = content[
-        ul.first  + verify (i, 0 until m),
-        ul.second + verify (j, 0 until n)
+        verify (partition.ul.first  + i, partition.mrange),
+        verify (partition.ul.second + j, partition.nrange)
     ]
 
 }
@@ -94,11 +99,23 @@ data class TransformMatrix<out T, out R> (private val matrix : Matrix<T>, privat
 
 }
 
+data class Partition (val m : Int, val n : Int, val ul : Pair<Int, Int> = 0 to 0) {
+
+    val lr by lazy { ul.first + m - 1 to ul.second + n - 1 }
+
+    val mrange by lazy { ul.first  .. lr.first  }
+    val nrange by lazy { ul.second .. lr.second }
+
+    operator fun contains (ij : Pair<Int, Int>) = ij.first in mrange && ij.second in nrange
+
+}
+
 fun <T> matrixOf (m : Int, n : Int, f : (Int, Int, Pair<Int, Int>) -> T) : Matrix<T> = List (m * n) { (m to n).run { f (it / n, it % n, this) } }.matrix (m, n)
 
 fun <T> List<T>.matrix (m : Int, n : Int) : Matrix<T> = ListMatrix (this, m, n)
 
-fun <T> Matrix<T>.matrix (m : Int, n : Int, point : Pair<Int, Int> = 0 to 0) : Matrix<T> = SubMatrix (this, point, point.first + m to point.second + n)
+fun <T> Matrix<T>.matrix (partition : Partition) : Matrix<T> = SubMatrix (this, partition)
+fun <T> Matrix<T>.matrix (m : Int, n : Int, point : Pair<Int, Int> = 0 to 0) : Matrix<T> = matrix (Partition (m, n, point))
 
 fun <T> Matrix<T>.toSequence () : Sequence<T> = (0 until size).asSequence ().map { this[it / n, it % n] }
 fun <T> Matrix<T>.toList () : List<T> = toSequence ().toList ()
