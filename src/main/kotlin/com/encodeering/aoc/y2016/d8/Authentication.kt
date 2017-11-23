@@ -3,6 +3,7 @@ package com.encodeering.aoc.y2016.d8
 import com.encodeering.aoc.common.Grid
 import com.encodeering.aoc.common.Matrix.Line.Column
 import com.encodeering.aoc.common.Matrix.Line.Row
+import com.encodeering.aoc.common.Partition
 import com.encodeering.aoc.common.by
 import com.encodeering.aoc.common.map
 import com.encodeering.aoc.common.rotate
@@ -40,7 +41,7 @@ data class Authentication (private val m : Grid<Boolean>) {
 
     constructor (height : Int, width : Int) : this (Grid (height, width) { _, _, _ -> false })
 
-    fun fill (x : Int, y : Int)       = Authentication (m.derive { it.map { i, j, state -> if (i in 0 until y && j in 0 until x) true else state } })
+    fun fill (x : Int, y : Int)       = Authentication (m.derive { it.map (Partition (y, x)) { _, _, _ -> true } })
 
     fun rotateCol (x : Int, by : Int) = Authentication (m.derive { it.rotate (x by by, line = Column) })
 
