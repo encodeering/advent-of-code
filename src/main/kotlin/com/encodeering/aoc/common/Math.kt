@@ -120,8 +120,8 @@ fun <T> Matrix<T>.matrix (m : Int, n : Int, point : Pair<Int, Int> = 0 to 0) : M
 fun <T> Matrix<T>.toSequence () : Sequence<T> = (0 until size).asSequence ().map { this[it / n, it % n] }
 fun <T> Matrix<T>.toList () : List<T> = toSequence ().toList ()
 
-fun <T> Matrix<T>.row    (i : Int) : Matrix<T> = ListMatrix ((0 until n).map { j -> this[i, j] }, 1, n)
-fun <T> Matrix<T>.column (j : Int) : Matrix<T> = ListMatrix ((0 until m).map { i -> this[i, j] }, m, 1)
+fun <T> Matrix<T>.row    (i : Int) : Matrix<T> = matrix (1, n, i to 0)
+fun <T> Matrix<T>.column (j : Int) : Matrix<T> = matrix (m, 1, 0 to j)
 fun <T> Matrix<T>.transpose ()     : Matrix<T> = TransposeMatrix (this)
 
 fun <T, R> Matrix<T>.map (f : (Int, Int, T) -> R) : Matrix<R> = TransformMatrix (this, f)
