@@ -15,6 +15,7 @@ class MathSpek : Spek ({
 
     val list4 = listOf (1, 2, 3, 4)
     val list6 = listOf (1, 2, 3, 4, 5, 6)
+    val list16 = (0 .. 15).toList ()
 
     describe ("Matrix") {
 
@@ -189,6 +190,63 @@ class MathSpek : Spek ({
 
                 expect (count).to.equal (4)
             }
+        }
+
+        describe ("partial transformation") {
+
+            it ("point") {
+                val matrix = list16.matrix (4, 4)
+
+                expect (matrix.map (Partition (2, 2, 1 to 1)) { _, _, _ -> 99 }.toList ()).to.equal (listOf (
+                     0,  1,  2,  3,
+                     4, 99, 99,  7,
+                     8, 99, 99, 11,
+                    12, 13, 14, 15
+                ))
+            }
+
+            it ("row") {
+                val matrix = list16.matrix (4, 4)
+
+                expect (matrix.map (Partition (2, 2, 1 to 1)) { _ -> listOf (99, 98, 97, 96) }.toList ()).to.equal (listOf (
+                     0,  1,  2,  3,
+                     4, 99, 98,  7,
+                     8, 99, 98, 11,
+                    12, 13, 14, 15
+                ))
+            }
+
+            it ("column") {
+                val matrix = list16.matrix (4, 4)
+
+                expect (matrix.map (Partition (2, 2, 1 to 1), line = Matrix.Line.Column) { _ -> listOf (99, 98, 97, 96) }.toList ()).to.equal (listOf (
+                     0,  1,  2,  3,
+                     4, 99, 99,  7,
+                     8, 98, 98, 11,
+                    12, 13, 14, 15
+                ))
+            }
+
+            it ("context") {
+                val matrix = list16.matrix (4, 4)
+                val partition = Partition (1, 1)
+
+                var count = 0
+
+                fun verify (context : Matrix<Int>) : List<Int> {
+                    expect (context).to.equal (matrix)
+
+                    count += 1
+
+                    return listOf (99)
+                }
+
+                matrix.map (partition) { _ -> verify (this) }.toList ()
+                matrix.map (partition, line = Matrix.Line.Column) { _ -> verify (this) }.toList ()
+
+                expect (count).to.equal (2)
+            }
+
         }
 
     }

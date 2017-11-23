@@ -124,6 +124,33 @@ fun <T> Matrix<T>.row    (i : Int) : Matrix<T> = matrix (1, n, i to 0)
 fun <T> Matrix<T>.column (j : Int) : Matrix<T> = matrix (m, 1, 0 to j)
 fun <T> Matrix<T>.transpose ()     : Matrix<T> = TransposeMatrix (this)
 
+fun <T> Matrix<T>.map (partition : Partition, f : (Int, Int, T) -> T) : Matrix<T> = map {
+        i,   j,                       v ->
+    if (i to j in partition) f (i, j, v) else v
+}
+
+fun <T> Matrix<T>.map (partition : Partition, line : Matrix.Line = Line.Row, f : Matrix<T>.(Int) -> List<T>) : Matrix<T> = map (line) { idx ->
+    when (line) {
+        Line.Row -> this@map.row (idx).toSequence ().toMutableList ().let {
+            if                   (idx !in partition.mrange) return@let it
+
+            val                                     replacement = f (this@map, idx).take (partition.n)
+            partition.nrange.forEach { i -> it[i] = replacement[i - partition.nrange.first] }
+
+            it
+        }
+
+        Line.Column -> this@map.column (idx).toSequence ().toMutableList ().let {
+            if                         (idx !in partition.nrange) return@let it
+
+            val                                     replacement = f (this@map, idx).take (partition.m)
+            partition.mrange.forEach { i -> it[i] = replacement[i - partition.mrange.first] }
+
+            it
+        }
+    }
+}
+
 fun <T, R> Matrix<T>.map (f : (Int, Int, T) -> R) : Matrix<R> = TransformMatrix (this, f)
 fun <T, R> Matrix<T>.map (line : Matrix.Line = Line.Row, f : Matrix<T>.(Int) -> List<R>) : Matrix<R> {
     val cache = mutableMapOf<Int, List<R>> ()
@@ -143,8 +170,8 @@ private fun <T> List<T>.rotate (by : Int) : List<T> = when {
 fun <T> Matrix<T>.rotate (vararg rotations : Rotation, line : Matrix.Line = Line.Row) : Matrix<T> {
     val mapping = rotations.associate { it }
 
-    return map (line) {                        idx ->
-        when   (line) {
+    return map (line = line) {                 idx ->
+        when          (line) {
             Line.Row    -> this@rotate.row    (idx)
             Line.Column -> this@rotate.column (idx)
         }.toList ().run {
