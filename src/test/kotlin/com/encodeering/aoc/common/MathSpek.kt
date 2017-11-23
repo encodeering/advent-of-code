@@ -146,13 +146,36 @@ class MathSpek : Spek ({
                 expect (matrix.map { i, j, v -> i + j + v }.toList ()).to.equal (listOf (1, 3, 4, 6))
             }
 
-            it ("line") {
+            it ("row") {
                 val matrix = list4.matrix (2, 2)
 
                 expect (matrix.rotate (0 by 1, 1 by 1).toList ()).to.equal (listOf (2, 1, 4, 3))
+            }
+
+            it ("column") {
+                val matrix = list4.matrix (2, 2)
+
                 expect (matrix.rotate (0 by 1, 1 by 1, line = Matrix.Line.Column).toList ()).to.equal (listOf (3, 4, 1, 2))
             }
 
+            it ("context") {
+                val matrix = list4.matrix (2, 2)
+
+                var count = 0
+
+                fun verify (context : Matrix<Int>) : List<Int> {
+                    expect (context).to.equal (matrix)
+
+                    count += 1
+
+                    return listOf (99, 99)
+                }
+
+                matrix.map { _ -> verify (this) }.toList ()
+                matrix.map (line = Matrix.Line.Column) { _ -> verify (this) }.toList ()
+
+                expect (count).to.equal (4)
+            }
         }
 
     }
