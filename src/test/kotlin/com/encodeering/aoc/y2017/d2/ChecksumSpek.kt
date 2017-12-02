@@ -29,6 +29,20 @@ class ChecksumSpek : Spek ({
 
         }
 
+        describe ("#2") {
+
+            it ("second example") {
+                val description = """
+                |5 9 2 8
+                |9 4 7 3
+                |3 8 6 5
+                """
+
+                expect (checksum2 (description.trimMargin ().lineSequence ())).to.equal (9)
+            }
+
+        }
+
     }
 
 })
