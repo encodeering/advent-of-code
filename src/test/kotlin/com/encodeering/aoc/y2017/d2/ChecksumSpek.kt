@@ -24,7 +24,7 @@ class ChecksumSpek : Spek ({
                 |2 4 6 8
                 """
 
-                expect (checksum (description.trimMargin ().lineSequence ())).to.equal (18)
+                expect (checksum1 (description.trimMargin ().lineSequence ())).to.equal (18)
             }
 
         }

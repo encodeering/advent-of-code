@@ -7,7 +7,7 @@ import com.encodeering.aoc.common.traverse
  */
 fun main(args : Array<String>) {
     traverse ("/y2017/d2/checksum.txt") {
-        println ("checksum #1: ${checksum (it)}")
+        println ("checksum #1: ${checksum1 (it)}")
     }
 
     traverse ("/y2017/d2/checksum.txt") {
@@ -15,11 +15,9 @@ fun main(args : Array<String>) {
     }
 }
 
-fun checksum (text : Sequence<String>) : Int {
-    val    rows = text.map { it.split ("\\s".toRegex ()).map { it.toInt () } }
-
-    return rows.map {
-        it.fold (Int.MAX_VALUE to Int.MIN_VALUE) {
+fun checksum1 (text : Sequence<String>) : Int {
+    return checksum (text) {
+        fold (Int.MAX_VALUE to Int.MIN_VALUE) {
             pair,                                 value ->
             pair.copy (first = minOf (pair.first, value), second = maxOf (pair.second, value))
         }
@@ -27,10 +25,8 @@ fun checksum (text : Sequence<String>) : Int {
 }
 
 fun checksum2 (text : Sequence<String>) : Int {
-    val    rows = text.map { it.split ("\\s".toRegex ()).map { it.toInt () } }
-
-    return rows.map {
-        it.candidates ().map {
+    return checksum (text) {
+        candidates ().map {
             it.copy (
                 maxOf (it.first, it.second),
                 minOf (it.first, it.second)
@@ -38,6 +34,10 @@ fun checksum2 (text : Sequence<String>) : Int {
         }.first { it.first % it.second == 0 }
     }.sumBy     { it.first / it.second }
 }
+
+private fun checksum (text : Sequence<String>, f : List<Int>.() -> Pair<Int, Int>) =
+    text.map { it.split ("\\s".toRegex ()).map { it.toInt () }  }
+        .map { it.f () }
 
 private fun <T> List<T>.candidates() : List<Pair<T, T>> {
     return (0 until size).flatMap {
