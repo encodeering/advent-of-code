@@ -5,6 +5,7 @@ import com.encodeering.aoc.common.Search
 import com.encodeering.aoc.common.Sector
 import java.lang.Math.ceil
 import java.lang.Math.sqrt
+import kotlin.coroutines.experimental.buildSequence
 
 /**
  * @author clausen - encodeering@gmail.com
@@ -69,7 +70,7 @@ private fun spiral (n : Int, initialvalue : Int, supply : Grid<Int>.(Pair<Int, I
     return grid
 }
 
-private fun moves (iteration : Int) : List<Pair<Int, Int>> {
+private fun moves (iteration : Int) : Sequence<Pair<Int, Int>> {
     //  #0  1 1 2 2 2
     //  #1  1 3 4 4 4
     //  #2  1 5 6 6 6
@@ -78,11 +79,11 @@ private fun moves (iteration : Int) : List<Pair<Int, Int>> {
     val second = 2 *  iteration + 1
     val rest   = 2 * (iteration + 1)
 
-    return listOf (
-        (0 until first).map  {  1 to  0 },
-        (0 until second).map {  0 to -1 },
-        (0 until rest).map   { -1 to  0 },
-        (0 until rest).map   {  0 to +1 },
-        (0 until rest).map   {  1 to  0 }
-    ).flatten ()
+    return buildSequence {
+        (0 until first).forEach  { yield ( 1 to  0) }
+        (0 until second).forEach { yield ( 0 to -1) }
+        (0 until rest).forEach   { yield (-1 to  0) }
+        (0 until rest).forEach   { yield ( 0 to +1) }
+        (0 until rest).forEach   { yield ( 1 to  0) }
+    }
 }
