@@ -58,3 +58,8 @@ junitPlatform {
         }
     }
 }
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
