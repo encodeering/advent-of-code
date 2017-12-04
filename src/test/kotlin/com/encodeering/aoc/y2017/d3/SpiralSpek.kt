@@ -18,7 +18,7 @@ class SpiralSpek : Spek ({
         describe ("#1") {
 
             it ("first example") {
-                val     spiral = Spiral (25)
+                val     spiral = Spiral (25, 1, addone ())
 
                 expect (spiral.shortest (1, 1)).to.equal  (0)
                 expect (spiral.shortest (12, 1)).to.equal (3)
@@ -26,7 +26,7 @@ class SpiralSpek : Spek ({
             }
 
             it ("second example") {
-                val     spiral = Spiral (1024)
+                val     spiral = Spiral (1024, 1, addone ())
 
                 expect (spiral.shortest (1024, 1)).to.equal (31)
             }
@@ -34,12 +34,12 @@ class SpiralSpek : Spek ({
             it ("spiral values") {
                 fun Spiral.lastN (n : Int) = grid.values ().toList ().takeLast (n)
 
-                expect (Spiral (20).lastN (6)).to.equal (listOf (10, 0,   0,  0,  0,  0))
-                expect (Spiral (21).lastN (6)).to.equal (listOf (10, 21,  0,  0,  0,  0))
-                expect (Spiral (22).lastN (6)).to.equal (listOf (10, 21, 22,  0,  0,  0))
-                expect (Spiral (23).lastN (6)).to.equal (listOf (10, 21, 22, 23,  0,  0))
-                expect (Spiral (24).lastN (6)).to.equal (listOf (10, 21, 22, 23, 24,  0))
-                expect (Spiral (25).lastN (6)).to.equal (listOf (10, 21, 22, 23, 24, 25))
+                expect (Spiral (20, 1, addone ()).lastN (6)).to.equal (listOf (10, 0,   0,  0,  0,  0))
+                expect (Spiral (21, 1, addone ()).lastN (6)).to.equal (listOf (10, 21,  0,  0,  0,  0))
+                expect (Spiral (22, 1, addone ()).lastN (6)).to.equal (listOf (10, 21, 22,  0,  0,  0))
+                expect (Spiral (23, 1, addone ()).lastN (6)).to.equal (listOf (10, 21, 22, 23,  0,  0))
+                expect (Spiral (24, 1, addone ()).lastN (6)).to.equal (listOf (10, 21, 22, 23, 24,  0))
+                expect (Spiral (25, 1, addone ()).lastN (6)).to.equal (listOf (10, 21, 22, 23, 24, 25))
             }
 
         }

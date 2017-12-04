@@ -10,13 +10,18 @@ import java.lang.Math.sqrt
  * @author clausen - encodeering@gmail.com
  */
 fun main (args : Array<String>) {
-    println (Spiral (361527).shortest(361527, 1))
+    println (Spiral (361527, 1, addone ()).shortest (361527, 1))
+}
+
+fun addone () : Array<Array<Int>>.(Iteration) -> Int {
+    var        sequence = 1
+    return { ++sequence }
 }
 
 
-class Spiral (n : Int) {
+class Spiral (n : Int, initialvalue : Int, supply : Array<Array<Int>>.(Iteration) -> Int) {
 
-    val grid = spiral (n)
+    val grid = spiral (n, initialvalue, supply)
 
     fun shortest (start : Int, target : Int) : Int {
         val s = grid.locate { it.value == start  }.first ()
@@ -30,7 +35,7 @@ class Spiral (n : Int) {
 
 }
 
-private fun spiral (n : Int, initialvalue : Int = 1) : Grid<Int> {
+private fun spiral (n : Int, initialvalue : Int, supply : Array<Array<Int>>.(Iteration) -> Int) : Grid<Int> {
     val edgesize = ceil (sqrt (n.toDouble ())).toInt ().run { this + if (this % 2 == 0) 1 else 0 }
 
     val spiral = Array (edgesize) {
@@ -38,14 +43,14 @@ private fun spiral (n : Int, initialvalue : Int = 1) : Grid<Int> {
     }
 
     var iterations = 1
-    var value = initialvalue
     var start = (edgesize / 2).let { it to it }
 
     spiral[start.first][start.second] = initialvalue
 
     (0 .. edgesize / 2).forEach {
-                       iteration ->
-        start = moves (iteration).fold (start) { previous, move ->
+                               iteration ->
+        val     moves = moves (iteration)
+        start = moves.foldIndexed (start) { progress, previous, move ->
             if (++iterations > n) return@forEach
 
             val (px, py) = previous
@@ -53,7 +58,7 @@ private fun spiral (n : Int, initialvalue : Int = 1) : Grid<Int> {
 
             val position = px + x to py + y
 
-            spiral[position.first][position.second] = ++value
+            spiral[position.first][position.second] = spiral.supply (Iteration (position, progress, move, moves))
 
             position
         }
@@ -82,3 +87,5 @@ private fun moves (iteration : Int) : List<Pair<Int, Int>> {
 
     return moves
 }
+
+data class Iteration (val position : Pair<Int, Int>, private val progress : Int, private val move: Pair<Int, Int>, private val moves : List<Pair<Int, Int>>)
