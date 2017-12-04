@@ -18,15 +18,15 @@ fun main (args : Array<String>) {
     // https://oeis.org/A141481
 }
 
-fun addone () : Grid<Int>.(Pair<Int, Int>) -> Int {
+fun addone () : Grid<Int>.(Coordinate) -> Int {
     var        sequence = 1
     return { ++sequence }
 }
 
-fun adjacents () : Grid<Int>.(Pair<Int, Int>) -> Int =
-    { (x, y) -> neighbours (y, x, diagonally = true).sumBy { it.value } }
+fun adjacents () : Grid<Int>.(Coordinate) -> Int =
+    { (i, j) -> neighbours (i, j, diagonally = true).sumBy { it.value } }
 
-class Spiral (n : Int, initialvalue : Int, supply : Grid<Int>.(Pair<Int, Int>) -> Int) {
+class Spiral (n : Int, initialvalue : Int, supply : Grid<Int>.(Coordinate) -> Int) {
 
     val grid = spiral (n, initialvalue, supply)
 
@@ -44,14 +44,14 @@ class Spiral (n : Int, initialvalue : Int, supply : Grid<Int>.(Pair<Int, Int>) -
 
 }
 
-private fun spiral (n : Int, initialvalue : Int, supply : Grid<Int>.(Pair<Int, Int>) -> Int) : Grid<Int> {
+private fun spiral (n : Int, initialvalue : Int, supply : Grid<Int>.(Coordinate) -> Int) : Grid<Int> {
     val edgesize = ceil (sqrt (n.toDouble ())).toInt ().run { this + if (this % 2 == 0) 1 else 0 }
 
     val spiral = Array (edgesize) {
                  Array (edgesize) { 0 }
     }
 
-    val grid = Grid (edgesize, edgesize) { i, j, _ -> spiral[j][i] }
+    val grid = Grid (edgesize, edgesize) { i, j, _ -> spiral[i][j] }
 
     var iterations = 1
     var start = (edgesize / 2).let { it to it }
@@ -60,17 +60,17 @@ private fun spiral (n : Int, initialvalue : Int, supply : Grid<Int>.(Pair<Int, I
 
     (0 .. edgesize / 2).forEach {
                        iteration ->
-        start = moves (iteration).fold (start) { (px, py), ( x,  y) ->
+        start = moves (iteration).fold (start) { (pi, pj), (i, j) ->
             if (++iterations > n) return@forEach
 
-            (px + x to py + y).also { spiral[it.first][it.second] = grid.supply (it) }
+            (pi + i to pj + j).also { spiral[it.first][it.second] = grid.supply (it) }
         }
     }
 
     return grid
 }
 
-private fun moves (iteration : Int) : Sequence<Pair<Int, Int>> {
+private fun moves (iteration : Int) : Sequence<Coordinate> {
     //  #0  1 1 2 2 2
     //  #1  1 3 4 4 4
     //  #2  1 5 6 6 6
@@ -79,11 +79,13 @@ private fun moves (iteration : Int) : Sequence<Pair<Int, Int>> {
     val second = 2 *  iteration + 1
     val rest   = 2 * (iteration + 1)
 
-    return buildSequence {
-        (0 until first).forEach  { yield ( 1 to  0) }
-        (0 until second).forEach { yield ( 0 to -1) }
-        (0 until rest).forEach   { yield (-1 to  0) }
-        (0 until rest).forEach   { yield ( 0 to +1) }
-        (0 until rest).forEach   { yield ( 1 to  0) }
+    return buildSequence {              // i to  j
+        (0 until first).forEach  { yield ( 0 to  1) }
+        (0 until second).forEach { yield (-1 to  0) }
+        (0 until rest).forEach   { yield ( 0 to -1) }
+        (0 until rest).forEach   { yield (+1 to  0) }
+        (0 until rest).forEach   { yield ( 0 to  1) }
     }
 }
+
+private typealias Coordinate = Pair<Int, Int>
