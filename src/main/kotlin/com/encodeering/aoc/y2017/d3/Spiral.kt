@@ -13,6 +13,8 @@ fun main (args : Array<String>) {
     println (Spiral (361527, 1, addone ()).shortest (361527, 1))
 
     println (Spiral (9 * 9,  1, adjacents ()).display ())
+
+    // https://oeis.org/A141481
 }
 
 fun addone () : Grid<Int>.(Pair<Int, Int>) -> Int {
