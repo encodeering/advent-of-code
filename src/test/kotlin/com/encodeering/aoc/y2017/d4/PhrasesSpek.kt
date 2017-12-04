@@ -25,6 +25,18 @@ class PhrasesSpek : Spek ({
 
         }
 
+        describe ("#2") {
+
+            it ("second example") {
+                expect (validate2 ("abcde fghij")).to.equal (true)
+                expect (validate2 ("abcde xyz ecdab")).to.equal (false)
+                expect (validate2 ("a ab abc abd abf abj")).to.equal (true)
+                expect (validate2 ("iiii oiii ooii oooi oooo")).to.equal (false) // day specification seems to be false
+                expect (validate2 ("oiii ioii iioi iiio")).to.equal (false)
+            }
+
+        }
+
     }
 
 })
