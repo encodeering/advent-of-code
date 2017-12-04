@@ -11,6 +11,8 @@ import java.lang.Math.sqrt
  */
 fun main (args : Array<String>) {
     println (Spiral (361527, 1, addone ()).shortest (361527, 1))
+
+    println (Spiral (9 * 9,  1, adjacents ()).display ())
 }
 
 fun addone () : Array<Array<Int>>.(Iteration) -> Int {
@@ -18,10 +20,58 @@ fun addone () : Array<Array<Int>>.(Iteration) -> Int {
     return { ++sequence }
 }
 
+fun adjacents () : Array<Array<Int>>.(Iteration) -> Int {
+    return { iteration ->
+
+        val position   = iteration.position
+        val group      = iteration.group
+        val groupid    = iteration.groupid
+        val groupidsub = iteration.groupidsub
+
+        when (groupid) {
+            0 -> this[position.first - 1][position.second] + this[position.first - 1][position.second - 1]
+
+            1 -> group.let {
+                    when (groupidsub) {
+                        it.size - 1 -> this[position.first][position.second + 1]                                             + this[position.first - 1][position.second + 1]
+                        it.size - 2 -> this[position.first][position.second + 1] + this[position.first - 1][position.second] + this[position.first - 1][position.second + 1]
+                        else        -> this[position.first][position.second + 1] + this[position.first - 1][position.second] + this[position.first - 1][position.second + 1] + this[position.first - 1][position.second - 1]
+                    }
+                }
+
+            2 -> group.let {
+                    when (groupidsub) {
+                        it.size - 1 -> this[position.first + 1][position.second]                                             + this[position.first + 1][position.second + 1]
+                        it.size - 2 -> this[position.first + 1][position.second] + this[position.first][position.second + 1] + this[position.first + 1][position.second + 1]
+                        else        -> this[position.first + 1][position.second] + this[position.first][position.second + 1] + this[position.first + 1][position.second + 1] + this[position.first - 1][position.second + 1]
+                    }
+                }
+
+            3 -> group.let {
+                    when (groupidsub) {
+                        it.size - 1 -> this[position.first][position.second - 1]                                             + this[position.first + 1][position.second - 1]
+                        it.size - 2 -> this[position.first][position.second - 1] + this[position.first + 1][position.second] + this[position.first + 1][position.second - 1]
+                        else        -> this[position.first][position.second - 1] + this[position.first + 1][position.second] + this[position.first + 1][position.second - 1] + this[position.first + 1][position.second + 1]
+                    }
+                }
+
+            4 -> group.let {
+                    when (groupidsub) {
+                        it.size - 1 -> this[position.first - 1][position.second] + this[position.first][position.second - 1] + this[position.first - 1][position.second - 1]
+                        else        -> this[position.first - 1][position.second] + this[position.first][position.second - 1] + this[position.first - 1][position.second - 1] + this[position.first + 1][position.second - 1]
+                    }
+                }
+
+            else -> throw IllegalStateException ("$groupid")
+        }
+    }
+}
 
 class Spiral (n : Int, initialvalue : Int, supply : Array<Array<Int>>.(Iteration) -> Int) {
 
     val grid = spiral (n, initialvalue, supply)
+
+    fun display () = grid.display (8)
 
     fun shortest (start : Int, target : Int) : Int {
         val s = grid.locate { it.value == start  }.first ()
@@ -50,7 +100,7 @@ private fun spiral (n : Int, initialvalue : Int, supply : Array<Array<Int>>.(Ite
     (0 .. edgesize / 2).forEach {
                                iteration ->
         val     moves = moves (iteration)
-        start = moves.foldIndexed (start) { progress, previous, move ->
+        start = moves.flatten ().foldIndexed (start) { progress, previous, move ->
             if (++iterations > n) return@forEach
 
             val (px, py) = previous
@@ -68,7 +118,7 @@ private fun spiral (n : Int, initialvalue : Int, supply : Array<Array<Int>>.(Ite
     return Grid (edgesize, edgesize) { i, j, _ -> spiral[j][i] }
 }
 
-private fun moves (iteration : Int) : List<Pair<Int, Int>> {
+private fun moves (iteration : Int) : List<List<Pair<Int, Int>>> {
     //  #0  1 1 2 2 2
     //  #1  1 3 4 4 4
     //  #2  1 5 6 6 6
@@ -77,15 +127,31 @@ private fun moves (iteration : Int) : List<Pair<Int, Int>> {
     val second = 2 *  iteration + 1
     val rest   = 2 * (iteration + 1)
 
-    val moves = mutableListOf<Pair<Int, Int>> ()
-
-    (0 until first).forEach  { moves +=  1 to  0 }
-    (0 until second).forEach { moves +=  0 to -1 }
-    (0 until rest).forEach   { moves += -1 to  0 }
-    (0 until rest).forEach   { moves +=  0 to +1 }
-    (0 until rest).forEach   { moves +=  1 to  0 }
-
-    return moves
+    return listOf (
+        (0 until first).map  {  1 to  0 },
+        (0 until second).map {  0 to -1 },
+        (0 until rest).map   { -1 to  0 },
+        (0 until rest).map   {  0 to +1 },
+        (0 until rest).map   {  1 to  0 }
+    )
 }
 
-data class Iteration (val position : Pair<Int, Int>, private val progress : Int, private val move: Pair<Int, Int>, private val moves : List<Pair<Int, Int>>)
+data class Iteration (val position : Pair<Int, Int>, private val progress : Int, private val move: Pair<Int, Int>, private val moves : List<List<Pair<Int, Int>>>) {
+
+    val group by lazy {
+        moves[groupid]
+    }
+
+    val groupid by lazy {
+        moves.indexOfFirst { move in it }.run {
+            if (this != 0) return@run this
+
+            if (progress == 0) 0 else moves.lastIndex
+        }
+    }
+
+    val groupidsub by lazy {
+        progress - (0 until groupid).sumBy { moves[it].size }
+    }
+
+}

@@ -47,6 +47,13 @@ class SpiralSpek : Spek ({
         describe ("#2") {
 
             it ("second example") {
+                expect (Spiral (25, 1, adjacents ()).display()).to.equal (
+                """|     147     142     133     122      59
+                   |     304       5       4       2      57
+                   |     330      10       1       1      54
+                   |     351      11      23      25      26
+                   |     362     747     806     880     931
+                """.trimMargin ())
             }
 
         }
