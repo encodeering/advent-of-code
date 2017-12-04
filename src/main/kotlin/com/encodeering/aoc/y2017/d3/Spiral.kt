@@ -15,59 +15,15 @@ fun main (args : Array<String>) {
     println (Spiral (9 * 9,  1, adjacents ()).display ())
 }
 
-fun addone () : Array<Array<Int>>.(Iteration) -> Int {
+fun addone () : Grid<Int>.(Pair<Int, Int>) -> Int {
     var        sequence = 1
     return { ++sequence }
 }
 
-fun adjacents () : Array<Array<Int>>.(Iteration) -> Int {
-    return { iteration ->
+fun adjacents () : Grid<Int>.(Pair<Int, Int>) -> Int =
+    { (x, y) -> neighbours (y, x, diagonally = true).sumBy { it.value } }
 
-        val position   = iteration.position
-        val group      = iteration.group
-        val groupid    = iteration.groupid
-        val groupidsub = iteration.groupidsub
-
-        when (groupid) {
-            0 -> this[position.first - 1][position.second] + this[position.first - 1][position.second - 1]
-
-            1 -> group.let {
-                    when (groupidsub) {
-                        it.size - 1 -> this[position.first][position.second + 1]                                             + this[position.first - 1][position.second + 1]
-                        it.size - 2 -> this[position.first][position.second + 1] + this[position.first - 1][position.second] + this[position.first - 1][position.second + 1]
-                        else        -> this[position.first][position.second + 1] + this[position.first - 1][position.second] + this[position.first - 1][position.second + 1] + this[position.first - 1][position.second - 1]
-                    }
-                }
-
-            2 -> group.let {
-                    when (groupidsub) {
-                        it.size - 1 -> this[position.first + 1][position.second]                                             + this[position.first + 1][position.second + 1]
-                        it.size - 2 -> this[position.first + 1][position.second] + this[position.first][position.second + 1] + this[position.first + 1][position.second + 1]
-                        else        -> this[position.first + 1][position.second] + this[position.first][position.second + 1] + this[position.first + 1][position.second + 1] + this[position.first - 1][position.second + 1]
-                    }
-                }
-
-            3 -> group.let {
-                    when (groupidsub) {
-                        it.size - 1 -> this[position.first][position.second - 1]                                             + this[position.first + 1][position.second - 1]
-                        it.size - 2 -> this[position.first][position.second - 1] + this[position.first + 1][position.second] + this[position.first + 1][position.second - 1]
-                        else        -> this[position.first][position.second - 1] + this[position.first + 1][position.second] + this[position.first + 1][position.second - 1] + this[position.first + 1][position.second + 1]
-                    }
-                }
-
-            4 -> group.let {
-                    when (groupidsub) {
-                        it.size - 1 -> this[position.first - 1][position.second] + this[position.first][position.second - 1] + this[position.first - 1][position.second - 1]
-                        else        -> this[position.first - 1][position.second] + this[position.first][position.second - 1] + this[position.first - 1][position.second - 1] + this[position.first + 1][position.second - 1]
-                    }
-                }
-
-            else -> throw IllegalStateException ("$groupid")
-        }
-    }
-}
-
-class Spiral (n : Int, initialvalue : Int, supply : Array<Array<Int>>.(Iteration) -> Int) {
+class Spiral (n : Int, initialvalue : Int, supply : Grid<Int>.(Pair<Int, Int>) -> Int) {
 
     val grid = spiral (n, initialvalue, supply)
 
@@ -85,12 +41,14 @@ class Spiral (n : Int, initialvalue : Int, supply : Array<Array<Int>>.(Iteration
 
 }
 
-private fun spiral (n : Int, initialvalue : Int, supply : Array<Array<Int>>.(Iteration) -> Int) : Grid<Int> {
+private fun spiral (n : Int, initialvalue : Int, supply : Grid<Int>.(Pair<Int, Int>) -> Int) : Grid<Int> {
     val edgesize = ceil (sqrt (n.toDouble ())).toInt ().run { this + if (this % 2 == 0) 1 else 0 }
 
     val spiral = Array (edgesize) {
                  Array (edgesize) { 0 }
     }
+
+    val grid = Grid (edgesize, edgesize) { i, j, _ -> spiral[j][i] }
 
     var iterations = 1
     var start = (edgesize / 2).let { it to it }
@@ -98,27 +56,18 @@ private fun spiral (n : Int, initialvalue : Int, supply : Array<Array<Int>>.(Ite
     spiral[start.first][start.second] = initialvalue
 
     (0 .. edgesize / 2).forEach {
-                               iteration ->
-        val     moves = moves (iteration)
-        start = moves.flatten ().foldIndexed (start) { progress, previous, move ->
+                       iteration ->
+        start = moves (iteration).fold (start) { (px, py), ( x,  y) ->
             if (++iterations > n) return@forEach
 
-            val (px, py) = previous
-            val ( x,  y) = move
-
-            val position = px + x to py + y
-
-            spiral[position.first][position.second] = spiral.supply (Iteration (position, progress, move, moves))
-
-            position
+            (px + x to py + y).also { spiral[it.first][it.second] = grid.supply (it) }
         }
-
     }
 
-    return Grid (edgesize, edgesize) { i, j, _ -> spiral[j][i] }
+    return grid
 }
 
-private fun moves (iteration : Int) : List<List<Pair<Int, Int>>> {
+private fun moves (iteration : Int) : List<Pair<Int, Int>> {
     //  #0  1 1 2 2 2
     //  #1  1 3 4 4 4
     //  #2  1 5 6 6 6
@@ -133,25 +82,5 @@ private fun moves (iteration : Int) : List<List<Pair<Int, Int>>> {
         (0 until rest).map   { -1 to  0 },
         (0 until rest).map   {  0 to +1 },
         (0 until rest).map   {  1 to  0 }
-    )
-}
-
-data class Iteration (val position : Pair<Int, Int>, private val progress : Int, private val move: Pair<Int, Int>, private val moves : List<List<Pair<Int, Int>>>) {
-
-    val group by lazy {
-        moves[groupid]
-    }
-
-    val groupid by lazy {
-        moves.indexOfFirst { move in it }.run {
-            if (this != 0) return@run this
-
-            if (progress == 0) 0 else moves.lastIndex
-        }
-    }
-
-    val groupidsub by lazy {
-        progress - (0 until groupid).sumBy { moves[it].size }
-    }
-
+    ).flatten ()
 }
