@@ -46,6 +46,12 @@ interface Matrix<out T> {
 
 }
 
+data class FunctionMatrix<out T> (override val m : Int, override val n : Int, private val f : (Int, Int) -> T) : Matrix<T> {
+
+    override fun get (i : Int, j : Int) = f (i, j)
+
+}
+
 data class ListMatrix<out T> (private val content : List<T>, override val m : Int, override val n : Int) : Matrix<T> {
 
     init {
@@ -110,7 +116,7 @@ data class Partition (val m : Int, val n : Int, val ul : Pair<Int, Int> = 0 to 0
 
 }
 
-fun <T> matrixOf (m : Int, n : Int, f : (Int, Int, Pair<Int, Int>) -> T) : Matrix<T> = List (m * n) { (m to n).run { f (it / n, it % n, this) } }.matrix (m, n)
+fun <T> matrixOf (m : Int, n : Int, f : (Int, Int, Pair<Int, Int>) -> T) : Matrix<T> = FunctionMatrix (m, n) { i, j -> f (i, j, m to n) }
 
 fun <T> List<T>.matrix (m : Int, n : Int) : Matrix<T> = ListMatrix (this, m, n)
 
