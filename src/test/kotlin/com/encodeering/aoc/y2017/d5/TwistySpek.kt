@@ -18,7 +18,15 @@ class TwistySpek : Spek ({
         describe ("#1") {
 
             it ("first example") {
-                expect (twisty (mutableListOf (0, 3, 0, 1, -3))).to.equal (5)
+                expect (twisty1 (mutableListOf (0, 3, 0, 1, -3))).to.equal (5)
+            }
+
+        }
+
+        describe ("#2") {
+
+            it ("second example") {
+                expect (twisty2 (mutableListOf (0, 3, 0, 1, -3))).to.equal (10)
             }
 
         }
