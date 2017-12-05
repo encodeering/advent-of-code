@@ -1,8 +1,7 @@
 package com.encodeering.aoc.y2017.d3
 
 import com.encodeering.aoc.common.Grid
-import com.encodeering.aoc.common.Search
-import com.encodeering.aoc.common.Sector
+import java.lang.Math.abs
 import java.lang.Math.ceil
 import java.lang.Math.sqrt
 import kotlin.coroutines.experimental.buildSequence
@@ -36,11 +35,8 @@ class Spiral (n : Int, initialvalue : Int, supply : Grid<Int>.(Coordinate) -> In
         val s = grid.locate { it.value == start  }.first ()
         val e = grid.locate { it.value == target }.first ()
 
-        return Search.bfs (generate = this::generate).query (s, emptyList ()) { first == e }!!.size
+        return abs (e.i - s.i) + abs (e.j - s.j)
     }
-
-    private fun generate (sector : Sector<Int>, path : List<Sector<Int>>) =
-        grid.neighbours  (sector).map { it to path + it }.toList ()
 
 }
 
