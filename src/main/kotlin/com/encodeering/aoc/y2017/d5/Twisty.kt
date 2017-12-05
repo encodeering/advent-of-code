@@ -8,17 +8,15 @@ import com.encodeering.aoc.common.traverse
  */
 fun main(args : Array<String>) {
     traverse ("/y2017/d5/twisty.txt") {
-        val instructions = it.map { it.number { toInt() }!! }.toMutableList ()
-
-        println ("steps #1: ${twisty1 (instructions)}")
+        println ("steps #1: ${twisty1 (it.instructions ())}")
     }
 
     traverse ("/y2017/d5/twisty.txt") {
-        val instructions = it.map { it.number { toInt() }!! }.toMutableList ()
-
-        println ("steps #2: ${twisty2 (instructions)}")
+        println ("steps #2: ${twisty2 (it.instructions ())}")
     }
 }
+
+private fun Sequence<String>.instructions () = map { it.number { toInt () }!! }.toMutableList ()
 
 fun twisty1 (instructions : MutableList<Int>) = twisty (instructions) {                      1 }
 
