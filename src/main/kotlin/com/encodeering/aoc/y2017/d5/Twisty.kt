@@ -18,11 +18,11 @@ fun main(args : Array<String>) {
 
 private fun Sequence<String>.instructions () = map { it.number { toInt () }!! }.toMutableList ()
 
-fun twisty1 (instructions : MutableList<Int>) = twisty (instructions) {                      1 }
+fun twisty1 (instructions : MutableList<Int>) = twisty (instructions.toIntArray ()) {                      1 }
 
-fun twisty2 (instructions : MutableList<Int>) = twisty (instructions) { if (it >= 3) -1 else 1 }
+fun twisty2 (instructions : MutableList<Int>) = twisty (instructions.toIntArray ()) { if (it >= 3) -1 else 1 }
 
-fun twisty (positions : MutableList<Int>, offset : (Int) -> Int) : Int {
+fun twisty (positions : IntArray, offset : (Int) -> Int) : Int {
     tailrec fun jump (pos : Int,             steps : Int) : Int =
         if           (pos >= positions.size) steps
         else    jump (pos +  positions[pos].also {
