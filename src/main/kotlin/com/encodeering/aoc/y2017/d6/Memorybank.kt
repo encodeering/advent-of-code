@@ -27,16 +27,12 @@ fun reallocate (banks : IntArray, solves : MutableList<Int>.(Int) -> Boolean) : 
         val max = banks.max ()!!
         val idx = banks.indexOf (max)
 
-        val  fullcycles = max / banks.size
+        val fullcycles    = max / banks.size
+        val partialcycles = max % banks.size
 
-        val (leftcycles, rightcycles) = (max % banks.size).let {
-            if (it == 0) return@let 0 to 0
-
-            val rightcycles  = (banks.size - idx - 1).run { if (this > it) it else this }
-            val leftcycles   = it - rightcycles
-
-            leftcycles to rightcycles
-        }
+        val rightavail  = banks.size - idx - 1
+        val rightcycles = if (partialcycles == 0) 0 else if (rightavail > partialcycles) partialcycles else rightavail
+        val leftcycles  = if (partialcycles == 0) 0 else                                 partialcycles    - rightcycles
 
         banks[idx] = 0
 
