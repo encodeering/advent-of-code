@@ -30,20 +30,11 @@ fun reallocate (banks : IntArray, solves : MutableList<Int>.(Int) -> Boolean) : 
         val fullcycles  = max / banks.size
         val partial     = max % banks.size
 
-        val rightavail  = banks.size - idx - 1
-        val right       = if (partial == 0) 0 else if (rightavail > partial) partial else rightavail
-        val left        = if (partial == 0) 0 else                           partial    - right
-
-        val leftrange  = 0       until           left
-        val rightrange = idx + 1 until idx + 1 + right
-
         banks[idx] = 0
 
-        (0 until banks.size).forEachIndexed {
-                  pos, _ ->
-            banks[pos] += fullcycles +
-                          if (pos in leftrange)  1 else 0 +
-                          if (pos in rightrange) 1 else 0
+        (idx + 1 until idx + 1 + banks.size).forEachIndexed {
+            num,  pos ->
+            banks[pos % banks.size] += fullcycles + if (num < partial) 1 else 0
         }
 
         return perform (banks, states)
@@ -51,10 +42,3 @@ fun reallocate (banks : IntArray, solves : MutableList<Int>.(Int) -> Boolean) : 
 
     return perform (banks, mutableListOf<Int> ())
 }
-
-// as stated by reddit users: following optimization could be used if the bank size and values are small. fullcycle count dominates iteration (iterate n times vs add n times)
-//
-//   (0 until max).forEach {
-//              pos ->
-//       banks[(pos + idx + 1) % banks.size] += 1
-//   }
