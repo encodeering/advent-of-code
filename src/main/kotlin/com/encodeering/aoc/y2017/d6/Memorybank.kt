@@ -24,8 +24,7 @@ fun reallocate (banks : IntArray, solves : MutableList<Int>.(Int) -> Boolean) : 
         val state = banks.contentHashCode ()
         if (states.solves (state).also { states += state }) return states
 
-        val max = banks.max ()!!
-        val idx = banks.indexOf (max)
+        val (idx, max) = banks.withIndex ().maxBy { it.value }!!
 
         val fullcycles  = max / banks.size
         val partial     = max % banks.size
