@@ -34,13 +34,17 @@ fun reallocate (banks : IntArray, solves : MutableList<Int>.(Int) -> Boolean) : 
         val rightcycles = if (partialcycles == 0) 0 else if (rightavail > partialcycles) partialcycles else rightavail
         val leftcycles  = if (partialcycles == 0) 0 else                                 partialcycles    - rightcycles
 
+        val leftrange  = 0       until           leftcycles
+        val rightrange = idx + 1 until idx + 1 + rightcycles
+
         banks[idx] = 0
 
-        (0       until banks.size).forEach  { banks[it] += fullcycles }
-
-        (0       until leftcycles).forEach  { banks[it] += 1 }
-
-        (idx + 1 until idx + 1 + rightcycles).forEach { banks[it] += 1 }
+        (0 until banks.size).forEachIndexed {
+                  pos, _ ->
+            banks[pos] += fullcycles +
+                          if (pos in leftrange)  1 else 0 +
+                          if (pos in rightrange) 1 else 0
+        }
 
         return perform (banks, states)
     }
