@@ -18,7 +18,15 @@ class MemorybankSpek : Spek ({
         describe ("#1") {
 
             it ("first example") {
-                expect (reallocate (listOf (0, 2, 7, 0).toIntArray ())).to.equal (5)
+                expect (reallocate1 (listOf (0, 2, 7, 0).toIntArray ())).to.equal (5)
+            }
+
+        }
+
+        describe ("#2") {
+
+            it ("first example") {
+                expect (reallocate2 (listOf (0, 2, 7, 0).toIntArray ())).to.equal (4)
             }
 
         }
