@@ -51,3 +51,10 @@ fun reallocate (banks : IntArray, solves : MutableList<Int>.(Int) -> Boolean) : 
 
     return perform (banks, mutableListOf<Int> ())
 }
+
+// as stated by reddit users: following optimization could be used if the bank size and values are small. fullcycle count dominates iteration (iterate n times vs add n times)
+//
+//   (0 until max).forEach {
+//              pos ->
+//       banks[(pos + idx + 1) % banks.size] += 1
+//   }
