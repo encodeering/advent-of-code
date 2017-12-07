@@ -45,7 +45,7 @@ fun construct            (papers : List<Paper>) : Tower {
                     paper to Tower (
                         paper.name,
                         paper.weight,
-                        subtowers.toList ()
+                        subtowers
                     )
                 }
             }
