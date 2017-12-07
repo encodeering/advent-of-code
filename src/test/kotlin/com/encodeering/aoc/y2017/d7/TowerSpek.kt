@@ -41,6 +41,16 @@ class TowerSpek : Spek ({
 
         }
 
+        describe ("#2") {
+
+            it ("first example") {
+                val tower = construct (Paper.read (description.lineSequence ()))
+
+                expect (rebalance (tower)).to.equal ("ugml" to 60)
+            }
+
+        }
+
     }
 
 })
