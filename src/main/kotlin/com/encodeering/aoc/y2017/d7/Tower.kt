@@ -21,11 +21,14 @@ fun rebalance    (tower : Tower) : Pair<String, Int> {
     val (_, unbalanced) = tower.locate { balance () > 0 }.maxBy { it.first }!!
 
     return  unbalanced.towers.groupBy { it.totalweight () }.run {
-        val any        = maxBy { it.value.size }!!.value.first ()
-        val offender   = minBy { it.value.size }!!.value.first ()
         val difference = unbalanced.balance ()
 
-        offender.name to offender.weight + if (offender.totalweight () > any.totalweight ()) -difference else difference
+        val (anyweight, _)             = maxBy { it.value.size }!!
+        val (offenderweight, offender) = minBy { it.value.size }!!
+
+        with (offender[0]) {
+            name to weight + if (offenderweight > anyweight) -difference else difference
+        }
     }
 }
 
