@@ -18,10 +18,10 @@ fun main(args : Array<String>) {
 }
 
 fun rebalance    (tower : Tower) : Pair<String, Int> {
-    val (_, unbalanced) = tower.locate { balance () > 0 }.maxBy { it.first }!!
+    val (_, unbalanced) = tower.locate { balance > 0 }.maxBy { it.first }!!
 
-    return  unbalanced.towers.groupBy { it.totalweight () }.run {
-        val difference = unbalanced.balance ()
+    return  unbalanced.towers.groupBy { it.totalweight }.run {
+        val difference = unbalanced.balance
 
         val (anyweight, _)             = maxBy { it.value.size }!!
         val (offenderweight, offender) = minBy { it.value.size }!!
@@ -81,11 +81,11 @@ data class Paper (val name : String, val weight : Int, val disks  : List<String>
 
 data class Tower (val name : String, val weight : Int, val towers : List<Tower> = emptyList ()) {
 
-    fun totalweight () : Int = weight + towers.sumBy { it.totalweight () }
+    val totalweight : Int by lazy { weight + towers.sumBy { it.totalweight } }
 
-    fun balance () : Int {
-        val    weights = towers.map { it.totalweight () }
-        return weights.zipwise ().map { (a, b) -> abs (a - b) }.max () ?: 0
+    val balance : Int by lazy {
+        val weights = towers.map { it.totalweight }
+            weights.zipwise ().map { (a, b) -> abs (a - b) }.max () ?: 0
     }
 
 }
