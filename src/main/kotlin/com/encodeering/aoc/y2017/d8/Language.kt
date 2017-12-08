@@ -19,11 +19,24 @@ fun main(args : Array<String>) {
     traverse ("/y2017/d8/language.txt") {
         println ("max value #1: ${solve1 (it)}")
     }
+
+    traverse ("/y2017/d8/language.txt") {
+        println ("max value #2: ${solve2 (it)}")
+    }
 }
 
 fun solve1 (lines : Sequence<String>) = Interpreter ().run (lines).map { _, value -> value }.max ()!!
 
-class State (private val defaultval : Int = 0) {
+fun solve2 (lines : Sequence<String>) : Int {
+    val                             queue = mutableListOf<Int> ()
+    val state = State { _, value -> queue += value }
+
+    Interpreter ().run (lines, state)
+
+    return queue.max ()!!
+}
+
+class State (private val defaultval : Int = 0, private val observer : (String, Int) -> Unit = { _, _ -> }) {
 
     private val registers = mutableMapOf<String, Int> ()
 
@@ -31,6 +44,8 @@ class State (private val defaultval : Int = 0) {
 
     operator fun set (register : String, value : Int) {
         registers[register] = value
+
+        observer (register,   value)
     }
 
     fun <T> map (f : State.(String, Int) -> T) = registers.map { (k, v) -> f (k, v) }

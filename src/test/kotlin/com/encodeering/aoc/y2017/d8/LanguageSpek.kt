@@ -33,6 +33,7 @@ class LanguageSpek : Spek ({
         describe ("#2") {
 
             it ("first example") {
+                expect (solve2 (description.lineSequence ())).to.equal (10)
             }
 
         }
