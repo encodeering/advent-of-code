@@ -28,12 +28,12 @@ fun main(args : Array<String>) {
 fun solve1 (lines : Sequence<String>) = Interpreter ().run (lines).map { _, value -> value }.max ()!!
 
 fun solve2 (lines : Sequence<String>) : Int {
-    val                             queue = mutableListOf<Int> ()
-    val state = State { _, value -> queue += value }
+    var                             maximum = Integer.MIN_VALUE
+    val state = State { _, value -> maximum = maxOf (maximum, value) }
 
     Interpreter ().run (lines, state)
 
-    return queue.max ()!!
+    return maximum
 }
 
 class State (private val defaultval : Int = 0, private val observer : (String, Int) -> Unit = { _, _ -> }) {
