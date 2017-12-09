@@ -30,6 +30,19 @@ class GarbageSpek : Spek ({
 
         }
 
+        describe ("#2") {
+
+            it ("first example") {
+                expect (count2 ("<>")).to.equal (0)
+                expect (count2 ("<<<<>")).to.equal (3)
+                expect (count2 ("<{!>}>")).to.equal (2)
+                expect (count2 ("<!!>")).to.equal (0)
+                expect (count2 ("<!!!>>")).to.equal (0)
+                expect (count2 ("<{o\"i!a,<{i<a>")).to.equal (10)
+            }
+
+        }
+
     }
 
 })
