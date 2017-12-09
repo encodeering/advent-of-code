@@ -48,7 +48,7 @@ fun <T> count (line : CharSequence, listener : TrackListener<T>) : T {
         when (track.garbage) {
             true  ->
                 when (c) {
-                    '>'  -> if (track.escaped) track.copy (escape = 0) else track.copy (escape = 0, garbage = false, start = 0).also { listener.garbage (line, track.start, position + 1) }
+                    '>'  -> if (track.escaped) track.copy (escape = 0) else track.copy (escape = 0, garbage = false, start = Integer.MIN_VALUE).also { listener.garbage (line, track.start, position + 1) }
                     '!'  ->                    track.copy (escape = track.escape + 1)
                     else ->                    track.copy (escape = 0)
                 }
@@ -66,7 +66,7 @@ fun <T> count (line : CharSequence, listener : TrackListener<T>) : T {
     return listener.build ()
 }
 
-data class Track (val group : Int, val escape : Int, val garbage : Boolean, val start : Int = -1) {
+data class Track (val group : Int, val escape : Int, val garbage : Boolean, val start : Int = Integer.MIN_VALUE) {
 
     val escaped : Boolean get () = escape % 2 == 1
 
