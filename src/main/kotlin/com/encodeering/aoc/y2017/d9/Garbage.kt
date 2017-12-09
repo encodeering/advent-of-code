@@ -44,7 +44,7 @@ fun count2 (line : CharSequence) : Int = count (line, object : TrackListener<Int
 })
 
 fun <T> count (line : CharSequence, listener : TrackListener<T>) : T {
-    line.foldIndexed (Track (0, 0, false)) { position, track, c ->
+    line.foldIndexed (Track (0, false)) { position, track, c ->
         when (track.garbage) {
             true  ->
                 when (c) {
@@ -56,8 +56,8 @@ fun <T> count (line : CharSequence, listener : TrackListener<T>) : T {
             false ->
                 when (c) {
                     '<'   -> track.copy (escape = 0, garbage = true, start = position)
-                    '{'   -> track.copy (group = track.group + 1).also { listener.groupOpen  (line, position) }
-                    '}'   -> track.copy (group = track.group - 1).also { listener.groupClose (line, position) }
+                    '{'   -> track.also { listener.groupOpen  (line, position) }
+                    '}'   -> track.also { listener.groupClose (line, position) }
                      else -> track
                 }
         }
@@ -66,7 +66,7 @@ fun <T> count (line : CharSequence, listener : TrackListener<T>) : T {
     return listener.build ()
 }
 
-data class Track (val group : Int, val escape : Int, val garbage : Boolean, val start : Int = Integer.MIN_VALUE) {
+data class Track (val escape : Int = 0, val garbage : Boolean, val start : Int = Integer.MIN_VALUE) {
 
     val escaped : Boolean get () = escape % 2 == 1
 
