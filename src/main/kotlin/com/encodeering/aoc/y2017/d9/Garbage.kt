@@ -17,25 +17,25 @@ fun main(args : Array<String>) {
 
 fun count1 (line : CharSequence) : Int = count (line, object : TrackListener<Int> {
 
-    val queue = mutableListOf<Int> ()
+    var count = 0
     var level = 0
 
-    override fun build () = queue.sum ()
+    override fun build () = count
 
-    override fun groupOpen  (line : CharSequence, idx : Int) { queue.add (++level) }
+    override fun groupOpen  (line : CharSequence, idx : Int) { count += ++level }
 
-    override fun groupClose (line : CharSequence, idx : Int) {            --level  }
+    override fun groupClose (line : CharSequence, idx : Int) {          --level  }
 
 })
 
 fun count2 (line : CharSequence) : Int = count (line, object : TrackListener<Int> {
 
-    val queue = mutableListOf<Int> ()
+    var count = 0
 
-    override fun build () = queue.sum ()
+    override fun build () = count
 
     override fun garbage  (line : CharSequence, from : Int, to : Int) {
-        queue.add (shrink (line.subSequence (from, to)).length - 2)
+        count += shrink   (line.subSequence    (from,       to)).length - 2
     }
 
     private fun shrink (garbage : CharSequence) : String =
