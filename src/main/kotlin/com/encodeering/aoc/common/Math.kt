@@ -167,11 +167,6 @@ fun <T, R> Matrix<T>.map (line : Matrix.Line = Line.Row, f : Matrix<T>.(Int) -> 
     }
 }
 
-private fun <T> List<T>.rotate (by : Int) : List<T> = when {
-    floorMod (by, size) == 0 -> this
-              by <  0            -> takeLast (floorMod (size - abs (by), size)) + take (floorMod (abs (by), size))
-    else                         -> takeLast (floorMod (abs (by), size)) + take (floorMod (size - abs (by), size))
-}
 
 fun <T> Matrix<T>.rotate (vararg rotations : Rotation, line : Matrix.Line = Line.Row) : Matrix<T> {
     val mapping = rotations.associate { it }
