@@ -1,7 +1,6 @@
 package com.encodeering.aoc.y2017.d10
 
 import com.encodeering.aoc.common.blockwise
-import com.encodeering.aoc.common.rotate
 import com.encodeering.aoc.common.traverse
 import java.lang.Integer.toHexString
 
@@ -32,7 +31,7 @@ private fun List<Int>.hash                 (knots : List<Int>, runs : Int = 1) :
         val to = from + knots.first ()
 
         return combine (
-            (input + input).reverse (from, to - 1).subList (from, from + input.size).rotate (from),
+            input.reverse (from, to - 1),
             knots.drop (1),
             skip + to,
             skip + 1
@@ -45,10 +44,19 @@ private fun List<Int>.hash                 (knots : List<Int>, runs : Int = 1) :
     }.list
 }
 
-fun <T> List<T>.reverse (idxA : Int = 0, idxB : Int = size - 1) : List<T> =
-    subList (0,    idxA) +
-    subList (idxA, idxB + 1).reversed () +
-    subList (idxB + 1, size)
+fun <T> List<T>.reverse (idxA : Int = 0, idxB : Int = size - 1) : List<T> {
+    val swaps = run {
+        if (idxA < idxB) (idxA .. idxB)
+        else             (idxB .. idxB + idxA - size)
+    }.map { it % size }.toList ()
+
+    val mapping = (0 until swaps.size).associate {
+        swaps[it] to
+        swaps[swaps.size - it - 1]
+    }
+
+    return List (size) { mapping[it]?.let { this[it] } ?: this[it] }
+}
 
 private data class Knot (val list : List<Int>, val knots : List<Int>, val position : Int, val skip : Int)
 
