@@ -45,3 +45,9 @@ fun <T, R> Iterable<T>.zipwise (transform : (T) -> R) = asSequence ().zipwise (t
 
 fun <T>    Iterable<T>.blockwise (n : Int, partial : Boolean = false) = blockwise (n, partial) { it }
 fun <T, R> Iterable<T>.blockwise (n : Int, partial : Boolean = false, transform : (T) -> R) = asSequence ().blockwise (n, partial, transform).asIterable ()
+
+fun <T> List<T>.rotate (by : Int) : List<T> = when {
+    Math.floorMod(by, size) == 0 -> this
+              by <  0            -> takeLast (Math.floorMod(size - Math.abs(by), size)) + take (Math.floorMod(Math.abs(by), size))
+    else                         -> takeLast (Math.floorMod(Math.abs(by), size)) + take (Math.floorMod(size - Math.abs(by), size))
+}
