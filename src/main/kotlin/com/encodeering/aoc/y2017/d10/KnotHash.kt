@@ -28,13 +28,13 @@ private fun List<Int>.hash                 (knots : List<Int>, runs : Int = 1) :
     tailrec fun combine (input : List<Int>, knots : List<Int>, position : Int, skip : Int) : Knot {
         if                                 (knots.isEmpty ()) return Knot (input, knots, position, skip)
 
-        val list =            input + input
-        val from = position % input.size
+        val      from = position % input.size
+        val to = from + knots.first ()
 
         return combine (
-            list.reverse (from, from + knots.first () - 1).subList (from, from + input.size).rotate (from),
+            (input + input).reverse (from, to - 1).subList (from, from + input.size).rotate (from),
             knots.drop (1),
-            position + knots.first () + skip,
+            skip + to,
             skip + 1
         )
     }
