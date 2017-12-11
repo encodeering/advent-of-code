@@ -10,15 +10,24 @@ fun main(args : Array<String>) {
     traverse ("/y2017/d11/hexagon.txt") {
         println (hexagon1 (it.first ()))
     }
+
+    traverse ("/y2017/d11/hexagon.txt") {
+        println (hexagon2 (it.first ()))
+    }
 }
 
 fun hexagon1 (movements : String) =
     HexCoord (0, 0, 0).run {
-        hexCoord (this, movements.split (',')).distance (this)
+        hexCoord (this, movements.split (',')).last ().distance (this)
     }
 
-private fun hexCoord      (start : HexCoord, movements : List<String>) : HexCoord {
-    return movements.fold (start) { (x, y, z), direction ->
+fun hexagon2 (movements : String) =
+    HexCoord (0, 0, 0).run {
+        hexCoord (this, movements.split (',')).map { it.distance (this)!! }.max()
+    }
+
+private fun hexCoord      (start : HexCoord, movements : List<String>) : List<HexCoord> {
+    return movements.scan (start) { (x, y, z), direction ->
         when (direction) {
             "n"  -> HexCoord (x,     y - 1, z - 1)
             "s"  -> HexCoord (x,     y + 1, z + 1)
@@ -46,4 +55,15 @@ private data class HexCoord (val x : Int, val y : Int, val z : Int) {
         abs (other.z - z)
     ).max ()
 
+}
+
+private fun <T, R> List<T>.scan (initial : R, map : (R, T) -> R) : List<R> {
+    val scan = mutableListOf<R> ()
+
+    fold (initial) {
+             p, v ->
+        map (p, v).also { scan += it }
+    }
+
+    return scan
 }
