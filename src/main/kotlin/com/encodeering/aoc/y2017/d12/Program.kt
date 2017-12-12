@@ -10,6 +10,24 @@ fun main(args : Array<String>) {
     traverse("/y2017/d12/plumber.txt") {
         println (group (Program.read (it), 0).size)
     }
+
+    traverse("/y2017/d12/plumber.txt") {
+        println (blocks (Program.read (it), 0))
+    }
+}
+
+fun blocks             (programs : List<Program>, start : Int) : Int {
+    tailrec fun blocks (programs : List<Program>, start : Int, blocks : Int) : Int {
+        if             (programs.isEmpty ()) return            blocks
+
+        val rest = programs - group (programs, start)
+        if (rest.isEmpty ())
+            return blocks
+
+        return blocks (rest, rest.first ().id, blocks + 1)
+    }
+
+    return blocks (programs, start, 1)
 }
 
 fun group        (programs : List<Program>, start : Int) : List<Program> {
@@ -34,7 +52,10 @@ fun group        (programs : List<Program>, start : Int) : List<Program> {
         nodes += node.connections ()
     }
 
-    return seen
+    return seen.associate { it.id to true }.let {
+                                     group ->
+        programs.filter   { it.id in group }
+    }
 }
 
 data class Program (val id : Int, val pipes : List<Int>) {

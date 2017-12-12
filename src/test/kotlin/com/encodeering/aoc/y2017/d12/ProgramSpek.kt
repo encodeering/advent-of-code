@@ -33,6 +33,14 @@ class ProgramSpek : Spek ({
 
         }
 
+        describe ("#2") {
+
+            it ("second example") {
+                expect (blocks (Program.read (description.lineSequence ()), 0)).to.equal (2)
+            }
+
+        }
+
     }
 
 })
