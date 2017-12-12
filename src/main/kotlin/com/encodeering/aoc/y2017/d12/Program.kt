@@ -35,13 +35,10 @@ fun group        (programs : List<Program>, start : Int) : List<Program> {
 
     fun Program.connections () = pipes.map { mapping[it]!! }
 
-    val root = mapping[start]!!
-
     val seen = mutableListOf<Program> ()
-        seen += root
 
     val nodes = LinkedList<Program> ()
-        nodes += root.connections ()
+        nodes += mapping[start]!!
 
     while         (nodes.isNotEmpty ()) {
         val node = nodes.poll ()
