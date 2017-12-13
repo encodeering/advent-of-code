@@ -37,16 +37,16 @@ data class Firewall (private val  layers : List<Layer>) {
 
     fun severity  (delay : Int) = layers.map {
         layer ->
-        layer.copy (position = layer.run {
-            val steps   = depth - 1
+        layer.copy (position = layer.let {
+            val steps   = it.depth - 1
 
-            val value   = number + delay
+            val value   = it.number + delay
 
             val partial = value % steps
             val full    = value / steps
 
-            if (full % 2 == 0)         partial
-            else               depth - partial - 1
+            if (full % 2 == 0)            partial
+            else               it.depth - partial - 1
         })
     }.filter { it.position == 0 }.sumBy { it.number * it.depth }
 
