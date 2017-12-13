@@ -33,17 +33,17 @@ fun severity    (lines : Sequence<String>) : Sequence<List<Layer>> {
     return generateSequence (0) { it + 1 }.map { delay ->
         layers.map {
             layer ->
-            layer.copy (position = (layer.position + run {
-                val steps   = layer.depth - 1
+            layer.copy (position = layer.run {
+                val steps   = depth - 1
 
-                val value   = layer.number + delay
+                val value   = number + delay
 
                 val partial = value % steps
                 val full    = value / steps
 
-                if (full % 2 == 0)               partial
-                else               layer.depth - partial - 1
-            } % layer.depth))
+                if (full % 2 == 0)         partial
+                else               depth - partial - 1
+            })
         }
     }
 }
