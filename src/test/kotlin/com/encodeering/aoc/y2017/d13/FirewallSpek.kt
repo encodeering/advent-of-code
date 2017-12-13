@@ -30,6 +30,15 @@ class FirewallSpek : Spek ({
 
         }
 
+        describe ("#2") {
+
+            it ("second example") {
+                expect (severity2 (description.lineSequence ())).to.equal (10)
+
+            }
+
+        }
+
     }
 
 })
