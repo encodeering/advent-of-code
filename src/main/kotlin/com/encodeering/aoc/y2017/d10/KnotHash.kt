@@ -17,6 +17,8 @@ fun main(args : Array<String>) {
     }
 }
 
+fun String.knothash () = hash2 ((0..255).toList (), this)
+
 fun hash1 (list : List<Int>, knots : List<Int>) = list.hash (knots).run { this[0] * this[1] }
 
 fun hash2 (list : List<Int>, knots : CharSequence) = list.hash (knots.ascii () + listOf (17, 31, 73, 47, 23), 64)
