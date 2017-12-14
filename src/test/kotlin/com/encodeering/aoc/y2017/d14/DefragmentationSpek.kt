@@ -23,6 +23,14 @@ class DefragmentationSpek : Spek ({
 
         }
 
+        describe ("#2") {
+
+            it ("first example") {
+                expect (defrag ("flqrgnkx").blocks ()).to.equal (1242)
+            }
+
+        }
+
     }
 
 })
