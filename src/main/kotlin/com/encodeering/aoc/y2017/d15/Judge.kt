@@ -29,11 +29,13 @@ fun guard (left : Sequence<Int>, right : Sequence<Int>, steps : Int) =
                .take (steps)
                    .sum ()
 
-private fun sequence (start : Long, magic : Long, f : (Int) -> Boolean = { true }) : Sequence<Int> = buildSequence {
+private inline fun sequence (start : Long, magic : Long, crossinline f : (Int) -> Boolean = { true }) : Sequence<Int> = buildSequence {
     var value = start
 
     while (true) {
-               value = (value * magic) % Integer.MAX_VALUE
-        yield (value.toInt () and 0xFFFF)
+        value = (value * magic) % Integer.MAX_VALUE
+        value.toInt ().let {
+            if (f (it)) yield (it and 0xFFFF)
+        }
     }
-}.filter (f)
+}
