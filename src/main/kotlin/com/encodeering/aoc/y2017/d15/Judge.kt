@@ -24,16 +24,13 @@ fun duel2 (left : Long, right : Long) : Int =
         5000000
     )
 
-fun guard (left : Sequence<Int>, right : Sequence<Int>, steps : Int) = left.zip (right).take (steps).fold (0) {
-    count, (l,              r) ->
-    if     (l and 0xFFFF == r and 0xFFFF) count + 1 else count
-}
+fun guard (left : Sequence<Int>, right : Sequence<Int>, steps : Int) = left.zip (right) { l, r -> if (l == r) 1 else 0 }.take (steps).sum ()
 
 private fun sequence (start : Long, magic : Long, f : (Int) -> Boolean = { true }) : Sequence<Int> = buildSequence {
     var value = start
 
     while (true) {
                value = (value * magic) % Integer.MAX_VALUE
-        yield (value.toInt ())
+        yield (value.toInt () and 0xFFFF)
     }
 }.filter (f)
