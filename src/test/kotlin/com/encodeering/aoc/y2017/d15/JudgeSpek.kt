@@ -23,6 +23,14 @@ class JudgeSpek : Spek ({
 
         }
 
+        describe ("#2") {
+
+            it ("first example") {
+                expect (duel2 (65, 8921)).to.equal (309)
+            }
+
+        }
+
     }
 
 })
