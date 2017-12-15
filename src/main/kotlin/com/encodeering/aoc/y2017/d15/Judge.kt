@@ -24,7 +24,10 @@ fun duel2 (left : Long, right : Long) : Int =
         5000000
     )
 
-fun guard (left : Sequence<Int>, right : Sequence<Int>, steps : Int) = left.zip (right) { l, r -> if (l == r) 1 else 0 }.take (steps).sum ()
+fun guard (left : Sequence<Int>, right : Sequence<Int>, steps : Int) =
+           left.zip             (right) { l, r -> if (l == r) 1 else 0 }
+               .take (steps)
+                   .sum ()
 
 private fun sequence (start : Long, magic : Long, f : (Int) -> Boolean = { true }) : Sequence<Int> = buildSequence {
     var value = start
