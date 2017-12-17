@@ -14,14 +14,9 @@ fun spinlock1 (steps : Int, iterations : Int) : Int {
     val buffer = LinkedList<Int> ()
         buffer += 0
 
-    var position = 0
-    var value    = 1
-
-    repeat (iterations) {
+    spin (steps, iterations) {
+                    position,     value ->
         buffer.add (position + 1, value)
-
-        value   += 1
-        position = (position + 1 + steps) % (value)
     }
 
     return buffer[buffer.indexOf (iterations) + 1]
@@ -31,15 +26,22 @@ fun spinlock1 (steps : Int, iterations : Int) : Int {
 fun spinlock2 (steps : Int, iterations : Int) : Int {
     val buffer = LinkedList<Int> ()
 
+    spin (steps, iterations) {
+            position,                  value ->
+        if (position == 0) buffer.add (value)
+    }
+
+    return buffer.last
+}
+
+private fun spin (steps : Int, iterations : Int, handle : (Int, Int) -> Unit) {
     var position = 0
     var value    = 1
 
     repeat (iterations) {
-        if (position == 0) buffer.add (value)
+        handle (position, value)
 
         value   += 1
         position = (position + 1 + steps) % (value)
     }
-
-    return buffer.last
 }
