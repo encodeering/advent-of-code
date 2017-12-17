@@ -27,20 +27,18 @@ private fun dance2 (moves : List<String>) : CharSequence {
 
 private fun repetition (text : CharSequence, moves : List<String>) : Int {
     var sample = text
-    var count  = 0
 
-    val map = mutableMapOf<CharSequence, Int>()
-        map[sample] = 1
+    val map = LinkedHashMap<CharSequence, Boolean> ()
+        map[sample] = true
 
     while (true) {
-            sample  =                   sample.promenade (moves)
-        map[sample] = map.getOrDefault (sample, 0) + 1
-
-        count += 1
-
-        if (map[sample]!! > 1) {
-            return count
+            sample = sample.promenade (moves)
+        if (sample in map) {
+            return map.size -
+                   map.entries.withIndex ().find { it.value.key == sample }!!.index
         }
+
+        map[sample] = true
     }
 }
 
