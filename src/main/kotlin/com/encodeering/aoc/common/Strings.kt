@@ -22,6 +22,14 @@ fun <T : Number> String.number (f : String.() -> T) : T? = try {
 
 fun CharSequence.findAll (regex : Regex) = regex.findAll (this).flatMap { it.groupValues.drop (1).asSequence () }
 
+fun CharSequence.swap (idxA : Int, idxB : Int) : CharSequence = this.mapIndexed { idx, char ->
+    when (idx) {
+          idxA -> elementAt (idxB)
+          idxB -> elementAt (idxA)
+          else -> char
+    }
+}.joinToString ("")
+
 fun CharSequence.reverse (idxA : Int = 0, idxB : Int = length - 1) : CharSequence =
     subSequence (0,    idxA).toString () +
     subSequence (idxA, idxB + 1).reversed () +

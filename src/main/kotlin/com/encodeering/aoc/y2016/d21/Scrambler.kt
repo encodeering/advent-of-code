@@ -3,6 +3,7 @@ package com.encodeering.aoc.y2016.d21
 import com.encodeering.aoc.common.findAll
 import com.encodeering.aoc.common.reverse
 import com.encodeering.aoc.common.rotate
+import com.encodeering.aoc.common.swap
 import com.encodeering.aoc.common.traverse
 
 /**
@@ -85,14 +86,6 @@ tailrec fun scramble                   (state : CharSequence, ops : Iterable<Cha
         reverse = reverse
     )
 }
-
-fun CharSequence.swap (idxA : Int, idxB : Int) : CharSequence = this.mapIndexed { idx, char ->
-    when (idx) {
-          idxA -> elementAt (idxB)
-          idxB -> elementAt (idxA)
-          else -> char
-    }
-}.joinToString ("")
 
 fun CharSequence.move (idxA : Int, idxB : Int) : CharSequence =
     when {
