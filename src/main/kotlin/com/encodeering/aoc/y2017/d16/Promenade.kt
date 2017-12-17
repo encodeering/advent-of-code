@@ -20,12 +20,14 @@ private fun dance1 (moves : List<String>) = "abcdefghijklmnop".promenade (moves)
 
 private fun dance2 (moves : List<String>) : CharSequence {
     val text : CharSequence = "abcdefghijklmnop"
-    val cycles = 1000000000 % repetition (text, moves)
+    val (offset, repetitions) = repetition (text, moves)
 
-    return (0 until cycles).fold (text) { t, _ -> t.promenade (moves) }
+    val cycles = (1000000000 - offset) % (repetitions.size - offset)
+
+    return repetitions[cycles]
 }
 
-private fun repetition (text : CharSequence, moves : List<String>) : Int {
+private fun repetition (text : CharSequence, moves : List<String>) : Pair<Int, List<CharSequence>> {
     var sample = text
 
     val map = LinkedHashMap<CharSequence, Boolean> ()
@@ -34,8 +36,7 @@ private fun repetition (text : CharSequence, moves : List<String>) : Int {
     while (true) {
             sample = sample.promenade (moves)
         if (sample in map) {
-            return map.size -
-                   map.entries.withIndex ().find { it.value.key == sample }!!.index
+            return map.entries.withIndex ().find { it.value.key == sample }!!.index to map.keys.toList ()
         }
 
         map[sample] = true
