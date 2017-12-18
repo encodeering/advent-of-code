@@ -30,17 +30,9 @@ fun CharSequence.swap (idxA : Int, idxB : Int) : CharSequence = this.mapIndexed 
     }
 }.joinToString ("")
 
-fun CharSequence.reverse (idxA : Int = 0, idxB : Int = length - 1) : CharSequence =
-    subSequence (0,    idxA).toString () +
-    subSequence (idxA, idxB + 1).reversed () +
-    subSequence (idxB + 1, length)
+fun CharSequence.reverse (idxA : Int, idxB : Int) : CharSequence = toList ().reverse (idxA, idxB).joinToString ("")
 
-fun CharSequence.rotate (by : Int) : CharSequence =
-    when {
-        by == 0 || length - Math.abs (by) == 0 -> this
-        by <  0                               -> takeLast (Math.floorMod (length - Math.abs (by), length)).toString () + take (Math.floorMod (Math.abs (by), length))
-        else                                  -> takeLast (Math.floorMod (Math.abs (by), length)).toString () + take (Math.floorMod (length - Math.abs (by), length))
-    }
+fun CharSequence.rotate (by : Int) : CharSequence = toList ().rotate (by).joinToString ("")
 
 operator fun CharSequence.times (n : Int)        : CharSequence = (1 until n).fold             (asSequence ()) { v, _ -> v + this@times.asSequence () }.asCharSequence ()
 operator fun Int.times (sequence : CharSequence) : CharSequence = (1 until this).fold (sequence.asSequence ()) { v, _ -> v +   sequence.asSequence () }.asCharSequence ()

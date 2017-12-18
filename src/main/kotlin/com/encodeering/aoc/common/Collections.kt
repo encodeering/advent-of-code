@@ -63,7 +63,7 @@ fun <T, R> List<T>.scan (initial : R, map : (R, T) -> R) : List<R> {
     return scan
 }
 
-fun <T> List<T>.reverse (idxA : Int = 0, idxB : Int = size - 1) : List<T> {
+fun <T> List<T>.reverse (idxA : Int, idxB : Int) : List<T> {
     val a = idxA % size
     val b = idxB % size
 
