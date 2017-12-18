@@ -29,8 +29,8 @@ private fun List<Int>.hash                 (knots : List<Int>, runs : Int = 1) :
     tailrec fun combine (input : List<Int>, knots : List<Int>, position : Int, skip : Int) : Knot {
         if                                 (knots.isEmpty ()) return Knot (input, knots, position, skip)
 
-        val      from = position % input.size
-        val to = from + knots.first ()
+        val       from = position        % input.size
+        val to = (from + knots.first ()) % input.size
 
         return combine (
             input.reverse (from, to - 1),
@@ -48,8 +48,8 @@ private fun List<Int>.hash                 (knots : List<Int>, runs : Int = 1) :
 
 fun <T> List<T>.reverse (idxA : Int = 0, idxB : Int = size - 1) : List<T> {
     val swaps = run {
-        if (idxA < idxB) (idxA .. idxB)
-        else             (idxB .. idxB + idxA - size)
+        if (idxA <= idxB) (idxA .. idxB)
+        else              (idxA .. idxB + size)
     }.map { it % size }.toList ()
 
     val mapping = (0 until swaps.size).associate {
