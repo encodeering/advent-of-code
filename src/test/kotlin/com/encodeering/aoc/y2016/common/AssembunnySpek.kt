@@ -17,7 +17,7 @@ class AssembunnySpek : Spek ({
     describe ("Assembunny") {
 
         fun evaluate (description : String) : State {
-            return Assembunny.run (Assembunny.parse (description.trimIndent().lineSequence()))
+            return Assembunny.run (Assembunny.parse (description.trimIndent ().lineSequence ()))
         }
 
         describe ("commands") {

@@ -7,7 +7,7 @@ import java.lang.Math.abs
 /**
  * @author clausen - encodeering@gmail.com
  */
-fun main(args : Array<String>) {
+fun main (args : Array<String>) {
     traverse ("/y2017/d11/hexagon.txt") {
         println (hexagon1 (it.first ()))
     }
@@ -24,7 +24,7 @@ fun hexagon1 (movements : String) =
 
 fun hexagon2 (movements : String) =
     HexCoord (0, 0, 0).run {
-        hexCoord (this, movements.split (',')).map { it.distance (this)!! }.max()
+        hexCoord (this, movements.split (',')).map { it.distance (this)!! }.max ()
     }
 
 private fun hexCoord      (start : HexCoord, movements : List<String>) : List<HexCoord> {
@@ -36,7 +36,7 @@ private fun hexCoord      (start : HexCoord, movements : List<String>) : List<He
             "nw" -> HexCoord (x - 1, y,     z - 1)
             "ne" -> HexCoord (x + 1, y - 1, z)
             "sw" -> HexCoord (x - 1, y + 1, z)
-            else -> throw IllegalStateException("direction $direction unknown")
+            else -> throw IllegalStateException ("direction $direction unknown")
         }
     }
 }

@@ -5,7 +5,7 @@ import com.encodeering.aoc.common.traverse
 /**
  * @author clausen - encodeering@gmail.com
  */
-fun main(args : Array<String>) {
+fun main (args : Array<String>) {
     traverse ("/y2017/d9/garbage.txt") {
         println ("groups: ${count1 (it.first ())}")
     }
@@ -40,7 +40,7 @@ fun count2 (line : CharSequence) : Int = count (line, object : TrackListener<Int
 
     private fun shrink (garbage : CharSequence) : String =
                         garbage.replace ("""(?<!!)(!!)*""".toRegex (), "")
-                               .replace ("""![^!]""".toRegex(), "")
+                               .replace ("""![^!]""".toRegex (), "")
 })
 
 fun <T> count (line : CharSequence, listener : TrackListener<T>) : T {

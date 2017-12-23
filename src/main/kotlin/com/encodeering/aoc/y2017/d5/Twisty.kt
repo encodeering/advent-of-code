@@ -6,7 +6,7 @@ import com.encodeering.aoc.common.traverse
 /**
  * @author clausen - encodeering@gmail.com
  */
-fun main(args : Array<String>) {
+fun main (args : Array<String>) {
     traverse ("/y2017/d5/twisty.txt") {
         println ("steps #1: ${twisty1 (it.instructions ())}")
     }

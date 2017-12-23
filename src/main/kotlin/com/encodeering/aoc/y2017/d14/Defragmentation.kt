@@ -10,7 +10,7 @@ import java.util.LinkedList
 /**
  * @author clausen - encodeering@gmail.com
  */
-fun main(args : Array<String>) {
+fun main (args : Array<String>) {
     val grid = defrag ("xlqgujun")
 
     println ("used: ${grid.used ()}")

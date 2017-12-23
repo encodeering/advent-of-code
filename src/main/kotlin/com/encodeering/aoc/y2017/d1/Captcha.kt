@@ -24,6 +24,6 @@ fun captcha      (text : CharSequence,               step : CharSequence.() -> I
     return (0 until text.length).map {
         val (a,   b) = matrix.column (it).toList ()
 
-        if  (a == b) a.toString().toInt() else 0
+        if  (a == b) a.toString ().toInt () else 0
     }.sum ()
 }

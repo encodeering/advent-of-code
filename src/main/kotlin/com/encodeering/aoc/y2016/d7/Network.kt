@@ -11,11 +11,11 @@ object Day7 {
     @JvmStatic
     fun main (args : Array<String>) {
         traverse ("/y2016/d7/addresses.txt") {
-            println ("addresses: ${ it.map (::tls).filter { it }.count () }")
+            println ("addresses: ${it.map (::tls).filter { it }.count ()}")
         }
 
         traverse ("/y2016/d7/addresses.txt") {
-            println ("addresses: ${ it.map (::ssl).filter { it }.count () }")
+            println ("addresses: ${it.map (::ssl).filter { it }.count ()}")
         }
     }
 

@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
 /**
  * @author clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
+@RunWith (JUnitPlatform::class)
 class LanguageSpek : Spek ({
 
     describe ("Language") {
@@ -20,12 +20,12 @@ class LanguageSpek : Spek ({
         a inc 1 if b < 5
         c dec -10 if a >= 1
         c inc -20 if c == 10
-        """.trimIndent()
+        """.trimIndent ()
 
         describe ("#1") {
 
             it ("first example") {
-                expect (solve1 (Language.parse(description.lineSequence ()))).to.equal (1)
+                expect (solve1 (Language.parse (description.lineSequence ()))).to.equal (1)
             }
 
         }
@@ -33,7 +33,7 @@ class LanguageSpek : Spek ({
         describe ("#2") {
 
             it ("first example") {
-                expect (solve2 (Language.parse(description.lineSequence ()))).to.equal (10)
+                expect (solve2 (Language.parse (description.lineSequence ()))).to.equal (10)
             }
 
         }

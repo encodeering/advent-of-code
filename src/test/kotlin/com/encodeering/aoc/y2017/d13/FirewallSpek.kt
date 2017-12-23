@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
 /**
  * @author clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
+@RunWith (JUnitPlatform::class)
 class FirewallSpek : Spek ({
 
     describe ("Firewall") {
@@ -20,7 +20,7 @@ class FirewallSpek : Spek ({
         1: 2
         4: 4
         6: 4
-        """.trimIndent()
+        """.trimIndent ()
 
         describe ("#1") {
 

@@ -8,7 +8,7 @@ import kotlin.coroutines.experimental.buildSequence
 /**
  * @author clausen - encodeering@gmail.com
  */
-fun main(args : Array<String>) {
+fun main (args : Array<String>) {
     traverse ("/y2017/d7/tower.txt") {
         val tower = construct (Paper.read (it))
 

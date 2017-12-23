@@ -6,12 +6,12 @@ import java.util.LinkedList
 /**
  * @author clausen - encodeering@gmail.com
  */
-fun main(args : Array<String>) {
-    traverse("/y2017/d12/plumber.txt") {
+fun main (args : Array<String>) {
+    traverse ("/y2017/d12/plumber.txt") {
         println (group (Program.read (it), 0).size)
     }
 
-    traverse("/y2017/d12/plumber.txt") {
+    traverse ("/y2017/d12/plumber.txt") {
         println (blocks (Program.read (it), 0))
     }
 }

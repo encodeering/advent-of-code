@@ -82,11 +82,11 @@ data class Node (val path : String, val size : Int, val used : Int, val meta : S
         get () = size - used
 
     val x : Int by lazy {
-        """.+node-x(\d+)-y\d+$""".toRegex ().find (path)!!.groupValues[1].toInt ()
+        """.+node-x (\d+)-y\d+$""".toRegex ().find (path)!!.groupValues[1].toInt ()
     }
 
     val y : Int by lazy {
-        """.+node-x\d+-y(\d+)$""".toRegex ().find (path)!!.groupValues[1].toInt ()
+        """.+node-x\d+-y (\d+)$""".toRegex ().find (path)!!.groupValues[1].toInt ()
     }
 
 }

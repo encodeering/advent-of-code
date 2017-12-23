@@ -8,13 +8,13 @@ import java.lang.Integer.toHexString
 /**
  * @author clausen - encodeering@gmail.com
  */
-fun main(args : Array<String>) {
+fun main (args : Array<String>) {
     traverse ("/y2017/d10/knots.txt") {
-        println ("mulitplication:  ${hash1 ((0..255).toList(), it.first().split(',').map { it.toInt () })}")
+        println ("mulitplication:  ${hash1 ((0..255).toList (), it.first ().split (',').map { it.toInt () })}")
     }
 
     traverse ("/y2017/d10/knots.txt") {
-        println ("hash:  ${hash2 ((0..255).toList(), it.first())}")
+        println ("hash:  ${hash2 ((0..255).toList (), it.first ())}")
     }
 }
 
@@ -49,4 +49,4 @@ private fun List<Int>.hash                 (knots : List<Int>, runs : Int = 1) :
 
 private data class Knot (val list : List<Int>, val knots : List<Int>, val position : Int, val skip : Int)
 
-private fun CharSequence.ascii () = map { c -> c.toInt () }.toList()
+private fun CharSequence.ascii () = map { c -> c.toInt () }.toList ()

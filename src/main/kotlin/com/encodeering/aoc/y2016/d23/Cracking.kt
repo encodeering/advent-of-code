@@ -12,10 +12,10 @@ object Day23 {
     @JvmStatic
     fun main (args : Array<String>) {
         traverse ("/y2016/d23/cracking.txt") {
-            val code = Assembunny.parse(it)
+            val code = Assembunny.parse (it)
 
-            println ("register a: ${Assembunny.run (code, State().apply { this["a"] =  7 })["a"]}")
-            println ("register a: ${Assembunny.run (code, State().apply { this["a"] = 12 })["a"]}")
+            println ("register a: ${Assembunny.run (code, State ().apply { this["a"] = 7 })["a"]}")
+            println ("register a: ${Assembunny.run (code, State ().apply { this["a"] = 12 })["a"]}")
         }
     }
 

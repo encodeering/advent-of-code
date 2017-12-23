@@ -9,7 +9,7 @@ import com.encodeering.aoc.common.traverse
  */
 fun main (args : Array<String>) {
     traverse ("/y2017/d16/promenade.txt") {
-        val moves = it.first ().split(',')
+        val moves = it.first ().split (',')
 
         println ("dance #1: ${dance1 (moves)}")
         println ("dance #2: ${dance2 (moves)}")

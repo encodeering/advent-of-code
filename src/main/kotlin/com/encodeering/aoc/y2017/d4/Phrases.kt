@@ -5,7 +5,7 @@ import com.encodeering.aoc.common.traverse
 /**
  * @author clausen - encodeering@gmail.com
  */
-fun main(args : Array<String>) {
+fun main (args : Array<String>) {
     traverse ("/y2017/d4/phrases.txt") {
         println (it.sumBy { if (validate1 (it)) 1 else 0 })
     }

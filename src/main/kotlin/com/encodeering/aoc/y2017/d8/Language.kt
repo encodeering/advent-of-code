@@ -16,7 +16,7 @@ import com.encodeering.aoc.y2017.d8.Guard.Type.NotEqual
  * @author clausen - encodeering@gmail.com
  */
 
-fun main(args : Array<String>) {
+fun main (args : Array<String>) {
     traverse ("/y2017/d8/language.txt") {
         val code = Language.parse (it)
 

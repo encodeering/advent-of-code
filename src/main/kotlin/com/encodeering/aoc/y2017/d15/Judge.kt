@@ -5,7 +5,7 @@ import kotlin.coroutines.experimental.buildSequence
 /**
  * @author clausen - encodeering@gmail.com
  */
-fun main(args : Array<String>) {
+fun main (args : Array<String>) {
     println ("duel #1: ${duel1 (116, 299)}")
     println ("duel #2: ${duel2 (116, 299)}")
 }

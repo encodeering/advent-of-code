@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
 /**
  * @author clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
+@RunWith (JUnitPlatform::class)
 class PromenadeSpek : Spek ({
 
     describe ("Promenade") {
@@ -18,7 +18,7 @@ class PromenadeSpek : Spek ({
         describe ("#1") {
 
             it ("first example") {
-                expect ("abcde".promenade ("s1,x3/4,pe/b".split(','))).to.equal ("baedc")
+                expect ("abcde".promenade ("s1,x3/4,pe/b".split (','))).to.equal ("baedc")
             }
 
         }

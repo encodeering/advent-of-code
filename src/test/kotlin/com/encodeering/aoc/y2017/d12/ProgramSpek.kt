@@ -10,7 +10,7 @@ import org.junit.runner.RunWith
 /**
  * @author clausen - encodeering@gmail.com
  */
-@RunWith(JUnitPlatform::class)
+@RunWith (JUnitPlatform::class)
 class ProgramSpek : Spek ({
 
     describe ("Program") {
@@ -23,7 +23,7 @@ class ProgramSpek : Spek ({
         4 <-> 2, 3, 6
         5 <-> 6
         6 <-> 4, 5
-        """.trimIndent()
+        """.trimIndent ()
 
         describe ("#1") {
 
