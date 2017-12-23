@@ -106,6 +106,41 @@ class CollectionsSpek : Spek ({
 
         }
 
+        describe ("scan") {
+
+            it ("should return a list of all intermediate steps") {
+                expect (emptyList<Int> ().scan (0) { _, _ -> 0 }).to.be.empty
+
+                expect (listOf (1).scan (10) { a, b -> a + b }).to.equal (listOf (11))
+
+                expect (listOf (1, 2).scan (10) { a, b -> a + b }).to.equal (listOf (11, 13))
+            }
+
+        }
+
+
+        describe ("reverse") {
+
+            it ("should return a list with a reversed subsequence") {
+                expect (listOf (1, 2, 3, 4, 5).reverse (0, 0)).to.equal (listOf (1, 2, 3, 4, 5))
+                expect (listOf (1, 2, 3, 4, 5).reverse (0, 1)).to.equal (listOf (2, 1, 3, 4, 5))
+                expect (listOf (1, 2, 3, 4, 5).reverse (0, 2)).to.equal (listOf (3, 2, 1, 4, 5))
+                expect (listOf (1, 2, 3, 4, 5).reverse (0, 3)).to.equal (listOf (4, 3, 2, 1, 5))
+                expect (listOf (1, 2, 3, 4, 5).reverse (0, 4)).to.equal (listOf (5, 4, 3, 2, 1))
+                expect (listOf (1, 2, 3, 4, 5).reverse (0, 5)).to.equal (listOf (1, 2, 3, 4, 5))
+
+                expect (listOf (1, 2, 3, 4, 5).reverse (3, 4)).to.equal (listOf (1, 2, 3, 5, 4))
+
+                expect (listOf (1, 2, 3, 4, 5).reverse (4, 5)).to.equal (listOf (5, 2, 3, 4, 1))
+                expect (listOf (1, 2, 3, 4, 5).reverse (4, 4)).to.equal (listOf (1, 2, 3, 4, 5))
+                expect (listOf (1, 2, 3, 4, 5).reverse (4, 3)).to.equal (listOf (3, 2, 1, 5, 4))
+                expect (listOf (1, 2, 3, 4, 5).reverse (4, 2)).to.equal (listOf (2, 1, 5, 4, 3))
+                expect (listOf (1, 2, 3, 4, 5).reverse (4, 1)).to.equal (listOf (1, 5, 3, 4, 2))
+                expect (listOf (1, 2, 3, 4, 5).reverse (4, 0)).to.equal (listOf (5, 2, 3, 4, 1))
+            }
+
+        }
+
     }
 
 })

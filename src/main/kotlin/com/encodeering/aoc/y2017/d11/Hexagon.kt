@@ -1,5 +1,6 @@
 package com.encodeering.aoc.y2017.d11
 
+import com.encodeering.aoc.common.scan
 import com.encodeering.aoc.common.traverse
 import java.lang.Math.abs
 
@@ -55,15 +56,4 @@ private data class HexCoord (val x : Int, val y : Int, val z : Int) {
         abs (other.z - z)
     ).max ()
 
-}
-
-private fun <T, R> List<T>.scan (initial : R, map : (R, T) -> R) : List<R> {
-    val scan = mutableListOf<R> ()
-
-    fold (initial) {
-             p, v ->
-        map (p, v).also { scan += it }
-    }
-
-    return scan
 }

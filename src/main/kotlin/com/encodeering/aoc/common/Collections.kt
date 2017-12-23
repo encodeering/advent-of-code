@@ -51,3 +51,31 @@ fun <T> List<T>.rotate (by : Int) : List<T> = when {
               by <  0            -> takeLast (Math.floorMod(size - Math.abs(by), size)) + take (Math.floorMod(Math.abs(by), size))
     else                         -> takeLast (Math.floorMod(Math.abs(by), size)) + take (Math.floorMod(size - Math.abs(by), size))
 }
+
+fun <T, R> List<T>.scan (initial : R, map : (R, T) -> R) : List<R> {
+    val scan = mutableListOf<R> ()
+
+    fold (initial) {
+             p, v ->
+        map (p, v).also { scan += it }
+    }
+
+    return scan
+}
+
+fun <T> List<T>.reverse (idxA : Int = 0, idxB : Int = size - 1) : List<T> {
+    val a = idxA % size
+    val b = idxB % size
+
+    val swaps = run {
+        if (a <= b) (a .. b)
+        else        (a .. b + size)
+    }.map { it % size }.toList ()
+
+    val mapping = (0 until swaps.size).associate {
+        swaps[it] to
+        swaps[swaps.size - it - 1]
+    }
+
+    return List (size) { mapping[it]?.let { this[it] } ?: this[it] }
+}
