@@ -51,7 +51,7 @@ class State (private val defaultval : Int? = null, private val observer : (Strin
 
 }
 
-class Interpreter (private val code : Code) {
+class Interpreter (private val code : Code, private val debug : State.(Command) -> Unit = { }) {
 
     fun run (state : State) : State {
         tailrec fun next (pos : Int, state : State) : State {
@@ -68,7 +68,7 @@ class Interpreter (private val code : Code) {
                       code.line = pos
         val command = code[pos]!!
 
-        return code.line + command.apply (code, state)
+        return code.line + command.apply (code, state).also { debug (state, command) }
     }
 
 }
