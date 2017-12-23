@@ -1,5 +1,7 @@
 package com.encodeering.aoc.common
 
+import kotlin.coroutines.experimental.buildSequence
+
 /**
  * @author clausen - encodeering@gmail.com
  */
@@ -61,6 +63,19 @@ class Interpreter (private val code : Code, private val debug : State.(Command) 
         }
 
         return next (0, state)
+    }
+
+    fun lazy (state : State) : Sequence<State> {
+        return buildSequence {
+            var pos = 0
+
+            while (true) {
+                if (pos >= code.size)
+                    return@buildSequence
+
+                pos = call (pos, state).also { yield (state) }
+            }
+        }
     }
 
     private fun call (pos : Int, state : State) : Int {
