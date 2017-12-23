@@ -1,10 +1,9 @@
 package com.encodeering.aoc.y2016.d9
 
-import com.encodeering.aoc.common.collection.Node
-import com.encodeering.aoc.common.collection.Node.Composite
-import com.encodeering.aoc.common.collection.Node.Leaf
-import com.encodeering.aoc.common.primitive.times
 import com.encodeering.aoc.common.io.traverse
+import com.encodeering.aoc.common.primitive.times
+import com.encodeering.aoc.y2016.d9.CyberNode.CyberComposite
+import com.encodeering.aoc.y2016.d9.CyberNode.CyberLeaf
 
 /**
  * @author clausen - encodeering@gmail.com
@@ -46,15 +45,27 @@ fun decompress (text : CharSequence, recursive : Boolean) : CyberNode {
             if (recursive) scan (it) else listOf (CyberLeaf (it))
         }
 
-        return listOf (CyberLeaf (meta), CyberComposite (content, "times" to times)) + scan (upcoming.drop (many))
+        return listOf (CyberLeaf (meta), CyberComposite (times, content)) + scan (upcoming.drop (many))
     }
 
-    return CyberComposite (scan (text), "times" to 1)
+    return CyberComposite(1, scan(text))
 }
 
-typealias CyberNode = Node<CharSequence, Int>
-typealias CyberLeaf = Leaf<CharSequence, Int>
-typealias CyberComposite = Composite<CharSequence, Int>
+sealed class CyberNode (val children : Iterable<CyberNode>) {
 
-fun CyberNode.stringify () = transform ({ _, value -> value },                  { meta, children -> meta["times"] * children.joinToString ("") })
-fun CyberNode.countify ()  = transform ({ _, value -> value.length.toLong () }, { meta, children -> meta["times"] * children.sum () })
+    class    CyberLeaf (val sequence : CharSequence)                          : CyberNode (emptyList ())
+    class    CyberComposite (val times : Int, children : Iterable<CyberNode>) : CyberNode (children)
+
+}
+
+fun CyberNode.stringify () : CharSequence = when (this) {
+    is CyberLeaf      -> sequence
+    is CyberComposite -> times * children.joinToString ("") { it.stringify () }
+    else -> throw IllegalStateException ()
+}
+
+fun CyberNode.countify () : Long = when (this) {
+    is CyberLeaf      -> sequence.length.toLong ()
+    is CyberComposite -> times.toLong () * children.fold (0L) { sum, node -> sum + node.countify () }
+    else -> throw IllegalStateException ()
+}

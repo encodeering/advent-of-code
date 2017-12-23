@@ -1,6 +1,8 @@
 package com.encodeering.aoc.y2016.d9
 
 import com.encodeering.aoc.common.primitive.asCharSequence
+import com.encodeering.aoc.y2016.d9.CyberNode.CyberComposite
+import com.encodeering.aoc.y2016.d9.CyberNode.CyberLeaf
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -28,7 +30,7 @@ class CyberspaceSpek : Spek ({
             }
 
             it ("compression") {
-                expect (CyberComposite (listOf (CyberLeaf ("hello"), CyberLeaf ("world")), "times" to 2).stringify ().toString ()).to.equal ("helloworldhelloworld")
+                expect (CyberComposite (2, listOf (CyberLeaf ("hello"), CyberLeaf ("world"))).stringify ().toString ()).to.equal ("helloworldhelloworld")
             }
 
         }
