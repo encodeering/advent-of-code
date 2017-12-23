@@ -1,10 +1,10 @@
 package com.encodeering.aoc.y2017.d8
 
-import com.encodeering.aoc.common.Code
-import com.encodeering.aoc.common.Command
-import com.encodeering.aoc.common.Interpreter
-import com.encodeering.aoc.common.State
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.language.Code
+import com.encodeering.aoc.common.language.Command
+import com.encodeering.aoc.common.language.Interpreter
+import com.encodeering.aoc.common.language.State
+import com.encodeering.aoc.common.io.traverse
 import com.encodeering.aoc.y2017.d8.Guard.Type.Equal
 import com.encodeering.aoc.y2017.d8.Guard.Type.Greater
 import com.encodeering.aoc.y2017.d8.Guard.Type.GreaterEqual

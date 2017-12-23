@@ -1,10 +1,10 @@
 package com.encodeering.aoc.y2016.d9
 
-import com.encodeering.aoc.common.Node
-import com.encodeering.aoc.common.Node.Composite
-import com.encodeering.aoc.common.Node.Leaf
-import com.encodeering.aoc.common.times
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.collection.Node
+import com.encodeering.aoc.common.collection.Node.Composite
+import com.encodeering.aoc.common.collection.Node.Leaf
+import com.encodeering.aoc.common.primitive.times
+import com.encodeering.aoc.common.io.traverse
 
 /**
  * @author clausen - encodeering@gmail.com

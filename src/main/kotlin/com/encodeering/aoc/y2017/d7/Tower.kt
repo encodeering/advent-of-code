@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2017.d7
 
-import com.encodeering.aoc.common.traverse
-import com.encodeering.aoc.common.zipwise
+import com.encodeering.aoc.common.io.traverse
+import com.encodeering.aoc.common.collection.zipwise
 import java.lang.Math.abs
 import kotlin.coroutines.experimental.buildSequence
 

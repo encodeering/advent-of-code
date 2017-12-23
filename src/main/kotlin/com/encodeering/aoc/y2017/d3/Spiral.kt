@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2017.d3
 
-import com.encodeering.aoc.common.Grid
+import com.encodeering.aoc.common.search.Grid
 import java.lang.Math.abs
 import java.lang.Math.ceil
 import java.lang.Math.sqrt

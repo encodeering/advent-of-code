@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2017.d12
 
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.io.traverse
 import java.util.LinkedList
 
 /**

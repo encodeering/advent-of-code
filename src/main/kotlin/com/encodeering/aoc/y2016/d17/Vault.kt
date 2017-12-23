@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2016.d17
 
-import com.encodeering.aoc.common.Search
-import com.encodeering.aoc.common.md5sum
+import com.encodeering.aoc.common.primitive.md5sum
+import com.encodeering.aoc.common.search.Search
 import java.util.LinkedList
 
 /**

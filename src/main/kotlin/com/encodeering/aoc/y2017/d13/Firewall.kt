@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2017.d13
 
-import com.encodeering.aoc.common.findAll
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.primitive.findAll
+import com.encodeering.aoc.common.io.traverse
 
 /**
  * @author clausen - encodeering@gmail.com

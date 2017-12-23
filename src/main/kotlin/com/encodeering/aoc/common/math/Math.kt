@@ -1,10 +1,9 @@
-package com.encodeering.aoc.common
+package com.encodeering.aoc.common.math
 
-import com.encodeering.aoc.common.Matrix.Companion.verify
-import com.encodeering.aoc.common.Matrix.Line
-import java.lang.Math.abs
+import com.encodeering.aoc.common.math.Matrix.Companion.verify
+import com.encodeering.aoc.common.math.Matrix.Line
+import com.encodeering.aoc.common.collection.rotate
 import java.lang.Math.ceil
-import java.lang.Math.floorMod
 import java.lang.Math.log10
 
 /**

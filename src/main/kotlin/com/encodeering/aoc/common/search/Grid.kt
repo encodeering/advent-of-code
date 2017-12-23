@@ -1,4 +1,9 @@
-package com.encodeering.aoc.common
+package com.encodeering.aoc.common.search
+
+import com.encodeering.aoc.common.math.Matrix
+import com.encodeering.aoc.common.math.map
+import com.encodeering.aoc.common.math.matrixOf
+import com.encodeering.aoc.common.math.toSequence
 
 /**
  * @author clausen - encodeering@gmail.com

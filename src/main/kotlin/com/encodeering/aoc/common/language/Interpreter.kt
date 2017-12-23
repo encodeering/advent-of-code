@@ -1,5 +1,6 @@
-package com.encodeering.aoc.common
+package com.encodeering.aoc.common.language
 
+import com.encodeering.aoc.common.primitive.number
 import kotlin.coroutines.experimental.buildSequence
 
 /**

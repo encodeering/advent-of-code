@@ -1,10 +1,10 @@
 package com.encodeering.aoc.y2017.d1
 
-import com.encodeering.aoc.common.column
-import com.encodeering.aoc.common.matrix
-import com.encodeering.aoc.common.rotate
-import com.encodeering.aoc.common.toList
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.io.traverse
+import com.encodeering.aoc.common.math.column
+import com.encodeering.aoc.common.math.matrix
+import com.encodeering.aoc.common.math.toList
+import com.encodeering.aoc.common.primitive.rotate
 
 /**
  * @author clausen - encodeering@gmail.com

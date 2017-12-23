@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2016.d12
 
-import com.encodeering.aoc.common.State
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.language.State
+import com.encodeering.aoc.common.io.traverse
 import com.encodeering.aoc.y2016.common.Assembunny
 
 /**

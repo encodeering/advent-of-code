@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2016.d15
 
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.io.traverse
 import java.lang.Math.floorMod
 
 /**

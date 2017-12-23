@@ -1,8 +1,8 @@
 package com.encodeering.aoc.y2016.d25
 
-import com.encodeering.aoc.common.State
-import com.encodeering.aoc.common.traverse
-import com.encodeering.aoc.common.window
+import com.encodeering.aoc.common.collection.window
+import com.encodeering.aoc.common.io.traverse
+import com.encodeering.aoc.common.language.State
 import com.encodeering.aoc.y2016.common.Assembunny
 import com.encodeering.aoc.y2016.common.Out
 

@@ -1,4 +1,4 @@
-package com.encodeering.aoc.common
+package com.encodeering.aoc.common.io
 
 import java.io.InputStreamReader
 

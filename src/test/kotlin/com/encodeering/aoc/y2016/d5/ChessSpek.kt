@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2016.d5
 
-import com.encodeering.aoc.common.md5sum
+import com.encodeering.aoc.common.primitive.md5sum
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe

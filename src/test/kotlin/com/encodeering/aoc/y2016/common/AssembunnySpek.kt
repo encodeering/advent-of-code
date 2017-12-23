@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2016.common
 
-import com.encodeering.aoc.common.State
+import com.encodeering.aoc.common.language.State
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe

@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2017.d11
 
-import com.encodeering.aoc.common.scan
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.collection.scan
+import com.encodeering.aoc.common.io.traverse
 import java.lang.Math.abs
 
 /**

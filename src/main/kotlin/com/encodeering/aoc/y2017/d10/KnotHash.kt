@@ -1,8 +1,8 @@
 package com.encodeering.aoc.y2017.d10
 
-import com.encodeering.aoc.common.blockwise
-import com.encodeering.aoc.common.reverse
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.collection.blockwise
+import com.encodeering.aoc.common.collection.reverse
+import com.encodeering.aoc.common.io.traverse
 import java.lang.Integer.toHexString
 
 /**

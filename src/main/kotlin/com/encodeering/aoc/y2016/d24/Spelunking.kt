@@ -1,12 +1,12 @@
 package com.encodeering.aoc.y2016.d24
 
-import com.encodeering.aoc.common.Grid
-import com.encodeering.aoc.common.Search
-import com.encodeering.aoc.common.Sector
-import com.encodeering.aoc.common.permutation
-import com.encodeering.aoc.common.toGrid
-import com.encodeering.aoc.common.traverse
-import com.encodeering.aoc.common.window
+import com.encodeering.aoc.common.collection.window
+import com.encodeering.aoc.common.io.traverse
+import com.encodeering.aoc.common.math.permutation
+import com.encodeering.aoc.common.search.Grid
+import com.encodeering.aoc.common.search.Search
+import com.encodeering.aoc.common.search.Sector
+import com.encodeering.aoc.common.search.toGrid
 import java.util.LinkedList
 
 /**

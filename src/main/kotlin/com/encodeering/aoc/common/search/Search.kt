@@ -1,4 +1,4 @@
-package com.encodeering.aoc.common
+package com.encodeering.aoc.common.search
 
 import java.util.LinkedList
 import java.util.PriorityQueue
@@ -18,25 +18,25 @@ class Search<State, Hash, Result> (
         fun <State,       Result> bfs (generate : (State, Result) -> Iterable<Pair<State, Result>>) = bfs (generate) { it }
 
         fun <State, Hash, Result> bfs (generate : (State, Result) -> Iterable<Pair<State, Result>>, morph : (State) -> Hash) = Search (
-            storage  = { LinkedList () },
-            morph    = morph,
-            generate = generate
+                storage = { LinkedList () },
+                morph = morph,
+                generate = generate
         )
 
         fun <State,       Result> dfs (generate : (State, Result) -> Iterable<Pair<State, Result>>) = dfs (generate) { it }
 
         fun <State, Hash, Result> dfs (generate : (State, Result) -> Iterable<Pair<State, Result>>, morph : (State) -> Hash) = Search (
-            storage  = { Stack () },
-            morph    = morph,
-            generate = generate
+                storage = { Stack () },
+                morph = morph,
+                generate = generate
         )
 
         fun <State,       Result> astar (comparator : Comparator<Pair<State, Result>>, generate : (State, Result) -> Iterable<Pair<State, Result>>) = astar (comparator, generate) { it }
 
         fun <State, Hash, Result> astar (comparator : Comparator<Pair<State, Result>>, generate : (State, Result) -> Iterable<Pair<State, Result>>, morph : (State) -> Hash) = Search (
-            storage  = { PriorityQueue (comparator) },
-            morph    = morph,
-            generate = generate
+                storage = { PriorityQueue (comparator) },
+                morph = morph,
+                generate = generate
         )
 
     }

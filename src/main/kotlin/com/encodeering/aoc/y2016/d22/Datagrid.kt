@@ -1,9 +1,9 @@
 package com.encodeering.aoc.y2016.d22
 
-import com.encodeering.aoc.common.Grid
-import com.encodeering.aoc.common.cartesian
-import com.encodeering.aoc.common.matrix
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.io.traverse
+import com.encodeering.aoc.common.math.cartesian
+import com.encodeering.aoc.common.math.matrix
+import com.encodeering.aoc.common.search.Grid
 
 /**
  * @author clausen - encodeering@gmail.com

@@ -1,5 +1,7 @@
-package com.encodeering.aoc.common
+package com.encodeering.aoc.common.primitive
 
+import com.encodeering.aoc.common.collection.reverse
+import com.encodeering.aoc.common.collection.rotate
 import java.math.BigInteger
 import java.security.MessageDigest
 

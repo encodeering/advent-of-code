@@ -1,11 +1,11 @@
 package com.encodeering.aoc.y2016.common
 
-import com.encodeering.aoc.common.Code
-import com.encodeering.aoc.common.Command
-import com.encodeering.aoc.common.Interpreter
-import com.encodeering.aoc.common.State
-import com.encodeering.aoc.common.number
-import com.encodeering.aoc.common.window
+import com.encodeering.aoc.common.language.Code
+import com.encodeering.aoc.common.language.Command
+import com.encodeering.aoc.common.language.Interpreter
+import com.encodeering.aoc.common.language.State
+import com.encodeering.aoc.common.primitive.number
+import com.encodeering.aoc.common.collection.window
 
 /**
  * @author clausen - encodeering@gmail.com

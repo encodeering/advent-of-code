@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2016.d14
 
-import com.encodeering.aoc.common.md5sum
+import com.encodeering.aoc.common.primitive.md5sum
 import java.lang.Math.max
 
 /**

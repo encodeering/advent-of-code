@@ -1,13 +1,13 @@
 package com.encodeering.aoc.y2016.d8
 
-import com.encodeering.aoc.common.Grid
-import com.encodeering.aoc.common.Matrix.Line.Column
-import com.encodeering.aoc.common.Matrix.Line.Row
-import com.encodeering.aoc.common.Partition
-import com.encodeering.aoc.common.by
-import com.encodeering.aoc.common.map
-import com.encodeering.aoc.common.rotate
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.search.Grid
+import com.encodeering.aoc.common.math.Matrix.Line.Column
+import com.encodeering.aoc.common.math.Matrix.Line.Row
+import com.encodeering.aoc.common.math.Partition
+import com.encodeering.aoc.common.math.by
+import com.encodeering.aoc.common.math.map
+import com.encodeering.aoc.common.math.rotate
+import com.encodeering.aoc.common.io.traverse
 
 /**
  * @author clausen - encodeering@gmail.com

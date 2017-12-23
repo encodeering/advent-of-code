@@ -1,8 +1,8 @@
 package com.encodeering.aoc.y2016.d13
 
-import com.encodeering.aoc.common.Grid
-import com.encodeering.aoc.common.Search
-import com.encodeering.aoc.common.Sector
+import com.encodeering.aoc.common.search.Grid
+import com.encodeering.aoc.common.search.Search
+import com.encodeering.aoc.common.search.Sector
 import java.lang.Integer.toBinaryString
 import java.util.LinkedList
 

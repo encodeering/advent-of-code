@@ -1,4 +1,4 @@
-package com.encodeering.aoc.common
+package com.encodeering.aoc.common.collection
 
 /**
  * @author clausen - encodeering@gmail.com
@@ -12,13 +12,13 @@ sealed class Node<out T, out M> (open val meta : Meta<M> = Meta ()) {
             is Leaf      -> transform (meta, value)
         }
 
-    data class Leaf<out T, out M> (val value : T, override val meta : Meta<M>) : Node<T, M> () {
+    data class Leaf<out T, out M> (val value : T, override val meta : Meta<M>) : Node<T, M>() {
 
         constructor (value : T, vararg meta : Pair<String, M>) : this (value, Meta (* meta))
 
     }
 
-    data class Composite<out T, out M> (val children : Iterable<Node<T, M>>, override val meta : Meta<M>) : Node<T, M> () {
+    data class Composite<out T, out M> (val children : Iterable<Node<T, M>>, override val meta : Meta<M>) : Node<T, M>() {
 
         constructor (children : Iterable<Node<T, M>>, vararg meta : Pair<String, M>) : this (children, Meta (* meta))
 

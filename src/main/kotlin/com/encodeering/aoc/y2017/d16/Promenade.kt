@@ -1,8 +1,8 @@
 package com.encodeering.aoc.y2017.d16
 
-import com.encodeering.aoc.common.rotate
-import com.encodeering.aoc.common.swap
-import com.encodeering.aoc.common.traverse
+import com.encodeering.aoc.common.io.traverse
+import com.encodeering.aoc.common.primitive.rotate
+import com.encodeering.aoc.common.primitive.swap
 
 /**
  * @author clausen - encodeering@gmail.com

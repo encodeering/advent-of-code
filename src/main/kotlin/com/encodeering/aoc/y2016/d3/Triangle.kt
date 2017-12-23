@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2016.d3
 
-import com.encodeering.aoc.common.traverse
-import com.encodeering.aoc.common.window
+import com.encodeering.aoc.common.io.traverse
+import com.encodeering.aoc.common.collection.window
 
 /**
  * @author clausen - encodeering@gmail.com

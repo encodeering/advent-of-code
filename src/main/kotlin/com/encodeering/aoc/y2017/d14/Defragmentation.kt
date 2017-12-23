@@ -1,8 +1,8 @@
 package com.encodeering.aoc.y2017.d14
 
-import com.encodeering.aoc.common.Grid
-import com.encodeering.aoc.common.Sector
-import com.encodeering.aoc.common.matrix
+import com.encodeering.aoc.common.search.Grid
+import com.encodeering.aoc.common.search.Sector
+import com.encodeering.aoc.common.math.matrix
 import com.encodeering.aoc.y2017.d10.knothash
 import java.math.BigInteger
 import java.util.LinkedList

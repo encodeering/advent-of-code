@@ -1,4 +1,4 @@
-package com.encodeering.aoc.common
+package com.encodeering.aoc.common.collection
 
 /**
  * @author clausen - encodeering@gmail.com
@@ -47,9 +47,9 @@ fun <T>    Iterable<T>.blockwise (n : Int, partial : Boolean = false) = blockwis
 fun <T, R> Iterable<T>.blockwise (n : Int, partial : Boolean = false, transform : (T) -> R) = asSequence ().blockwise (n, partial, transform).asIterable ()
 
 fun <T> List<T>.rotate (by : Int) : List<T> = when {
-    Math.floorMod(by, size) == 0 -> this
-              by <  0            -> takeLast (Math.floorMod(size - Math.abs(by), size)) + take (Math.floorMod(Math.abs(by), size))
-    else                         -> takeLast (Math.floorMod(Math.abs(by), size)) + take (Math.floorMod(size - Math.abs(by), size))
+    Math.floorMod (by, size) == 0 -> this
+              by <  0            -> takeLast (Math.floorMod (size - Math.abs (by), size)) + take (Math.floorMod (Math.abs (by), size))
+    else                         -> takeLast (Math.floorMod (Math.abs (by), size)) + take (Math.floorMod (size - Math.abs (by), size))
 }
 
 fun <T, R> List<T>.scan (initial : R, map : (R, T) -> R) : List<R> {

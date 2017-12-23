@@ -1,6 +1,6 @@
 package com.encodeering.aoc.y2016.d9
 
-import com.encodeering.aoc.common.asCharSequence
+import com.encodeering.aoc.common.primitive.asCharSequence
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe

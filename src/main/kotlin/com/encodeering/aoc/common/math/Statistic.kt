@@ -1,4 +1,6 @@
-package com.encodeering.aoc.common
+package com.encodeering.aoc.common.math
+
+import com.encodeering.aoc.common.collection.nextOrNull
 
 /**
  * @author clausen - encodeering@gmail.com
