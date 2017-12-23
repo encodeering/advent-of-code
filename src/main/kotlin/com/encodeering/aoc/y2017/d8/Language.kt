@@ -1,9 +1,10 @@
 package com.encodeering.aoc.y2017.d8
 
-import com.encodeering.aoc.common.number
+import com.encodeering.aoc.common.Code
+import com.encodeering.aoc.common.Command
+import com.encodeering.aoc.common.Interpreter
+import com.encodeering.aoc.common.State
 import com.encodeering.aoc.common.traverse
-import com.encodeering.aoc.y2017.d8.Command.Dec
-import com.encodeering.aoc.y2017.d8.Command.Inc
 import com.encodeering.aoc.y2017.d8.Guard.Type.Equal
 import com.encodeering.aoc.y2017.d8.Guard.Type.Greater
 import com.encodeering.aoc.y2017.d8.Guard.Type.GreaterEqual
@@ -17,98 +18,60 @@ import com.encodeering.aoc.y2017.d8.Guard.Type.NotEqual
 
 fun main(args : Array<String>) {
     traverse ("/y2017/d8/language.txt") {
-        println ("max value #1: ${solve1 (it)}")
-    }
+        val code = Language.parse (it)
 
-    traverse ("/y2017/d8/language.txt") {
-        println ("max value #2: ${solve2 (it)}")
+        println ("max value #1: ${solve1 (code)}")
+        println ("max value #2: ${solve2 (code)}")
     }
 }
 
-fun solve1 (lines : Sequence<String>) = Interpreter ().run (lines).map { _, value -> value }.max ()!!
+fun solve1 (code : Code) = Language.run (code).map { _, value -> value }.max ()!!
 
-fun solve2 (lines : Sequence<String>) : Int {
-    var                             maximum = Integer.MIN_VALUE
-    val state = State { _, value -> maximum = maxOf (maximum, value) }
+fun solve2 (code : Code) : Int {
+    var                                              maximum = Integer.MIN_VALUE
+    val state = State (defaultval = 0) { _, value -> maximum = maxOf (maximum, value) }
 
-    Interpreter ().run (lines, state)
+    Language.run (code, state)
 
     return maximum
 }
 
-class State (private val defaultval : Int = 0, private val observer : (String, Int) -> Unit = { _, _ -> }) {
+object Language {
 
-    private val registers = mutableMapOf<String, Int> ()
+    fun run (code : Code, context : State = State (defaultval = 0)) = Interpreter (code).run (context)
 
-    operator fun get (register : String) = registers.computeIfAbsent (register) { defaultval }
-
-    operator fun set (register : String, value : Int) {
-        registers[register] = value
-
-        observer (register,   value)
-    }
-
-    fun <T> map (f : State.(String, Int) -> T) = registers.map { (k, v) -> f (k, v) }
-
-    fun convertOrLoad (value : String) = value.number { toInt () } ?: load (value)
-
-    fun load (register : String) = this[register]
-
-}
-
-class Interpreter {
-
-    fun run (lines : Sequence<String>, context : State = State ()) : State {
-        val commands = parse (lines)
-
-        tailrec fun interpret (pos : Int,                   context : State) : State {
-            if                (pos >= commands.size) return context
-
-            commands[pos].apply (context)
-
-            return interpret (pos + 1, context)
-        }
-
-        return     interpret (0, context)
-    }
-
-
-    fun parse (lines : Sequence<String>) : List<Command> {
+    fun parse (lines : Sequence<String>) = Code (lines.map { op ->
         val splitter = """^(\w+) (\w+) (.+?) \w+ (\w+) (.+?) (.+?)${'$'}""".toRegex ()
 
-        return lines.map {                                                                   op ->
-            val (target, command, operand, guard, comparator, value) = splitter.matchEntire (op)!!.destructured
+        val (target, command, operand, guard, comparator, value) = splitter.matchEntire (op)!!.destructured
 
-            fun guard () = Guard (guard, Guard.Type.choose (comparator), value)
+        fun guard () = Guard (guard, Guard.Type.choose (comparator), value)
 
-            when (command) {
-                "inc" -> Inc (target, operand, guard ())
-                "dec" -> Dec (target, operand, guard ())
-                else  -> throw IllegalStateException ("operation $command unknown")
-            }
-        }.toList ()
+        when (command) {
+            "inc" -> Inc (target, operand, guard ())
+            "dec" -> Dec (target, operand, guard ())
+            else  -> throw IllegalStateException ("operation $command unknown")
+        }
+    }.toMutableList ())
+
+}
+
+data class Inc (private val register : String, private val operand : String, private val guard : Guard) : Command {
+
+    override fun apply (code : Code, state : State) : Int {
+        if (guard.applicable (state)) state[register] = state.load (register) + state.convertOrLoad (operand)
+
+        return 1
     }
 
 }
 
-sealed class Command {
+data class Dec (private val register : String, private val operand : String, private val guard : Guard) : Command {
 
-    abstract fun apply (context : State)
+    override fun apply (code : Code, state : State) : Int {
+        if (guard.applicable (state)) state[register] = state.load (register) - state.convertOrLoad (operand)
 
-    data class Inc (private val register : String, private val operand : String, private val guard : Guard) : Command () {
-
-        override fun apply (context : State) {
-            if (guard.applicable (context)) context[register] = context[register] + context.convertOrLoad (operand)
-        }
-
-    }
-
-    data class Dec (private val register : String, private val operand : String, private val guard : Guard) : Command () {
-
-        override fun apply (context : State) {
-             if (guard.applicable (context)) context[register] = context[register] - context.convertOrLoad (operand)
-        }
-
+        return 1
     }
 
 }

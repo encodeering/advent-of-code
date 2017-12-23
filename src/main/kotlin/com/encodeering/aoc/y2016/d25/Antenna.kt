@@ -1,9 +1,10 @@
 package com.encodeering.aoc.y2016.d25
 
+import com.encodeering.aoc.common.State
 import com.encodeering.aoc.common.traverse
 import com.encodeering.aoc.common.window
-import com.encodeering.aoc.y2016.common.Interpreter
-import com.encodeering.aoc.y2016.common.State
+import com.encodeering.aoc.y2016.common.Assembunny
+import com.encodeering.aoc.y2016.common.Out
 
 /**
  * @author clausen - encodeering@gmail.com
@@ -13,27 +14,20 @@ object Day25 {
     @JvmStatic
     fun main (args : Array<String>) {
         traverse ("/y2016/d25/signal.txt") {
-            val operations = it.toList ()
+            val code = Assembunny.parse (it)
 
             generateSequence (0) { it + 1 }.filter {
-                val state = State ()
-                    state["a"] = it
-
-                var found = false
                 val queue = mutableListOf<Int> ()
 
-                Interpreter {
-                                queue += it
-                    val pairs = queue.toList ().window (2, step = 2).filterNot { (a, b) -> a == 0 && b == 1 }.take (50)
+                Assembunny.lazy (code, State ().apply { this["a"] = it }) {
+                          command ->
+                    when (command) {
+                        is Out -> queue += load (command.register)
+                    }
+                }.takeWhile { queue.size < 8 }.last ()
 
-                    if (pairs.isNotEmpty ())
-                        false
-                    else
-                        (queue.size < 100).also { found = ! it }
-                }.run (operations.asSequence (), state)
-
-                found
-            }.take ( 1).forEach { println (it) }
+                queue.toList ().window (2, step = 2).filterNot { (a, b) -> a == 0 && b == 1 }.isEmpty ()
+            }.take (1).forEach { println (it) }
         }
     }
 

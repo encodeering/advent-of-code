@@ -1,7 +1,6 @@
 package com.encodeering.aoc.y2016.d12
 
-import com.encodeering.aoc.y2016.common.Interpreter
-import com.encodeering.aoc.y2016.common.State
+import com.encodeering.aoc.y2016.common.Assembunny
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -29,14 +28,9 @@ class AssembunnySpek : Spek ({
                 dec a
                 """
 
-                val instructions = description.trimIndent ().lineSequence ()
+                val code = Assembunny.parse (description.trimIndent ().lineSequence ())
 
-                val state = State ()
-
-                val interpreter = Interpreter ()
-                    interpreter.run (instructions, state)
-
-                expect (state["a"]).to.equal (42)
+                expect (Assembunny.run (code)["a"]).to.equal (42)
             }
 
         }

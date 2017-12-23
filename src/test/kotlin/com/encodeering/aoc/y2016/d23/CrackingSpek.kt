@@ -1,7 +1,7 @@
 package com.encodeering.aoc.y2016.d23
 
-import com.encodeering.aoc.y2016.common.Interpreter
-import com.encodeering.aoc.y2016.common.State
+import com.encodeering.aoc.common.State
+import com.encodeering.aoc.y2016.common.Assembunny
 import com.winterbe.expekt.expect
 import org.jetbrains.spek.api.Spek
 import org.jetbrains.spek.api.dsl.describe
@@ -18,11 +18,7 @@ class CrackingSpek : Spek ({
     describe ("Cracking") {
 
         fun evaluate (description : String) : State {
-            val state = State ()
-            val interpreter = Interpreter ()
-                interpreter.run (description.trimIndent ().lineSequence (), state)
-
-            return state
+            return Assembunny.run (Assembunny.parse (description.trimIndent().lineSequence()))
         }
 
         describe ("#1") {

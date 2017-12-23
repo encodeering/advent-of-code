@@ -25,7 +25,7 @@ class LanguageSpek : Spek ({
         describe ("#1") {
 
             it ("first example") {
-                expect (solve1 (description.lineSequence ())).to.equal (1)
+                expect (solve1 (Language.parse(description.lineSequence ()))).to.equal (1)
             }
 
         }
@@ -33,7 +33,7 @@ class LanguageSpek : Spek ({
         describe ("#2") {
 
             it ("first example") {
-                expect (solve2 (description.lineSequence ())).to.equal (10)
+                expect (solve2 (Language.parse(description.lineSequence ()))).to.equal (10)
             }
 
         }
